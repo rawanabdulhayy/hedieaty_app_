@@ -1,13 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/presentation/pages/screenwrapper.dart';
+import 'package:hedieaty_app_mvc/presentation/pages/signup.dart';
 import 'package:provider/provider.dart'; // Import this for ChangeNotifierProvider
-import 'package:hedieaty_app_mvc/domain/navigation_controller.dart'; // Import your NavigationController
+import 'package:hedieaty_app_mvc/domain/navigation_controller.dart';
+
+import 'core/app_colors.dart'; // Import your NavigationController
 //import 'package:hedieaty_app_mvc/presentation/my_app.dart'; // Replace with the actual location of your MyApp class
 
 void main() {
   runApp(
     ChangeNotifierProvider(
       create: (_) => NavigationController(),
-      child: const Placeholder(), // The child in your ChangeNotifierProvider should be the root widget of your app. This is typically a MaterialApp or a custom widget that initializes your app's structure. In your case, MyApp appears to be the root widget, so it is correct to use it as the child.
+      child: HedieatyApp(), // The child in your ChangeNotifierProvider should be the root widget of your app. This is typically a MaterialApp or a custom widget that initializes your app's structure. In your case, MyApp appears to be the root widget, so it is correct to use it as the child.
     ),
   );
+}
+class HedieatyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Hedieaty',
+      theme: ThemeData(
+        primaryColor: AppColors.navyBlue,
+        hintColor: AppColors.gold,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => ScreenWrapper(),
+        // '/home': (context) => HomePage(),
+        // '/profile': (context) => ProfilePage(),
+        // '/friend_event_list': (context) => FriendEventListPage(),
+        // '/friend_gift_list': (context) => FriendGiftListPage(),
+        // '/user_events_list': (context) => EventListPage(),
+        // '/user_gift_list': (context) => GiftListPage(eventName: "Birthday"),
+        // '/gift_details': (context) => GiftDetailsPage(), // Add gift ID handling inside the GiftDetailsPage itself
+        // '/pledged_gifts': (context) => PledgedGiftsPage(),
+        // '/add_friend': (context) => AddFriendPage(),
+        // '/create_event_list': (context) => CreateEventPage(),
+        //'/': (context) => SignUpPage(),
+        // '/signin': (context) => CreateEventPage(),
+      },
+    );
+  }
 }
