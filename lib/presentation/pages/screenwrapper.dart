@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/core/common_widgets/custom_app_bar.dart';
 import 'package:hedieaty_app_mvc/data/data_repo/list_of_nav_bar_items.dart';
 import 'package:hedieaty_app_mvc/domain/navigation_controller.dart';
 import 'package:hedieaty_app_mvc/presentation/widgets/bottom_nav_bar_widget.dart';
@@ -14,30 +15,7 @@ class ScreenWrapper extends StatelessWidget {
     return Consumer<NavigationController>(
       builder: (context, navigationController, child) {
         return Scaffold(
-            appBar: AppBar(
-              backgroundColor: AppColors.navyBlue,
-              title: Center(
-                child: Text(
-                  listOfNavigationBarItems[navigationController.currentIndex].title,
-                  style: TextStyle(
-                    color: AppColors.gold,
-                    fontFamily: "Pacifico",
-                    fontSize: 27,
-                  ),
-                ),
-              ),
-              iconTheme: IconThemeData(
-                color: AppColors.gold,
-              ),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.card_giftcard),
-                  onPressed: () {
-                    // TODO Navigate to Homepage.
-                  },
-                ),
-              ],
-            ),
+          appBar: CustomAppBar(title:  listOfNavigationBarItems[navigationController.currentIndex].title),
           body: listOfNavigationBarItems[navigationController.currentIndex].page,
           bottomNavigationBar: BottomNavigationBarWidget(),
         );

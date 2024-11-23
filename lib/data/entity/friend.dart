@@ -1,19 +1,19 @@
-// mport 'dart:ui';
-//
-// class Product{
-//   final String id;
-//   final String name;
-//   final String description;
-//   final double price;
-//   final List<Color> availableColors;
-//   final String imageUrl;
-//
-//   Product({
-//     required this.id,
-//     required this.name,
-//     required this.description,
-//     required this.price,
-//     required this.availableColors,
-//     required this.imageUrl,
-//   });
-// }
+class Friend {
+  final String id;
+  final String name;
+  final String username;
+  final String email;
+  final String phoneNumber;
+  final DateTime birthDate;
+  final List<String> events;
+
+  Friend({
+    required this.id,
+    required this.name,
+    required this.username,
+    required this.email,
+    required this.phoneNumber,
+    required this.birthDate,
+    required this.events,
+  });
+}

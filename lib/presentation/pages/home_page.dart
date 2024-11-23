@@ -1,5 +1,117 @@
+// import 'package:flutter/material.dart';
+// import 'package:hedieaty_app_mvc/core/common_widgets/search_bar.dart';
+// import '../../core/app_colors.dart';
+// import '../../data/data_repo/sample_friends.dart';
+// import '../../data/entity/friend.dart';
+// import '../widgets/friend_card.dart';
+//
+// class HomePage extends StatefulWidget {
+//   @override
+//   _HomePageState createState() => _HomePageState();
+// }
+//
+// class _HomePageState extends State<HomePage> {
+//
+//   // Controller for the search text field
+//   TextEditingController searchController = TextEditingController();
+//   List<Friend> filteredFriends = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     filteredFriends = sampleFriends; // Initialize filteredFriends with sampleFriends
+//   }
+//
+//   // Function to filter friends based on search query
+//   void filterFriends(String query) {
+//     final results = sampleFriends.where((friend) {
+//       final name = friend.name.toLowerCase();
+//       final events = friend.events.map((event) => event.toLowerCase()).join(" ");
+//       final searchQuery = query.toLowerCase();
+//
+//       return name.contains(searchQuery) || events.contains(searchQuery);
+//     }).toList();
+//
+//     setState(() {
+//       filteredFriends = results;
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: double.infinity,
+//       decoration: BoxDecoration(
+//         gradient: LinearGradient(
+//           colors: [AppColors.navyBlue, AppColors.brightBlue],
+//         ),
+//       ),
+//       child: Column(
+//         children: [
+//           // Search text field
+//           Padding(
+//             padding: EdgeInsets.all(16.0),
+//             child: CustomSearchBar(controller: searchController, onChanged: (String ) {},),
+//           ),
+//           SizedBox(height: 16),
+//
+//           // List of friends
+//           Expanded(
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
+//               child: ListView.builder(
+//                 itemCount: filteredFriends.length,
+//                 itemBuilder: (context, index) {
+//                   final friend = filteredFriends[index];
+//                   final events = friend.events; // Get events from the Friend model
+//                   final eventCount = events.length;
+//
+//                   return FriendCard(
+//                     friendName: friend.name,
+//                     events: events,
+//                     eventCount: eventCount,
+//                     onTap: () {
+//                       Navigator.pushNamed(
+//                         context,
+//                         '/friend_event_list',
+//                         arguments: friend,
+//                       );
+//                     },
+//                   );
+//                 },
+//               ),
+//             ),
+//           ),
+//
+//           // Floating action button
+//           Padding(
+//             padding: const EdgeInsets.all(16.0),
+//             child: Align(
+//               alignment: Alignment.bottomRight,
+//               child: FloatingActionButton(
+//                 backgroundColor: AppColors.gold,
+//                 onPressed: () {
+//                   Navigator.pushNamed(context, '/add_friend');
+//                 },
+//                 child: Icon(
+//                   Icons.add,
+//                   color: AppColors.navyBlue,
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/core/common_widgets/search_bar.dart';
 import '../../core/app_colors.dart';
+import '../../data/entity/friend.dart';
+import '../../data/friend_repository.dart';
+import '../../domain/filter_friends_use_case.dart';
 import '../widgets/friend_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -8,36 +120,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Updated list of friends with events as a list
-  List<Map<String, dynamic>> friends = [
-    {"name": "Alice", "events": ["Birthday on Dec 12", "Wedding on Feb 2"]},
-    {"name": "Bob", "events": ["Anniversary on Jan 15"]},
-    {"name": "Charlie", "events": ["Birthday on Mar 22"]},
-    {"name": "Dave"}, // Friend with no events
-  ];
-
   // Controller for the search text field
   TextEditingController searchController = TextEditingController();
-  List<Map<String, dynamic>> filteredFriends = [];
+  List<Friend> filteredFriends = [];
+  final FilterFriendsUseCase _filterFriendsUseCase = FilterFriendsUseCase();
+  final FriendRepository _friendRepository = FriendRepository();
 
   @override
   void initState() {
     super.initState();
-    filteredFriends = friends;
+    filteredFriends = _friendRepository.getFriends(); // Initialize with all friends
   }
 
   // Function to filter friends based on search query
   void filterFriends(String query) {
-    final results = friends.where((friend) {
-      final name = friend['name']!.toLowerCase();
-      final events = (friend['events'] ?? []).map((event) => event.toLowerCase()).join(" ");
-      final searchQuery = query.toLowerCase();
-
-      return name.contains(searchQuery) || events.contains(searchQuery);
-    }).toList();
-
     setState(() {
-      filteredFriends = results;
+      filteredFriends = _filterFriendsUseCase.execute(_friendRepository.getFriends(), query);
     });
   }
 
@@ -56,28 +154,7 @@ class _HomePageState extends State<HomePage> {
           // Search text field
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: TextField(
-              controller: searchController,
-              onChanged: filterFriends,
-              decoration: InputDecoration(
-                hintText: 'Search friends...',
-                hintStyle: TextStyle(
-                  color: AppColors.gold,
-                ),
-                prefixIcon: Icon(Icons.search, color: AppColors.gold),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.brightBlue.withOpacity(0.1), width: 2.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.gold, width: 2.0),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                filled: true,
-                fillColor: AppColors.brightBlue.withOpacity(0.1),
-              ),
-            ),
+            child: CustomSearchBar(controller: searchController, onChanged: filterFriends),
           ),
           SizedBox(height: 16),
 
@@ -89,11 +166,11 @@ class _HomePageState extends State<HomePage> {
                 itemCount: filteredFriends.length,
                 itemBuilder: (context, index) {
                   final friend = filteredFriends[index];
-                  final events = friend['events'] as List<String>? ?? []; // Default to empty list
+                  final events = friend.events;
                   final eventCount = events.length;
 
                   return FriendCard(
-                    friendName: friend['name']!,
+                    friendName: friend.name,
                     events: events,
                     eventCount: eventCount,
                     onTap: () {

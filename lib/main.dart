@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/presentation/pages/home_page.dart';
 import 'package:hedieaty_app_mvc/presentation/pages/screenwrapper.dart';
 import 'package:hedieaty_app_mvc/presentation/pages/sign_in_tabs_wrapper.dart';
 import 'package:hedieaty_app_mvc/presentation/pages/signup.dart';
@@ -80,8 +81,8 @@ class HedieatyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        //'/': (context) => ScreenWrapper(),
-        // '/home': (context) => HomePage(),
+        //'/': (context) => SignInTabsWrapper(),
+        '/': (context) => ScreenWrapper(),
         // '/profile': (context) => ProfilePage(),
         // '/friend_event_list': (context) => FriendEventListPage(),
         // '/friend_gift_list': (context) => FriendGiftListPage(),
@@ -91,8 +92,6 @@ class HedieatyApp extends StatelessWidget {
         // '/pledged_gifts': (context) => PledgedGiftsPage(),
         // '/add_friend': (context) => AddFriendPage(),
         // '/create_event_list': (context) => CreateEventPage(),
-        '/': (context) => SignInTabsWrapper(),
-        // '/signin': (context) => CreateEventPage(),
       },
     );
   }
