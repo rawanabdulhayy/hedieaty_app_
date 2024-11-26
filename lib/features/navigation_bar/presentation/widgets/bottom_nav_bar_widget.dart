@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hedieaty_app_mvc/data/data_repo/list_of_nav_bar_items.dart';
-import 'package:hedieaty_app_mvc/core/presentation/providers/Navigation_Provider.dart';
+import 'package:hedieaty_app_mvc/features/navigation_bar/domain/list_of_nav_bar_items.dart';
+import 'package:hedieaty_app_mvc/features/navigation_bar/presentation/providers/Navigation_Provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../app_colors.dart';
+import '../../../../core/app_colors.dart';
 
 class BottomNavigationBarWidget extends StatelessWidget {
   const BottomNavigationBarWidget({super.key});

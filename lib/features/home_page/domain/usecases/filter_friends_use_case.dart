@@ -1,5 +1,5 @@
 
-import '../core/domain/models/User.dart';
+import '../../../../core/domain/models/User.dart';
 
 class FilterFriendsUseCase {
   // This will filter the friends based on the search query.

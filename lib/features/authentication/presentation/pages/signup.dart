@@ -1,26 +1,33 @@
 import 'package:flutter/material.dart';
-import '../../../core/app_colors.dart';
-import '../../../core/config/theme/gradient_background.dart';
-import '../../../core/presentation/widgets/buttons/custom_golden_button.dart';
-import '../../../core/presentation/widgets/text_fields/text_form_field.dart';
+import '../../../../core/app_colors.dart';
+import '../../../../core/config/theme/gradient_background.dart';
+import '../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
+import '../../../../core/presentation/widgets/text_fields/text_form_field.dart';
 import '../../domain/validators.dart';
 
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
+    _usernameController.dispose();
+    _phoneController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -52,8 +59,22 @@ class _SignInPageState extends State<SignInPage> {
                           controller: _emailController,
                           labelText: 'Email',
                           hintText: 'example@mail.com',
-                          validator: Validators.validateEmail,
-                          obscureText: false,
+                          validator: Validators.validateEmail, obscureText: null,
+                        ),
+                        // Username Field
+                        CustomTextFormField(
+                          controller: _usernameController,
+                          labelText: 'Username',
+                          hintText: 'Your Username',
+                          validator: Validators.validateUsername, obscureText: null,
+                        ),
+                        // Phone Number Field
+                        CustomTextFormField(
+                          controller: _phoneController,
+                          labelText: 'Phone Number',
+                          hintText: '+1234567890',
+                          keyboardType: TextInputType.phone,
+                          validator: Validators.validatePhone, obscureText: null,
                         ),
                         // Password Field
                         CustomTextFormField(
@@ -63,28 +84,26 @@ class _SignInPageState extends State<SignInPage> {
                           obscureText: true,
                           validator: Validators.validatePassword,
                         ),
-                        // Sign-In Button
+                        // Confirm Password Field
+                        CustomTextFormField(
+                          controller: _confirmPasswordController,
+                          labelText: 'Confirm Password',
+                          hintText: '******',
+                          obscureText: true,
+                          validator: (value) =>
+                              Validators.validateConfirmPassword(value, _passwordController.text),
+                        ),
+                        // Sign-Up Button
                         CustomButton(
-                          text: 'Sign In',
+                          text: 'Sign Up',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Handle sign-in logic
+                              // Handle sign-up logic
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Signing In...')),
+                                const SnackBar(content: Text('Signing Up...')),
                               );
                             }
                           },
-                        ),
-                        // Optional: Add Forgot Password or Register Links
-                        const SizedBox(height: 8.0),
-                        TextButton(
-                          onPressed: () {
-                            // Navigate to Forgot Password screen or other action
-                          },
-                          child: const Text(
-                            'Forgot Password?',
-                            style: TextStyle(color: Colors.white),
-                          ),
                         ),
                       ],
                     ),

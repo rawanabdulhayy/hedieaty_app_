@@ -107,11 +107,11 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-import '../../../core/app_colors.dart';
-import '../../../core/domain/models/User.dart';
-import '../../../core/presentation/widgets/search_bar/search_bar.dart';
-import '../../../data/friend_repository.dart';
-import '../../../domain/filter_friends_use_case.dart';
+import '../../../../core/app_colors.dart';
+import '../../../../core/domain/models/User.dart';
+import '../../../../core/presentation/widgets/search_bar/search_bar.dart';
+import '../../data/repository/friend_repository.dart';
+import '../../domain/usecases/filter_friends_use_case.dart';
 import '../widgets/friend_card.dart';
 
 class HomePage extends StatefulWidget {

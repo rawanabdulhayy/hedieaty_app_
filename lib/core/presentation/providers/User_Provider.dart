@@ -44,7 +44,6 @@
 // Fetch Dynamically: Fetch the user data in the login or splash screen and initialize the UserProvider there.
 //
 import 'package:flutter/foundation.dart';
-
 import '../../domain/models/User.dart';
 
 class UserProvider extends ChangeNotifier {
