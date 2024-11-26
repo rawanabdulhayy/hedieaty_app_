@@ -72,6 +72,7 @@ class _SignInPageState extends State<SignInPage> {
                             if (_formKey.currentState!.validate()) {
                               firebaseAuth.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
                               //firebaseAuth.sendPasswordResetEmail(email: email)
+                              //TODO: Error Handling (Validation and Firebase), moved to domain
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signing In...')),
                               );
