@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/config/theme/gradient_background.dart';
@@ -16,6 +17,7 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   void dispose() {
@@ -68,7 +70,8 @@ class _SignInPageState extends State<SignInPage> {
                           text: 'Sign In',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Handle sign-in logic
+                              firebaseAuth.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                              //firebaseAuth.sendPasswordResetEmail(email: email)
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signing In...')),
                               );

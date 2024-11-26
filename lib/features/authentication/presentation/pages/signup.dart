@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/config/theme/gradient_background.dart';
@@ -20,6 +21,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+
 
   @override
   void dispose() {
@@ -98,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           text: 'Sign Up',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              // Handle sign-up logic
+                              firebaseAuth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signing Up...')),
                               );
