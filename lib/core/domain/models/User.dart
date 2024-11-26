@@ -1,4 +1,6 @@
-class Friend {
+import 'Wishlist.dart';
+
+class User {
   final String id;
   final String name;
   final String username;
@@ -6,8 +8,9 @@ class Friend {
   final String phoneNumber;
   final DateTime birthDate;
   final List<String> events;
+  final Wishlist wishlist;
 
-  Friend({
+  User({
     required this.id,
     required this.name,
     required this.username,
@@ -15,5 +18,6 @@ class Friend {
     required this.phoneNumber,
     required this.birthDate,
     required this.events,
+    required this.wishlist,
   });
 }

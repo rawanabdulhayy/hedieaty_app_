@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:hedieaty_app_mvc/core/common_widgets/search_bar.dart';
+// import 'package:hedieaty_app_mvc/core/widgets/search_bar.dart';
 // import '../../core/app_colors.dart';
 // import '../../data/data_repo/sample_friends.dart';
 // import '../../data/entity/friend.dart';
@@ -107,11 +107,11 @@
 //   }
 // }
 import 'package:flutter/material.dart';
-import 'package:hedieaty_app_mvc/core/common_widgets/search_bar.dart';
-import '../../core/app_colors.dart';
-import '../../data/entity/friend.dart';
-import '../../data/friend_repository.dart';
-import '../../domain/filter_friends_use_case.dart';
+import '../../../core/app_colors.dart';
+import '../../../core/domain/models/User.dart';
+import '../../../core/presentation/widgets/search_bar/search_bar.dart';
+import '../../../data/friend_repository.dart';
+import '../../../domain/filter_friends_use_case.dart';
 import '../widgets/friend_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -122,7 +122,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // Controller for the search text field
   TextEditingController searchController = TextEditingController();
-  List<Friend> filteredFriends = [];
+  List<User> filteredFriends = [];
   final FilterFriendsUseCase _filterFriendsUseCase = FilterFriendsUseCase();
   final FriendRepository _friendRepository = FriendRepository();
 

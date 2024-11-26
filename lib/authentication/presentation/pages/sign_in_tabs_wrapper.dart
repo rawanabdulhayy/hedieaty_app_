@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hedieaty_app_mvc/core/common_widgets/custom_app_bar.dart';
-import 'package:hedieaty_app_mvc/presentation/pages/signin.dart';
-import 'package:hedieaty_app_mvc/presentation/pages/signup.dart';
+import 'package:hedieaty_app_mvc/authentication/presentation/pages/signin.dart';
+import 'package:hedieaty_app_mvc/authentication/presentation/pages/signup.dart';
+
+import '../../../core/presentation/widgets/app_bar/custom_app_bar.dart';
 
 class SignInTabsWrapper extends StatefulWidget {
   const SignInTabsWrapper({Key? key}) : super(key: key);

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/data/entity/nav_bar_item.dart';
 
-import '../../presentation/pages/home_page.dart';
+import '../../home_page/presentation/pages/home_page.dart';
 
 List <NavigationBarItem> listOfNavigationBarItems = [homepage, profilepage, eventspage];
 
