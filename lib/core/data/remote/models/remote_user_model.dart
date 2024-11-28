@@ -37,7 +37,19 @@ class RemoteUserModel {
       wishlist: wishlist,
     );
   }
-
+  // Method to convert from domain User model to RemoteUserModel
+  static RemoteUserModel fromDomain(User user) {
+    return RemoteUserModel(
+      id: user.id,
+      name: user.name,
+      username: user.username,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      birthDate: user.birthDate,
+      events: user.events,
+      wishlist: user.wishlist,
+    );
+  }
   factory RemoteUserModel.fromJson(String id, Map<String, dynamic> json) {
     return RemoteUserModel(
       id: id,
@@ -63,3 +75,15 @@ class RemoteUserModel {
     };
   }
 }
+// // RemoteUserModel.dart
+// import '../../../domain/models/User.dart';
+//   // toDomain method to convert RemoteUserModel to domain User model
+//   User toDomain() {
+//     return User(
+//       id: id,
+//       name: name,
+//       username: username,
+//       email: email,
+//     );
+//   }
+// }
