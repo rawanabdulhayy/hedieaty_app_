@@ -23,3 +23,6 @@ class FriendModel {
     );
   }
 }
+//Q: Why Only One Model for Friends?
+//A: Friends are simpler entities without distinct local/remote storage needs. Both SQLite and Firebase use a straightforward mapping structure (userId and friendId).
+//TODO: Why are there no fromDomain and toDomain in friend class but existing in user classes models?

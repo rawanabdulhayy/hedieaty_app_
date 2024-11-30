@@ -6,12 +6,14 @@ class RemoteFriendRepository {
 
   // Add a friend relationship
   Future<void> addFriend(Friend friend) async {
+    //TODO: What does this syntax mean? and why does it use the toMap to add a friend in db?
     await _dbRef.child(friend.userId).child(friend.friendId).set(friend.toMap());
   }
 
   // Get all friends for a user
   Future<List<Friend>> getFriends(String userId) async {
     final snapshot = await _dbRef.child(userId).get();
+    // the data from snapshot is retrieved as a map format
     final data = snapshot.value as Map<dynamic, dynamic>?;
 
     if (data == null) return [];

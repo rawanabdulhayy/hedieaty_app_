@@ -3,12 +3,13 @@ import 'dart:convert';
 class Wishlist {
   List<String> _items;
 
+  //Items initialised to added items otherwise returns an empty list of strings
   Wishlist({List<String>? items}) : _items = items ?? [];
 
   // Getter for items
   List<String> get items => List.unmodifiable(_items);
 
-  // Add an item to the wishlist
+  // Add an item to the wishlist that isn't already added
   void addItem(String item) {
     if (!_items.contains(item)) {
       _items.add(item);
