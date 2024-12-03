@@ -1,14 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../../core/app_colors.dart';
-import '../../../../core/config/theme/gradient_background.dart';
-import '../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
-import '../../../../core/presentation/widgets/text_fields/text_form_field.dart';
-import '../../domain/validators.dart';
+import '../../../../../core/app_colors.dart';
+import '../../../../../core/config/theme/gradient_background.dart';
+import '../../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
+import '../../../../../core/presentation/widgets/text_fields/text_form_field.dart';
+import '../../data/repositories/auth_repo.dart';
+import '../../domain/Auth_Input_Validator.dart';
 
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+  final AuthRepository authRepository;
+  const SignUpPage({super.key, required this.authRepository});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -101,7 +103,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           text: 'Sign Up',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              firebaseAuth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                              //firebaseAuth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                              final user = User(
+                                email: _emailController.text,
+                                username: _usernameController.text,
+                                phone: _phoneController.text,
+                              );
+                              await authRepository.signUp(user, _passwordController.text);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(content: Text('Signing Up...')),
                               );

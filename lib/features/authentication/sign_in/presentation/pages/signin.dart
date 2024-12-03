@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../../../core/app_colors.dart';
-import '../../../../core/config/theme/gradient_background.dart';
-import '../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
-import '../../../../core/presentation/widgets/text_fields/text_form_field.dart';
-import '../../domain/validators.dart';
+import '../../../../../core/app_colors.dart';
+import '../../../../../core/config/theme/gradient_background.dart';
+import '../../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
+import '../../../../../core/presentation/widgets/text_fields/text_form_field.dart';
+import '../../../sign_up/domain/Auth_Input_Validator.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});

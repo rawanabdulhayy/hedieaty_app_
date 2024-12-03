@@ -1,57 +1,50 @@
-import 'package:firebase_database/firebase_database.dart';
+import '../../../domain/models/User.dart';
+import '../firebase/user_crud_operations.dart';
 import '../models/remote_user_model.dart';
 
 class RemoteUserRepository {
-  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref('users');
+  final FirestoreService _firestoreService;
+  final String _userCollectionPath = 'users';
 
-  Future<List<RemoteUserModel>> getAllUsers() async {
-    final snapshot = await _dbRef.get();
-    if (snapshot.exists) {
-      final Map<String, dynamic> data =
-      Map<String, dynamic>.from(snapshot.value as Map);
-      return data.entries
-          .map((e) => RemoteUserModel.fromMap({'id': e.key, ...Map<String, dynamic>.from(e.value)}))
-          .toList();
-    }
-    return [];
+  RemoteUserRepository({FirestoreService? firestoreService})
+      : _firestoreService = firestoreService ?? FirestoreService();
+
+  /// Create or update a user
+  Future<void> upsertUser(User user) async {
+    final remoteModel = RemoteUserModel.fromDomain(user);
+    await _firestoreService.upsertDocument(
+      collectionPath: _userCollectionPath,
+      docId: remoteModel.id,
+      data: remoteModel.toMap(),
+    );
   }
 
-  Future<void> saveUser(RemoteUserModel user) async {
-    await _dbRef.child(user.id).set(user.toMap());
+  /// Fetch a user by ID
+  Future<User?> getUserById(String userId) async {
+    final data = await _firestoreService.getDocument(
+      collectionPath: _userCollectionPath,
+      docId: userId,
+    );
+    if (data == null) return null;
+
+    final remoteModel = RemoteUserModel.fromMap(data);
+    return remoteModel.toDomain();
   }
 
+  /// Fetch all users
+  Future<List<User>> getAllUsers() async {
+    final documents = await _firestoreService.getCollection(_userCollectionPath);
+    return documents.map((doc) {
+      final remoteModel = RemoteUserModel.fromJson(doc.id, doc.data());
+      return remoteModel.toDomain();
+    }).toList();
+  }
+
+  /// Delete a user by ID
   Future<void> deleteUser(String userId) async {
-    await _dbRef.child(userId).remove();
-  }
-
-  Future<RemoteUserModel?> getUserById(String userId) async {
-    final snapshot = await _dbRef.child(userId).get();
-    if (snapshot.exists) {
-      final data = Map<String, dynamic>.from(snapshot.value as Map);
-      return RemoteUserModel.fromMap({'id': userId, ...data});
-    }
-    return null;
+    await _firestoreService.deleteDocument(
+      collectionPath: _userCollectionPath,
+      docId: userId,
+    );
   }
 }
-
-// import 'package:firebase_database/firebase_database.dart';
-//
-// class RemoteUserRepository {
-//   final DatabaseReference _dbRef = FirebaseDatabase.instance.reference().child('users');
-//
-//   // Save user to Firebase
-//   Future<void> saveUser(RemoteUserModel user) async {
-//     await _dbRef.child(user.id).set(user.toMap());
-//   }
-//
-//   // Get all users from Firebase
-//   Future<List<RemoteUserModel>> getAllUsers() async {
-//     final DataSnapshot snapshot = await _dbRef.once();
-//     Map<dynamic, dynamic> data = snapshot.value;
-//     List<RemoteUserModel> users = [];
-//     data.forEach((key, value) {
-//       users.add(RemoteUserModel.fromMap(value));
-//     });
-//     return users;
-//   }
-// }
