@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../domain/models/User.dart';
 import '../firebase/user_crud_operations.dart';
 import '../models/remote_user_model.dart';
@@ -10,17 +12,16 @@ class RemoteUserRepository {
       : _firestoreService = firestoreService ?? FirestoreService();
 
   /// Create or update a user
-  Future<void> upsertUser(User user) async {
-    final remoteModel = RemoteUserModel.fromDomain(user);
+  Future<void> upsertUser(RemoteUserModel remoteUser) async {
     await _firestoreService.upsertDocument(
       collectionPath: _userCollectionPath,
-      docId: remoteModel.id,
-      data: remoteModel.toMap(),
+      //docId: remoteUser.id,
+      docId: FirebaseFirestore.instance.collection('users').doc().id,
+      data: remoteUser.toMap(),
     );
   }
-
   /// Fetch a user by ID
-  Future<User?> getUserById(String userId) async {
+  Future<RemoteUserModel?> getUserById(String userId) async {
     final data = await _firestoreService.getDocument(
       collectionPath: _userCollectionPath,
       docId: userId,
@@ -28,15 +29,16 @@ class RemoteUserRepository {
     if (data == null) return null;
 
     final remoteModel = RemoteUserModel.fromMap(data);
-    return remoteModel.toDomain();
+    return remoteModel;
   }
 
   /// Fetch all users
-  Future<List<User>> getAllUsers() async {
+  Future<List<RemoteUserModel>> getAllUsers() async {
     final documents = await _firestoreService.getCollection(_userCollectionPath);
     return documents.map((doc) {
+      //TODO: FromJson? aren't documents supposed to be maps?
       final remoteModel = RemoteUserModel.fromJson(doc.id, doc.data());
-      return remoteModel.toDomain();
+      return remoteModel;
     }).toList();
   }
 

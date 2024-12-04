@@ -11,7 +11,7 @@ class RemoteUserModel {
   final DateTime birthDate;
   final List<String> events;
   final Wishlist wishlist;
-  final DateTime updatedAt;
+  // final DateTime updatedAt;
 
   // Constructor
   RemoteUserModel({
@@ -23,7 +23,7 @@ class RemoteUserModel {
     required this.birthDate,
     required this.events,
     required this.wishlist,
-    required this.updatedAt,
+    // required this.updatedAt,
   });
 
   factory RemoteUserModel.fromMap(Map<String, dynamic> map) {
@@ -36,7 +36,7 @@ class RemoteUserModel {
       birthDate: map['birthDate'],
       events: map['events'],
       wishlist: map['wishlist'],
-      updatedAt: DateTime.parse(map['updatedAt']),
+      // updatedAt: DateTime.parse(map['updatedAt']),
     );
   }
   Map<String, dynamic> toMap() => {
@@ -48,7 +48,7 @@ class RemoteUserModel {
     'email': email,
     'events': events,
     'wishlist': wishlist,
-    'updatedAt': updatedAt.toIso8601String(),
+    // 'updatedAt': updatedAt.toIso8601String(),
   };
 
   User toDomain() {
@@ -61,7 +61,7 @@ class RemoteUserModel {
       birthDate: birthDate,
       events: events,
       wishlist: wishlist,
-      updatedAt: updatedAt,
+      // updatedAt: updatedAt,
     );
   }
   // Method to convert from domain User model to RemoteUserModel
@@ -75,7 +75,7 @@ class RemoteUserModel {
       birthDate: user.birthDate,
       events: user.events,
       wishlist: user.wishlist,
-      updatedAt: user.updatedAt,
+      // updatedAt: user.updatedAt,
     );
   }
   factory RemoteUserModel.fromJson(String id, Map<String, dynamic> json) {
@@ -88,7 +88,7 @@ class RemoteUserModel {
       birthDate: DateTime.parse(json['birthDate']),
       events: List<String>.from(json['events'] ?? []),
       wishlist: Wishlist.fromMap(json['wishlist'] ?? {}),
-      updatedAt: json['updatedAt'],
+      // updatedAt: json['updatedAt'],
     );
   }
 
@@ -101,7 +101,7 @@ class RemoteUserModel {
       'birthDate': birthDate.toIso8601String(),
       'events': events,
       'wishlist': wishlist.toMap(),
-      'updatedAt': updatedAt,
+      // 'updatedAt': updatedAt,
     };
 
   }

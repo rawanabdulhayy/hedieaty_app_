@@ -18,9 +18,17 @@ class FirestoreService {
           .collection(collectionPath)
           .doc(docId)
           .set(data, SetOptions(merge: true));
+      //TODO: setOptions?
     } catch (e) {
       throw Exception('Error creating or updating document: $e');
     }
+  }
+
+  /// Fetch all documents from a collection
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection(
+      String collectionPath) async {
+    final querySnapshot = await _firestore.collection(collectionPath).get();
+    return querySnapshot.docs;
   }
 
   /// Read a document by ID
@@ -61,12 +69,5 @@ class FirestoreService {
     } catch (e) {
       throw Exception('Error deleting document: $e');
     }
-  }
-
-  /// Fetch all documents from a collection
-  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection(
-      String collectionPath) async {
-    final querySnapshot = await _firestore.collection(collectionPath).get();
-    return querySnapshot.docs;
   }
 }

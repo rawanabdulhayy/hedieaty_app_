@@ -5,30 +5,35 @@ import 'package:hedieaty_app_mvc/core/config/theme/app_theme.dart';
 import 'package:hedieaty_app_mvc/core/data/local/repositories/local_user_repo.dart';
 import 'package:hedieaty_app_mvc/core/data/remote/repositories/remote_user_repo.dart';
 import 'package:provider/provider.dart';
-import 'core/domain/repositories/abstract_user_repo.dart';
+import 'core/domain/repositories/domain_user_repo.dart';
 import 'core/presentation/providers/User_Provider.dart';
 import 'features/navigation_bar/presentation/providers/Navigation_Provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(  options: DefaultFirebaseOptions.currentPlatform,);
-  // LocalUserRepository localRepository;
-  // RemoteUserRepository remoteRepository;
-  // final userRepository = UserRepository(localRepository, remoteRepository);
-  // await userRepository.syncData();
-  //Todo:The non-nullable local variable 'localRepository' must be assigned before it can be used. (Documentation)  Try giving it an initializer expression, or ensure that it's assigned on every execution path.
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    print("Firebase initialization failed: $e");
+  }
 
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => NavigationController()),
+        Provider(
+          create: (_) => DomainUserRepository(RemoteUserRepository()),
+        ),
       ],
       child: HedieatyApp(),
     ),
   );
 }
+
 
 // Decide when to trigger the sync process. Recommended triggers:
 //

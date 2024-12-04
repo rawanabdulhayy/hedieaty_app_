@@ -1,16 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../data/data_sources/firebase_auth_data_source.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/app_colors.dart';
 import '../../../../../core/config/theme/gradient_background.dart';
+import '../../../../../core/domain/models/Wishlist.dart';
+import '../../../../../core/domain/models/User.dart' as domain_user;
+import '../../../../../core/domain/repositories/domain_user_repo.dart';
 import '../../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
 import '../../../../../core/presentation/widgets/text_fields/text_form_field.dart';
-import '../../data/repositories/auth_repo.dart';
 import '../../domain/Auth_Input_Validator.dart';
 
-
 class SignUpPage extends StatefulWidget {
-  final AuthRepository authRepository;
-  const SignUpPage({super.key, required this.authRepository});
+  final DomainUserRepository domainUserRepository;
+  const SignUpPage({super.key, required this.domainUserRepository});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -23,8 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  final AuthService _authService = AuthService();
 
   @override
   void dispose() {
@@ -101,18 +102,37 @@ class _SignUpPageState extends State<SignUpPage> {
                         // Sign-Up Button
                         CustomButton(
                           text: 'Sign Up',
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              //firebaseAuth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-                              final user = User(
+                              //Create a new User domain model using the named constructor
+                              final user = domain_user.User.signup(
                                 email: _emailController.text,
                                 username: _usernameController.text,
-                                phone: _phoneController.text,
+                                phoneNumber: _phoneController.text,
+                                birthDate: DateTime.now(),
+                                wishlist: Wishlist(),
                               );
-                              await authRepository.signUp(user, _passwordController.text);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Signing Up...')),
-                              );
+                              // Call domain repository to upsert user (this will sync with the data layer)
+                              await widget.domainUserRepository.upsertUser(user);
+
+                              // Optional: Handle sign-up via Firebase Authentication
+                              try {
+                                // Call the signUp method from the AuthService
+                                await _authService.signUp(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                  username: _usernameController.text,
+                                  phoneNumber: _phoneController.text,
+                                  birthDate: DateTime.now(),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Signing Up...')),
+                                );
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Error: $e')),
+                                );
+                              }
                             }
                           },
                         ),

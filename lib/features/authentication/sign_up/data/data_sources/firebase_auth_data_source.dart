@@ -1,34 +1,29 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '../repositories/auth_repo.dart';
+import 'package:hedieaty_app_mvc/core/domain/models/User.dart' as domain_user;
+import 'package:hedieaty_app_mvc/core/domain/models/Wishlist.dart';
 
-class FirebaseAuthDataSource implements AuthRepository {
-  final FirebaseAuth firebaseAuth;
+class AuthService {
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  FirebaseAuthDataSource({required this.firebaseAuth});
-
-  @override
-  Future<void> signUp(User user, String password) async {
+  // Sign-up method
+  Future<UserCredential> signUp({
+    required String email,
+    required String password,
+    required String username,
+    required String phoneNumber,
+    required DateTime birthDate,
+  }) async {
     try {
-      await firebaseAuth.createUserWithEmailAndPassword(
-          email: user.email, password: password);
-      // Handle successful signup (optional)
-    } on FirebaseAuthException catch (e) {
-      // Handle specific Firebase Auth errors
+      // Create the user in Firebase Authentication
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      // Return the userCredential (useful for further Firebase Authentication operations)
+      return userCredential;
     } catch (e) {
-      // Handle other exceptions
+      throw Exception('Error during sign-up: $e');
     }
-  }
-}@override
-Future<void> signUp(User user, String password) async {
-  try {
-    await firebaseAuth.createUserWithEmailAndPassword(
-      email: user.email,
-      password: password,
-    );
-    // Handle successful signup (optional)
-  } on FirebaseAuthException catch (e) {
-    // Handle specific Firebase Auth errors
-  } catch (e) {
-    // Handle other exceptions
   }
 }

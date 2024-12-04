@@ -14,7 +14,7 @@ class LocalUserModel {
   final List<String> events;
   //final String wishlist; // JSON string for local storage
   final Wishlist wishlist; // Wishlist Object
-  final DateTime updatedAt;
+  // final DateTime updatedAt;
 
   // Constructor
   LocalUserModel( {
@@ -26,7 +26,7 @@ class LocalUserModel {
     required this.birthDate,
     required this.events,
     required this.wishlist,
-    required this.updatedAt,
+    // required this.updatedAt,
   });
 
   // Method to convert LocalUserModel to domain User model
@@ -63,7 +63,7 @@ class LocalUserModel {
       // wishlist: Wishlist.fromJson(wishlist),
       wishlist: wishlist,
       // No need for toJson() here, it's directly a Wishlist object and since the user domain class holds objects, so all set
-      updatedAt: updatedAt, // Converting the wishlist json string (data) to Wishlist object (domain)
+      // updatedAt: updatedAt, // Converting the wishlist json string (data) to Wishlist object (domain)
     );
   }
 
@@ -78,7 +78,7 @@ class LocalUserModel {
       'birthDate': birthDate.toIso8601String(),
       'events': events,
       'wishlist': wishlist.toJson(),  // Convert wishlist object to JSON string
-      'updatedAt': updatedAt.toIso8601String(),
+      // 'updatedAt': updatedAt.toIso8601String(),
     });
   }
 
@@ -100,7 +100,7 @@ class LocalUserModel {
       events: List<String>.from(map['events'] ?? []),
       //wishlist: map['wishlist'] as String,
       wishlist: Wishlist.fromMap(map['wishlist']),  // Create Wishlist object from Map
-      updatedAt: map ['updatedAt'], // Assuming the wishlist is stored as a JSON string
+      // updatedAt: map ['updatedAt'], // Assuming the wishlist is stored as a JSON string
     );
   }
 
@@ -115,7 +115,7 @@ class LocalUserModel {
       'birthDate': birthDate.toIso8601String(),
       'events': events,
       'wishlist': wishlist.toMap(), // Convert wishlist to Map
-      'updatedAt': updatedAt,
+      // 'updatedAt': updatedAt,
     };
   }
 
@@ -131,7 +131,7 @@ class LocalUserModel {
       events: user.events,
       //wishlist: user.wishlist.toJson(),
       wishlist: user.wishlist,  // Directly use the Wishlist object
-      updatedAt: user.updatedAt, // Converting Wishlist object to JSON string
+      // updatedAt: user.updatedAt, // Converting Wishlist object to JSON string
     );
   }
   factory LocalUserModel.fromRemoteModel(RemoteUserModel remoteModel) {
@@ -144,7 +144,7 @@ class LocalUserModel {
       birthDate: remoteModel.birthDate,
       events: remoteModel.events,
       wishlist: remoteModel.wishlist,
-      updatedAt: remoteModel.updatedAt, // Ensure the formats align
+      // updatedAt: remoteModel.updatedAt, // Ensure the formats align
     );
   }
 

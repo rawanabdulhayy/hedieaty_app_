@@ -10,7 +10,7 @@ class User {
   final DateTime birthDate;
   final List<String> events;
   final Wishlist wishlist;
-  DateTime updatedAt;
+  // DateTime updatedAt;
   // Add if needed for syncing
   //Initialize updatedAt in the User class with a default:
 
@@ -26,7 +26,18 @@ class User {
     required this.events,
     required this.wishlist,
     DateTime? updatedAt,
-      }) : updatedAt = updatedAt ?? DateTime.now();
+      }) ;
+      // : updatedAt = updatedAt ?? DateTime.now();
+  User.signup({
+    this.id = '', // Set a default or leave empty for now
+    this.name = '',
+    required this.email,
+    required this.username,
+    required this.phoneNumber,
+    required this.birthDate,
+    this.events = const [],
+    required this.wishlist,
+  });
 
   // Convert User to Map for SQLite
   Map<String, dynamic> toMap() => {
@@ -34,8 +45,8 @@ class User {
     'name': name,
     'email': email,
     'events': events,
-    'wishlist': wishlist,
-    'updatedAt': updatedAt.toIso8601String(),
+    'wishlist': wishlist as Map<String, dynamic>,
+    // 'updatedAt': updatedAt.toIso8601String(),
     'username': username,
     'phoneNumber': phoneNumber,
     'birthDate': birthDate,
@@ -49,7 +60,7 @@ class User {
     email: map['email'],
     events: map['events'],
     wishlist: map['wishlist'],
-    updatedAt: DateTime.parse(map['updatedAt']),
+    // updatedAt: DateTime.parse(map['updatedAt']),
     username: map['username'],
     phoneNumber: map['phoneNumber'],
     birthDate: map['birthDate'],
