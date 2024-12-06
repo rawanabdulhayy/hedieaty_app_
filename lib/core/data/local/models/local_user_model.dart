@@ -13,7 +13,7 @@ class LocalUserModel {
   final DateTime birthDate;
   final List<String> events;
   //final String wishlist; // JSON string for local storage
-  final Wishlist wishlist; // Wishlist Object
+  //final Wishlist wishlist; // Wishlist Object
   // final DateTime updatedAt;
 
   // Constructor
@@ -25,7 +25,7 @@ class LocalUserModel {
     required this.phoneNumber,
     required this.birthDate,
     required this.events,
-    required this.wishlist,
+    //required this.wishlist,
     // required this.updatedAt,
   });
 
@@ -61,7 +61,7 @@ class LocalUserModel {
       birthDate: birthDate,
       events: events,
       // wishlist: Wishlist.fromJson(wishlist),
-      wishlist: wishlist,
+      //wishlist: wishlist,
       // No need for toJson() here, it's directly a Wishlist object and since the user domain class holds objects, so all set
       // updatedAt: updatedAt, // Converting the wishlist json string (data) to Wishlist object (domain)
     );
@@ -77,7 +77,7 @@ class LocalUserModel {
       'phoneNumber': phoneNumber,
       'birthDate': birthDate.toIso8601String(),
       'events': events,
-      'wishlist': wishlist.toJson(),  // Convert wishlist object to JSON string
+     // 'wishlist': wishlist.toJson(),  // Convert wishlist object to JSON string
       // 'updatedAt': updatedAt.toIso8601String(),
     });
   }
@@ -99,7 +99,7 @@ class LocalUserModel {
       birthDate: DateTime.parse(map['birthDate']),
       events: List<String>.from(map['events'] ?? []),
       //wishlist: map['wishlist'] as String,
-      wishlist: Wishlist.fromMap(map['wishlist']),  // Create Wishlist object from Map
+      //wishlist: Wishlist.fromMap(map['wishlist']),  // Create Wishlist object from Map
       // updatedAt: map ['updatedAt'], // Assuming the wishlist is stored as a JSON string
     );
   }
@@ -114,7 +114,7 @@ class LocalUserModel {
       'phoneNumber': phoneNumber,
       'birthDate': birthDate.toIso8601String(),
       'events': events,
-      'wishlist': wishlist.toMap(), // Convert wishlist to Map
+      //'wishlist': wishlist.toMap(), // Convert wishlist to Map
       // 'updatedAt': updatedAt,
     };
   }
@@ -130,7 +130,7 @@ class LocalUserModel {
       birthDate: user.birthDate,
       events: user.events,
       //wishlist: user.wishlist.toJson(),
-      wishlist: user.wishlist,  // Directly use the Wishlist object
+      //wishlist: user.wishlist,  // Directly use the Wishlist object
       // updatedAt: user.updatedAt, // Converting Wishlist object to JSON string
     );
   }
@@ -143,7 +143,7 @@ class LocalUserModel {
       phoneNumber: remoteModel.phoneNumber,
       birthDate: remoteModel.birthDate,
       events: remoteModel.events,
-      wishlist: remoteModel.wishlist,
+      //wishlist: remoteModel.wishlist,
       // updatedAt: remoteModel.updatedAt, // Ensure the formats align
     );
   }

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../data/data_sources/firebase_auth_data_source.dart';
+import '../../data/data_sources/firebase_sign_up_auth_data_source.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/app_colors.dart';
 import '../../../../../core/config/theme/gradient_background.dart';
@@ -21,11 +21,12 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  final AuthService _authService = AuthService();
+  final FirebaseSignUpAuthDataSource _authService = FirebaseSignUpAuthDataSource();
 
   @override
   void dispose() {
@@ -60,19 +61,28 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        // Name Field
+                        CustomTextFormField(
+                          controller: _nameController,
+                          labelText: 'Name',
+                          hintText: 'Adam Sandler',
+                          isPassword: false,
+                          //validator: Validators.validateEmail, obscureText: null,
+                        ),
                         // Email Field
                         CustomTextFormField(
                           controller: _emailController,
                           labelText: 'Email',
                           hintText: 'example@mail.com',
-                          validator: Validators.validateEmail, obscureText: null,
+                          validator: Validators.validateEmail,
+                          isPassword: false,
                         ),
                         // Username Field
                         CustomTextFormField(
                           controller: _usernameController,
                           labelText: 'Username',
                           hintText: 'Your Username',
-                          validator: Validators.validateUsername, obscureText: null,
+                          validator: Validators.validateUsername,
                         ),
                         // Phone Number Field
                         CustomTextFormField(
@@ -80,14 +90,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           labelText: 'Phone Number',
                           hintText: '+1234567890',
                           keyboardType: TextInputType.phone,
-                          validator: Validators.validatePhone, obscureText: null,
+                          validator: Validators.validatePhone,
                         ),
                         // Password Field
                         CustomTextFormField(
                           controller: _passwordController,
                           labelText: 'Password',
                           hintText: '******',
-                          obscureText: true,
                           validator: Validators.validatePassword,
                         ),
                         // Confirm Password Field
@@ -95,7 +104,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           controller: _confirmPasswordController,
                           labelText: 'Confirm Password',
                           hintText: '******',
-                          obscureText: true,
                           validator: (value) =>
                               Validators.validateConfirmPassword(value, _passwordController.text),
                         ),
@@ -106,19 +114,18 @@ class _SignUpPageState extends State<SignUpPage> {
                             if (_formKey.currentState!.validate()) {
                               //Create a new User domain model using the named constructor
                               final user = domain_user.User.signup(
+                                name: _nameController.text,
                                 email: _emailController.text,
                                 username: _usernameController.text,
                                 phoneNumber: _phoneController.text,
                                 birthDate: DateTime.now(),
-                                wishlist: Wishlist(),
+                                //wishlist: Wishlist(),
                               );
-                              // Call domain repository to upsert user (this will sync with the data layer)
-                              await widget.domainUserRepository.upsertUser(user);
 
-                              // Optional: Handle sign-up via Firebase Authentication
                               try {
                                 // Call the signUp method from the AuthService
                                 await _authService.signUp(
+                                  name: _nameController.text,
                                   email: _emailController.text,
                                   password: _passwordController.text,
                                   username: _usernameController.text,
@@ -126,13 +133,23 @@ class _SignUpPageState extends State<SignUpPage> {
                                   birthDate: DateTime.now(),
                                 );
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Signing Up...')),
+                                  const SnackBar(content: Text('Authenticating User...')),
                                 );
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Error: $e')),
                                 );
                               }
+                              if (FirebaseAuth.instance.currentUser != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Creating User Account...')),
+                                );
+                                await widget.domainUserRepository.upsertUser(user);
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('User Authentication Failed')),
+                                );                              }
+
                             }
                           },
                         ),

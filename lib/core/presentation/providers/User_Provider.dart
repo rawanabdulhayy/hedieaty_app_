@@ -70,18 +70,18 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Update wishlist and trigger update notification
-  void addItemToWishlist(String item) {
-    _currentUser?.wishlist.addItem(item);
-    _shouldUpdate = true;
-    notifyListeners();
-  }
-
-  void removeItemFromWishlist(String item) {
-    _currentUser?.wishlist.removeItem(item);
-    _shouldUpdate = true;
-    notifyListeners();
-  }
+  // // Update wishlist and trigger update notification
+  // void addItemToWishlist(String item) {
+  //   _currentUser?.wishlist.addItem(item);
+  //   _shouldUpdate = true;
+  //   notifyListeners();
+  // }
+  //
+  // void removeItemFromWishlist(String item) {
+  //   _currentUser?.wishlist.removeItem(item);
+  //   _shouldUpdate = true;
+  //   notifyListeners();
+  // }
 
   void resetUpdateFlag() {
     _shouldUpdate = false;

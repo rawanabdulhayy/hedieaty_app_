@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../../domain/models/User.dart';
 import '../firebase/user_crud_operations.dart';
@@ -13,13 +14,18 @@ class RemoteUserRepository {
 
   /// Create or update a user
   Future<void> upsertUser(RemoteUserModel remoteUser) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId == null) {
+      throw Exception('No authenticated user found. Ensure the user is logged in before performing this operation.');
+    }
+
     await _firestoreService.upsertDocument(
       collectionPath: _userCollectionPath,
-      //docId: remoteUser.id,
-      docId: FirebaseFirestore.instance.collection('users').doc().id,
+      docId: userId, // Use authenticated UID here
       data: remoteUser.toMap(),
     );
   }
+
   /// Fetch a user by ID
   Future<RemoteUserModel?> getUserById(String userId) async {
     final data = await _firestoreService.getDocument(

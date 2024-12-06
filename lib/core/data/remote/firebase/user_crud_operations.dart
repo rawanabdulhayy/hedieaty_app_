@@ -16,13 +16,13 @@ class FirestoreService {
     try {
       await _firestore
           .collection(collectionPath)
-          .doc(docId)
+          .doc(docId) // Use provided docId (authenticated UID)
           .set(data, SetOptions(merge: true));
-      //TODO: setOptions?
     } catch (e) {
       throw Exception('Error creating or updating document: $e');
     }
   }
+
 
   /// Fetch all documents from a collection
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection(

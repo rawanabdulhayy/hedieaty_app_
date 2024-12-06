@@ -15,7 +15,7 @@ class CustomTextFormField extends StatelessWidget {
     required this.hintText,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
-    this.validator, required obscureText,
+    this.validator,
   }) : super(key: key);
 
   @override

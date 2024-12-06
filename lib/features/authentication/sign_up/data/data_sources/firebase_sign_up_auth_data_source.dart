@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hedieaty_app_mvc/core/domain/models/User.dart' as domain_user;
 import 'package:hedieaty_app_mvc/core/domain/models/Wishlist.dart';
 
-class AuthService {
+class FirebaseSignUpAuthDataSource {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // Sign-up method
   Future<UserCredential> signUp({
+    required String name,
     required String email,
     required String password,
     required String username,
@@ -19,6 +20,16 @@ class AuthService {
         email: email,
         password: password,
       );
+
+      // Optionally print the user info after signup
+      final user = _firebaseAuth.currentUser;
+      if (user != null) {
+        print('User is authenticated with UID: ${user.uid}');
+      } else {
+        print('No authenticated user found');
+      }
+
+      return userCredential;
 
       // Return the userCredential (useful for further Firebase Authentication operations)
       return userCredential;

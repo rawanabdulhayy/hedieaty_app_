@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/core/domain/repositories/domain_user_repo.dart';
+import 'package:hedieaty_app_mvc/features/authentication/sign_in/data/data_sources/firebase_sign_in_auth_data_source.dart';
 import '../../../../../core/app_colors.dart';
 import '../../../../../core/config/theme/gradient_background.dart';
 import '../../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
@@ -17,7 +18,7 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseSignInAuthDataSource _authService = FirebaseSignInAuthDataSource(); // Use AuthService instance
 
   @override
   void dispose() {
@@ -55,27 +56,36 @@ class _SignInPageState extends State<SignInPage> {
                           labelText: 'Email',
                           hintText: 'example@mail.com',
                           validator: Validators.validateEmail,
-                          obscureText: false,
                         ),
                         // Password Field
                         CustomTextFormField(
                           controller: _passwordController,
                           labelText: 'Password',
                           hintText: '******',
-                          obscureText: true,
                           validator: Validators.validatePassword,
                         ),
                         // Sign-In Button
                         CustomButton(
                           text: 'Sign In',
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              firebaseAuth.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
-                              //firebaseAuth.sendPasswordResetEmail(email: email)
-                              //TODO: Error Handling (Validation and Firebase), moved to domain
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Signing In...')),
-                              );
+                              try {
+                                // Call the signIn method from AuthService
+                                await _authService.signIn(
+                                  email: _emailController.text,
+                                  password: _passwordController.text,
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(content: Text('Signed In Successfully')),
+                                );
+                                 // Navigate to the homepage after successful sign-in
+                                Navigator.pushNamed(context, '/screen_wrapper'); // Replace with the actual route name of your homepage
+                                // Navigate to the next page or dashboard
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Error: $e')),
+                                );
+                              }
                             }
                           },
                         ),

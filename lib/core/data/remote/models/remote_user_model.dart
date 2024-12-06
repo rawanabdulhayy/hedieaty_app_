@@ -10,7 +10,7 @@ class RemoteUserModel {
   final String phoneNumber;
   final DateTime birthDate;
   final List<String> events;
-  final Wishlist wishlist;
+ // final Wishlist wishlist;
   // final DateTime updatedAt;
 
   // Constructor
@@ -22,7 +22,7 @@ class RemoteUserModel {
     required this.phoneNumber,
     required this.birthDate,
     required this.events,
-    required this.wishlist,
+   // required this.wishlist,
     // required this.updatedAt,
   });
 
@@ -35,7 +35,7 @@ class RemoteUserModel {
       phoneNumber: map['phoneNumber'],
       birthDate: map['birthDate'],
       events: map['events'],
-      wishlist: map['wishlist'],
+      //wishlist: map['wishlist'],
       // updatedAt: DateTime.parse(map['updatedAt']),
     );
   }
@@ -47,7 +47,7 @@ class RemoteUserModel {
     'birthDate': birthDate,
     'email': email,
     'events': events,
-    'wishlist': wishlist,
+   // 'wishlist': wishlist,
     // 'updatedAt': updatedAt.toIso8601String(),
   };
 
@@ -60,7 +60,7 @@ class RemoteUserModel {
       phoneNumber: phoneNumber,
       birthDate: birthDate,
       events: events,
-      wishlist: wishlist,
+      //wishlist: wishlist,
       // updatedAt: updatedAt,
     );
   }
@@ -74,7 +74,7 @@ class RemoteUserModel {
       phoneNumber: user.phoneNumber,
       birthDate: user.birthDate,
       events: user.events,
-      wishlist: user.wishlist,
+      //wishlist: user.wishlist,
       // updatedAt: user.updatedAt,
     );
   }
@@ -87,7 +87,7 @@ class RemoteUserModel {
       phoneNumber: json['phoneNumber'],
       birthDate: DateTime.parse(json['birthDate']),
       events: List<String>.from(json['events'] ?? []),
-      wishlist: Wishlist.fromMap(json['wishlist'] ?? {}),
+      //wishlist: Wishlist.fromMap(json['wishlist'] ?? {}),
       // updatedAt: json['updatedAt'],
     );
   }
@@ -100,12 +100,35 @@ class RemoteUserModel {
       'phoneNumber': phoneNumber,
       'birthDate': birthDate.toIso8601String(),
       'events': events,
-      'wishlist': wishlist.toMap(),
+      //'wishlist': wishlist.toMap(),
       // 'updatedAt': updatedAt,
     };
-
   }
 
+  // CopyWith method to create a new instance with updated values
+  RemoteUserModel copyWith({
+    String? id,
+    String? name,
+    String? username,
+    String? email,
+    String? phoneNumber,
+    DateTime? birthDate,
+    List<String>? events,
+    // Wishlist? wishlist,
+    // DateTime? updatedAt,
+  }) {
+    return RemoteUserModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      birthDate: birthDate ?? this.birthDate,
+      events: events ?? this.events,
+      // wishlist: wishlist ?? this.wishlist,
+      // updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
 }
 //Q: How are the two classes localusermodel and remoteusermodel different?
 //A: Difference Between Local and Remote Models
