@@ -1,4 +1,3 @@
-//Crud operations to be used in repo
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FirestoreService {
@@ -16,13 +15,12 @@ class FirestoreService {
     try {
       await _firestore
           .collection(collectionPath)
-          .doc(docId) // Use provided docId (authenticated UID)
+          .doc(docId)
           .set(data, SetOptions(merge: true));
     } catch (e) {
       throw Exception('Error creating or updating document: $e');
     }
   }
-
 
   /// Fetch all documents from a collection
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getCollection(
@@ -41,9 +39,26 @@ class FirestoreService {
       if (docSnapshot.exists) {
         return docSnapshot.data();
       }
-      return null; // Document not found
+      return null;
     } catch (e) {
       throw Exception('Error fetching document: $e');
+    }
+  }
+
+  /// Query a collection by a specific field and value
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> queryCollection({
+    required String collectionPath,
+    required String field,
+    required dynamic value,
+  }) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection(collectionPath)
+          .where(field, isEqualTo: value)
+          .get();
+      return querySnapshot.docs;
+    } catch (e) {
+      throw Exception('Error querying collection: $e');
     }
   }
 

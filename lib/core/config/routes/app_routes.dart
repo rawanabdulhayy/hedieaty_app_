@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/features/add_friend/presentation/add_friend.dart';
 import 'package:hedieaty_app_mvc/features/authentication/sign_in/presentation/pages/signin.dart';
 import 'package:hedieaty_app_mvc/features/navigation_bar/presentation/providers/Navigation_Provider.dart';
+import 'package:hedieaty_app_mvc/features/starting_page/presentation/starting_page.dart';
 import 'package:provider/provider.dart';
 import '../../../features/authentication/wrapper/presentation/page/sign_in_tabs_wrapper.dart';
 import '../../../features/home_page/presentation/pages/home_page.dart';
@@ -14,8 +15,10 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) {
     return SignInTabsWrapper();
   },
+  // '/sign_in_wrapper': (context) =>  SignInTabsWrapper(),
   '/screen_wrapper': (context) => ScreenWrapper(),
   '/sign_in': (context) => SignInPage(),
+  '/opening_page': (context) => OpeningPage(),
   // '/profile': (context) => ProfilePage(),
   // '/friend_event_list': (context) => FriendEventListPage(),
   // '/friend_gift_list': (context) => FriendGiftListPage(),

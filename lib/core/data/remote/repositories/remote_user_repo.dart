@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../../../domain/models/User.dart';
-import '../firebase/user_crud_operations.dart';
+import '../firebase/crud_operations.dart';
 import '../models/remote_user_model.dart';
 
 class RemoteUserRepository {

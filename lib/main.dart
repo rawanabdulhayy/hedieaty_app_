@@ -62,7 +62,7 @@ class HedieatyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hedieaty',
       theme: appTheme,
-      initialRoute: '/',
+      // initialRoute: '/',
       routes: appRoutes,
     );
   }

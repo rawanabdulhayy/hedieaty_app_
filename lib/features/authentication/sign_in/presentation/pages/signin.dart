@@ -96,6 +96,8 @@ class _SignInPageState extends State<SignInPage> {
                             // Navigate to Forgot Password screen or other action
                           },
                           child: const Text(
+                            //TODO: Needed Forget Password Firebase Authentication
+                            //TODO: Needed UseCases Update for signin, signup, forget passwords merely called at UI, each holding validator call, firebase authentication and db manipulation (at signup)
                             'Forgot Password?',
                             style: TextStyle(color: Colors.white),
                           ),

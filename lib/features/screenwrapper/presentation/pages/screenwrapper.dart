@@ -15,7 +15,17 @@ class ScreenWrapper extends StatelessWidget {
     return Consumer<NavigationController>(
       builder: (context, navigationController, child) {
         return Scaffold(
-          appBar: CustomAppBar(title:  listOfNavigationBarItems[navigationController.currentIndex].title),
+          appBar: CustomAppBar(
+            title:  listOfNavigationBarItems[navigationController.currentIndex].title,
+            actions: [
+                IconButton(
+                  icon: Icon(Icons.card_giftcard),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/opening_page'); // Replace with the actual route name of your homepage
+                  },
+          ),
+      ],
+          ),
           body: listOfNavigationBarItems[navigationController.currentIndex].page,
           bottomNavigationBar: BottomNavigationBarWidget(),
         );
