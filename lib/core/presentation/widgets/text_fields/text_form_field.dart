@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../app_colors.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
@@ -26,20 +27,32 @@ class CustomTextFormField extends StatelessWidget {
         controller: controller,
         obscureText: isPassword,
         keyboardType: keyboardType,
+        style: TextStyle(
+          color: AppColors.gold, // Align text color with the search bar
+        ),
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,
-          filled: true,
-          fillColor: Colors.white,
           labelStyle: TextStyle(
-            color: Theme.of(context).primaryColor, // Use theme color dynamically
+            color: AppColors.gold,
             fontSize: 16.0,
           ),
+          hintStyle: TextStyle(
+            color: AppColors.gold.withOpacity(0.6),
+          ),
+          filled: true,
+          fillColor: AppColors.brightBlue.withOpacity(0.1),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2.0),
+            borderSide: BorderSide(
+              color: AppColors.brightBlue.withOpacity(0.1),
+              width: 2.0,
+            ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Theme.of(context).colorScheme.secondary, width: 2.0),
+            borderSide: BorderSide(
+              color: AppColors.gold,
+              width: 2.0,
+            ),
           ),
           errorBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.red, width: 2.0),

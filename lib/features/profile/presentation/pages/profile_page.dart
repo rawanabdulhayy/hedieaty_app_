@@ -268,6 +268,7 @@
 //   }
 // }
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 
 import '../../../../core/app_colors.dart';
 
@@ -309,248 +310,241 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity, // Ensures the container takes full width
-        height: double.infinity, // Ensures the container takes full height
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppColors.navyBlue,AppColors.brightBlue], // Use defined colors
-          ),
-        ),
+      body: GradientBackground(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Form(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: AssetImage(getProfileImage()),
-                    child: GestureDetector(
-                      onTap: () {
-                        // Add functionality to change profile picture
-                      },
+            padding: EdgeInsets.all(16.0),
+            child: Form(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: AssetImage(getProfileImage()),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Add functionality to change profile picture
+                        },
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Name: ",
-                      style: TextStyle(
-                        color: AppColors.gold,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    isEditingName?
-                    Expanded(
-                      child: TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          hintText: "Enter Your Name",
-                          hintStyle: TextStyle(
-                            color: AppColors.gold, // Change hint text color to gold
-                          ),),
-                        textAlign: TextAlign.center,
-                        onChanged: (value) => onEdit(),
-                        //this triggers the setstate f onedit
-                      ),
-                    )
-                        : Text(
-                      nameController.text.isEmpty
-                          ? "Your Name"
-                          : nameController.text,
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: AppColors.lightAmber,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      color: AppColors.gold,
-                      onPressed: () {
-                        setState(() {
-                          isEditingName = !isEditingName;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Birthday: ",
-                      style: TextStyle(
-                        color: AppColors.gold,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    isEditingBirthday ?
-                    Expanded(
-                      child: GestureDetector(
-                        //ToDo What is Gesture Detector?
-                        onTap: () async {
-                          final DateTime? picked = await showDatePicker(
-                            context: context,
-                            initialDate: selectedDate,
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
-                          if (picked != null && picked != selectedDate) {
-                            setState(() {
-                              selectedDate = picked;
-                              onEdit();
-                            });
-                          }
-                        },
-                        child: Text(//ToDo what is line this doing?
-                          "${selectedDate.toLocal()}".split(' ')[0],
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: AppColors.lightAmber,
-                            fontStyle: FontStyle.italic,
-                          ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Name: ",
+                        style: TextStyle(
+                          color: AppColors.gold,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    )
-                        : Text(
-                      "${selectedDate.toLocal()}".split(' ')[0],
+                      isEditingName?
+                      Expanded(
+                        child: TextField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            hintText: "Enter Your Name",
+                            hintStyle: TextStyle(
+                              color: AppColors.gold, // Change hint text color to gold
+                            ),),
+                          textAlign: TextAlign.center,
+                          onChanged: (value) => onEdit(),
+                          //this triggers the setstate f onedit
+                        ),
+                      )
+                          : Text(
+                        nameController.text.isEmpty
+                            ? "Your Name"
+                            : nameController.text,
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: AppColors.lightAmber,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        color: AppColors.gold,
+                        onPressed: () {
+                          setState(() {
+                            isEditingName = !isEditingName;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Birthday: ",
+                        style: TextStyle(
+                          color: AppColors.gold,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                      isEditingBirthday ?
+                      Expanded(
+                        child: GestureDetector(
+                          //ToDo What is Gesture Detector?
+                          onTap: () async {
+                            final DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: selectedDate,
+                              firstDate: DateTime(1900),
+                              lastDate: DateTime.now(),
+                            );
+                            if (picked != null && picked != selectedDate) {
+                              setState(() {
+                                selectedDate = picked;
+                                onEdit();
+                              });
+                            }
+                          },
+                          child: Text(//ToDo what is line this doing?
+                            "${selectedDate.toLocal()}".split(' ')[0],
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: AppColors.lightAmber,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      )
+                          : Text(
+                        "${selectedDate.toLocal()}".split(' ')[0],
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: AppColors.lightAmber,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.edit),
+                        color: AppColors.gold,
+                        onPressed: () {
+                          setState(() {
+                            isEditingBirthday = !isEditingBirthday;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Gender: ",
+                        style: TextStyle(
+                          color: AppColors.gold,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                      Radio(
+                        value: 'Female',
+                        groupValue: selectedGender,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedGender = value.toString();
+                            onEdit();
+                          });
+                        },
+                        activeColor: AppColors.gold,
+                      ),
+                      Text('Female',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.lightAmber,
+                          fontStyle: FontStyle.italic,
+                        ),),
+                      Radio(
+                        value: 'Male',
+                        groupValue: selectedGender,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedGender = value.toString();
+                            onEdit();
+                          });
+                        },
+                        activeColor: AppColors.gold,
+                      ),
+                      Text('Male',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.lightAmber,
+                          fontStyle: FontStyle.italic,
+                        ),),
+                      Radio(
+                        value: 'Other',
+                        groupValue: selectedGender,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedGender = value.toString();
+                            onEdit();
+                          });
+                        },
+                        activeColor: AppColors.gold,
+                      ),
+                      Text('Other',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.lightAmber,
+                          fontStyle: FontStyle.italic,
+                        ),),
+                    ],
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Enable Notifications: ",
+                        style: TextStyle(
+                          color: AppColors.gold,
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),),
+                      Switch(
+                        value: notificationsEnabled,
+                        onChanged: (bool value) {
+                          setState(() {
+                            notificationsEnabled = value;
+                            onEdit();
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 16),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.gold,
+                      minimumSize: Size(175, 45),
+                    ),
+                    onPressed: isEditing
+                        ? () {
+                      // Save changes functionality
+                      setState(() {
+                        isEditing = false; // Reset the flag
+                      });
+                    }
+                        : null, // Disable button if no changes made
+                    child: Text(
+                      'Save Changes',
                       style: TextStyle(
-                        fontSize: 20,
-                        color: AppColors.lightAmber,
-                        fontStyle: FontStyle.italic,
+                        fontFamily: "Pacifico",
+                        fontSize: 25,
+                        color: AppColors.navyBlue,
                       ),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.edit),
-                      color: AppColors.gold,
-                      onPressed: () {
-                        setState(() {
-                          isEditingBirthday = !isEditingBirthday;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Gender: ",
-                      style: TextStyle(
-                        color: AppColors.gold,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    Radio(
-                      value: 'Female',
-                      groupValue: selectedGender,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedGender = value.toString();
-                          onEdit();
-                        });
-                      },
-                      activeColor: AppColors.gold,
-                    ),
-                    Text('Female',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.lightAmber,
-                        fontStyle: FontStyle.italic,
-                      ),),
-                    Radio(
-                      value: 'Male',
-                      groupValue: selectedGender,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedGender = value.toString();
-                          onEdit();
-                        });
-                      },
-                      activeColor: AppColors.gold,
-                    ),
-                    Text('Male',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.lightAmber,
-                        fontStyle: FontStyle.italic,
-                      ),),
-                    Radio(
-                      value: 'Other',
-                      groupValue: selectedGender,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedGender = value.toString();
-                          onEdit();
-                        });
-                      },
-                      activeColor: AppColors.gold,
-                    ),
-                    Text('Other',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.lightAmber,
-                        fontStyle: FontStyle.italic,
-                      ),),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Enable Notifications: ",
-                      style: TextStyle(
-                        color: AppColors.gold,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    Switch(
-                      value: notificationsEnabled,
-                      onChanged: (bool value) {
-                        setState(() {
-                          notificationsEnabled = value;
-                          onEdit();
-                        });
-                      },
-                    ),
-                  ],
-                ),
-
-                SizedBox(height: 16),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.gold,
-                    minimumSize: Size(175, 45),
                   ),
-                  onPressed: isEditing
-                      ? () {
-                    // Save changes functionality
-                    setState(() {
-                      isEditing = false; // Reset the flag
-                    });
-                  }
-                      : null, // Disable button if no changes made
-                  child: Text(
-                    'Save Changes',
-                    style: TextStyle(
-                      fontFamily: "Pacifico",
-                      fontSize: 25,
-                      color: AppColors.navyBlue,
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
       ),
       bottomNavigationBar: Container(
         color: AppColors.gold,

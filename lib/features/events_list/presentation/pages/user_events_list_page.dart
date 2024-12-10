@@ -58,6 +58,7 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import 'package:hedieaty_app_mvc/core/presentation/widgets/search_bar/search_bar.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/presentation/widgets/dropdown_list/custom_dropdown_button.dart';
@@ -114,58 +115,49 @@ class _EventListPageState extends State<EventListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppColors.navyBlue, AppColors.brightBlue],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
+      body: GradientBackground(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomSearchBar(
-                controller: _searchController,
-                onChanged: (value) => _filterEvents(value),
-                hintText: "Search events...",
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 150.0),
-              child: CustomDropdownButton(
-                items: ['Status', 'Category', 'Name'],
-                value: _selectedFilter,
-                onChanged: _sortEvents,
-                hint: Text('Sort by', style: TextStyle(color: AppColors.lightAmber)),
-                iconColor: AppColors.lightAmber,
-                dropdownColor: Colors.white,
-                selectedTextStyle: TextStyle(color: AppColors.gold), // Set the selected item color to gold
-              ),
-
-            ),
-            Expanded(
-              child: ListView.builder(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
                 padding: const EdgeInsets.all(10.0),
-                itemCount: _filteredEvents.length,
-                itemBuilder: (context, index) {
-                  final event = _filteredEvents[index];
-                  return EventCard(
-                    eventName: event['eventName']!,
-                    status: event['status']!,
-                    category: event['category']!,
-                  );
-                },
+                child: CustomSearchBar(
+                  controller: _searchController,
+                  onChanged: (value) => _filterEvents(value),
+                  hintText: "Search events...",
+                ),
               ),
-            ),
-          ],
-        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 150.0),
+                child: CustomDropdownButton(
+                  items: ['Status', 'Category', 'Name'],
+                  value: _selectedFilter,
+                  onChanged: _sortEvents,
+                  hint: Text('Sort by', style: TextStyle(color: AppColors.lightAmber)),
+                  iconColor: AppColors.lightAmber,
+                  dropdownColor: Colors.white,
+                  selectedTextStyle: TextStyle(color: AppColors.gold), // Set the selected item color to gold
+                ),
+
+              ),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(10.0),
+                  itemCount: _filteredEvents.length,
+                  itemBuilder: (context, index) {
+                    final event = _filteredEvents[index];
+                    return EventCard(
+                      eventName: event['eventName']!,
+                      status: event['status']!,
+                      category: event['category']!,
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
       ),
-    );
+      );
   }
 
   @override
