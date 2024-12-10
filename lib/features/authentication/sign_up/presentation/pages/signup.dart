@@ -3,7 +3,6 @@ import '../../data/data_sources/firebase_sign_up_auth_data_source.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/app_colors.dart';
 import '../../../../../core/config/theme/gradient_background.dart';
-import '../../../../../core/domain/models/Wishlist.dart';
 import '../../../../../core/domain/models/User.dart' as domain_user;
 import '../../../../../core/domain/repositories/domain_user_repo.dart';
 import '../../../../../core/presentation/widgets/buttons/custom_golden_button.dart';

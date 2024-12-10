@@ -6,6 +6,7 @@ import 'package:hedieaty_app_mvc/features/starting_page/presentation/starting_pa
 import 'package:provider/provider.dart';
 import '../../../features/authentication/wrapper/presentation/page/sign_in_tabs_wrapper.dart';
 import '../../../features/events_list/presentation/pages/create_event_list.dart';
+import '../../../features/events_list/presentation/pages/user_events_list_page.dart';
 import '../../../features/home_page/presentation/pages/home_page.dart';
 import '../../../features/screenwrapper/presentation/pages/screenwrapper.dart';
 import '../../domain/repositories/domain_user_repo.dart';
@@ -16,16 +17,18 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/': (context) {
     return SignInTabsWrapper();
   },
-  // '/sign_in_wrapper': (context) =>  SignInTabsWrapper(),
   '/screen_wrapper': (context) => ScreenWrapper(),
   '/sign_in': (context) => SignInPage(),
   '/opening_page': (context) => OpeningPage(),
   '/create_event_list': (context) => CreateEventPage(),
+  '/user_events_list': (context) => EventListPage(),
+};
+
   // '/profile': (context) => ProfilePage(),
   // '/friend_event_list': (context) => FriendEventListPage(),
   // '/friend_gift_list': (context) => FriendGiftListPage(),
   // Add other routes here
-};
+
 // import 'package:flutter/material.dart';
 // import 'package:hedieaty_app_mvc/features/home_page/presentation/pages/home_page.dart';
 // class Routes {

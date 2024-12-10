@@ -9,6 +9,8 @@ import 'package:hedieaty_app_mvc/features/navigation_bar/domain/list_of_nav_bar_
 import 'package:provider/provider.dart';
 import 'core/domain/repositories/domain_user_repo.dart';
 import 'core/presentation/providers/User_Provider.dart';
+import 'features/events_list/data/repositories/remote_event_list_repo.dart';
+import 'features/events_list/domain/repositories/domain_event_repo.dart';
 import 'features/home_page/presentation/pages/home_page.dart';
 import 'features/navigation_bar/presentation/providers/Navigation_Provider.dart';
 import 'features/screenwrapper/presentation/pages/screenwrapper.dart';
@@ -31,6 +33,12 @@ void main() async {
         ChangeNotifierProvider(create: (_) => NavigationController()),
         Provider(
           create: (_) => DomainUserRepository(RemoteUserRepository()),
+        ),
+        Provider<EventRemoteRepository>(
+          create: (_) => EventRemoteRepository(),
+        ),
+        ProxyProvider<EventRemoteRepository, DomainEventRepository>(
+          update: (_, remoteRepo, __) => DomainEventRepository(remoteRepo),
         ),
       ],
       child: HedieatyApp(),

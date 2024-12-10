@@ -5,6 +5,7 @@ class Event {
   final String location;
   final String description;
   final String userId;
+  final String type;
 
   // Constructor
   Event({
@@ -14,6 +15,7 @@ class Event {
     required this.location,
     required this.description,
     required this.userId,
+    required this.type,
   });
 
   // Named constructor for creating a new event with default ID
@@ -24,6 +26,7 @@ class Event {
     required this.location,
     required this.description,
     required this.userId,
+    required this.type,
   });
 
   // Convert Event to Map for local storage or Firebase
@@ -34,6 +37,7 @@ class Event {
     'location': location,
     'description': description,
     'userId': userId,
+    'type': type,
   };
 
   // Convert from Map to Event instance
@@ -45,6 +49,7 @@ class Event {
       location: map['location'],
       description: map['description'],
       userId: map['userId'],
+      type: map['type'],
     );
   }
 
@@ -56,6 +61,7 @@ class Event {
     'location': location,
     'description': description,
     'userId': userId,
+    'type': type,
   };
 
   // Convert from JSON to Event instance
@@ -67,6 +73,7 @@ class Event {
       location: json['location'],
       description: json['description'],
       userId: json['userId'],
+      type: json['type'],
     );
   }
 
@@ -78,6 +85,8 @@ class Event {
     String? location,
     String? description,
     String? userId,
+    String? type,
+
   }) {
     return Event(
       id: id ?? this.id,
@@ -86,6 +95,7 @@ class Event {
       location: location ?? this.location,
       description: description ?? this.description,
       userId: userId ?? this.userId,
+      type: type?? this.type,
     );
   }
 }

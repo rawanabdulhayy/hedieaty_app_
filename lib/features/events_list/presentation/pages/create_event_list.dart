@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/presentation/widgets/dropdown_list/custom_dropdown_button.dart';
 import '../../../../core/presentation/widgets/text_fields/text_form_field.dart';
 import '../../../navigation_bar/presentation/widgets/bottom_nav_bar_widget.dart';
+import '../../domain/entities/Event.dart';
+import '../../domain/repositories/domain_event_repo.dart';
 
 class CreateEventPage extends StatefulWidget {
-  const CreateEventPage({super.key});
+
+  CreateEventPage({super.key});
 
   @override
   State<CreateEventPage> createState() => _CreateEventPageState();
@@ -22,6 +27,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
   final TextEditingController _otherEventTypeController = TextEditingController();
   final TextEditingController _eventDateController = TextEditingController();
   final TextEditingController _eventDescriptionController = TextEditingController();
+  late DomainEventRepository domainEventRepository;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
+  }
 
   @override
   void dispose() {
@@ -116,7 +128,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         });
                       },
                       hint: Text(
-                        'Select Event Type',
+                        'Select Type',
                         style: TextStyle(color: AppColors.gold),
                       ),
                       iconColor: AppColors.gold,
@@ -177,11 +189,41 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       backgroundColor: AppColors.gold,
                       minimumSize: Size(double.infinity, 50), // Full-width button
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Navigator.pushNamed(context, '/user_events_list');
+                        final selectedType = isOtherEventType
+                            ? _otherEventTypeController.text
+                            : selectedEventType ?? '';
+
+                        final event = Event(
+                          id: '', // Assign an ID or generate it dynamically in the repository
+                          name: _eventNameController.text,
+                          date: DateFormat('dd/MM/yyyy').parse(_eventDateController.text),
+                          location: _eventLocationController.text,
+                          description: _eventDescriptionController.text,
+                          type: selectedType,
+                          userId: '', // Will be set in the repository layer using FirebaseAuth
+                        );
+
+                        try {
+                          domainEventRepository.upsertEvent(event).then((_) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Event created successfully!')),
+                            );
+                            Navigator.pop(context);
+                          }
+                          );
+                          // Navigate to the events list page on success
+                          Navigator.pushNamed(context, '/user_events_list');
+                        } catch (e) {
+                          // Show error message if upsert fails
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Failed to add event: $e')),
+                          );
+                        }
                       }
                     },
+
                     child: Text(
                       'Add Event',
                       style: TextStyle(
