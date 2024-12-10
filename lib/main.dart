@@ -78,4 +78,24 @@ class HedieatyApp extends StatelessWidget {
 //TODO: Authentication Feature built and working
 //TODO: DB Tables built and manipulating
 //TODO: Milestone one added and resorted
-
+//
+// 1. Provider for EventRemoteRepository
+// This provider creates an instance of EventRemoteRepository, which is responsible for interacting with the remote data source (e.g., Firestore, API). It encapsulates the low-level implementation details of fetching and updating event data remotely.
+//
+// Why This Provider?
+//
+// EventRemoteRepository is a dependency for DomainEventRepository.
+// By providing EventRemoteRepository, we ensure that DomainEventRepository can be instantiated correctly with its required dependency.
+// 2. ProxyProvider for DomainEventRepository
+// A ProxyProvider takes the already provided EventRemoteRepository and uses it to instantiate DomainEventRepository. The DomainEventRepository acts as the domain layer's abstraction, implementing application-specific business logic while delegating data access tasks to EventRemoteRepository.
+//
+// Why This Provider?
+//
+// DomainEventRepository needs EventRemoteRepository to function, as it uses it to fetch and manipulate remote data.
+// The ProxyProvider automatically resolves the dependency between these layers, creating a seamless dependency injection.
+// Why Two Providers Are Necessary?
+// The separation aligns with dependency injection principles and ensures clean architecture:
+//
+// Reusability: If other parts of the app need EventRemoteRepository (e.g., another repository or a testing environment), they can directly use it without duplicating its creation logic.
+// Scalability: Each provider has a distinct role. You could replace EventRemoteRepository with another implementation (e.g., a local repository) without affecting DomainEventRepository.
+// Decoupling: By splitting the responsibilities, DomainEventRepository is decoupled from the instantiation details of EventRemoteRepository.

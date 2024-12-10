@@ -210,11 +210,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Event created successfully!')),
                             );
-                            Navigator.pop(context);
                           }
                           );
                           // Navigate to the events list page on success
-                          Navigator.pushNamed(context, '/user_events_list');
+                          Navigator.pushNamed(context, '/screen_wrapper');
                         } catch (e) {
                           // Show error message if upsert fails
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -223,7 +222,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         }
                       }
                     },
-
                     child: Text(
                       'Add Event',
                       style: TextStyle(
