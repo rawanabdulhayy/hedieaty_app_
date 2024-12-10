@@ -14,9 +14,9 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: AppColors.navyBlue.withOpacity(0.1),
-      margin: EdgeInsets.all(10),
+      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       child: ListTile(
-        leading: Icon(Icons.event),
+        leading: Icon(Icons.event, color: AppColors.gold),
         title: Text(eventName,
         style: TextStyle(
             fontSize: 20,
@@ -27,7 +27,8 @@ class EventCard extends StatelessWidget {
         subtitle: Text('$status | $category',
           style: TextStyle(
             fontSize: 15,
-            color: AppColors.gold,
+            color: AppColors.lightAmber,
+            fontStyle: FontStyle.italic,
           ),),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,

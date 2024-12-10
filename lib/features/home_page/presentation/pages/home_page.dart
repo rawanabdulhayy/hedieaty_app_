@@ -154,7 +154,7 @@ class _HomePageState extends State<HomePage> {
           // Search text field
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: CustomSearchBar(controller: searchController, onChanged: filterFriends),
+            child: CustomSearchBar(controller: searchController, onChanged: filterFriends, hintText: "Search friends...",),
           ),
           SizedBox(height: 16),
 
