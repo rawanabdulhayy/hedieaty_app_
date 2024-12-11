@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../core/app_colors.dart';
-import '../../authentication/log_out/domain/usecases/log_out_usecase.dart';
+import '../../../../core/app_colors.dart';
+import '../domain/usecases/log_out_usecase.dart';
+
 
 class OpeningPage extends StatelessWidget {
   const OpeningPage({super.key});
