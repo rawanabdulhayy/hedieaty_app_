@@ -7,6 +7,8 @@ import '../../../features/authentication/log_out/presentation/log_out.dart';
 import '../../../features/authentication/wrapper/presentation/page/sign_in_tabs_wrapper.dart';
 import '../../../features/events_list/presentation/pages/create_event_list.dart';
 import '../../../features/events_list/presentation/pages/user_events_list_page.dart';
+import '../../../features/gifts_list/presentation/pages/gift_details.dart';
+import '../../../features/gifts_list/presentation/pages/users_gifts_list_page.dart';
 import '../../../features/home_page/presentation/pages/home_page.dart';
 import '../../../features/screenwrapper/presentation/pages/screenwrapper.dart';
 import '../../domain/repositories/domain_user_repo.dart';
@@ -14,14 +16,14 @@ import '../../domain/repositories/domain_user_repo.dart';
 final Map<String, WidgetBuilder> appRoutes = {
   // '/': (context) => ChangeNotifierProvider(create: (context) => NavigationController(),
   // child: ScreenWrapper()),
-  '/': (context) {
-    return SignInTabsWrapper();
-  },
+  '/': (context) => SignInTabsWrapper(),
   '/screen_wrapper': (context) => ScreenWrapper(),
   '/sign_in': (context) => SignInPage(),
   '/opening_page': (context) => OpeningPage(),
   '/create_event_list': (context) => CreateEventPage(),
   '/user_events_list': (context) => EventListPage(),
+  '/user_gift_list': (context) => GiftListPage(),
+  '/gift_details': (context) => GiftDetailsPage(),
 };
 
   // '/profile': (context) => ProfilePage(),
