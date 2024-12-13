@@ -21,9 +21,11 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/sign_in': (context) => SignInPage(),
   '/opening_page': (context) => OpeningPage(),
   '/create_event_list': (context) => CreateEventPage(),
-  '/user_events_list': (context) => EventListPage(),
-  '/user_gift_list': (context) => GiftListPage(),
-  '/gift_details': (context) => GiftDetailsPage(),
+  // '/user_events_list': (context) => EventListPage(),
+  // In the routes configuration, when defining the navigation for the GiftListPage,
+  // you need to ensure that you pass the required eventName dynamically.
+  // Since routes is typically a static map, you cannot directly pass dynamic arguments like eventName within the map.
+  // '/gift_details': (context) => GiftDetailsPage(),
 };
 
   // '/profile': (context) => ProfilePage(),

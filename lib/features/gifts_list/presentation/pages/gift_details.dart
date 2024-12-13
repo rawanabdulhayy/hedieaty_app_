@@ -1,48 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
+import 'package:provider/provider.dart'; // For dependency injection
 import '../../../../core/app_colors.dart';
+import '../../../../core/config/theme/gradient_background.dart';
+import '../../../../core/presentation/widgets/dropdown_list/custom_dropdown_button.dart';
+import '../../../../core/presentation/widgets/text_fields/text_form_field.dart';
+import '../../domain/entity/Gift.dart';
+import '../../domain/repositories/domain_gift_repo.dart';
 
 class GiftDetailsPage extends StatefulWidget {
-  final String? giftName;
-  final String? category;
-  final bool? isAvailable; // Reflects in gift list page as available or pledged
-  final double? minBudget;
-  final double? maxBudget;
+  final String eventId;
+  final String eventName;
+  final Gift? gift;
 
   const GiftDetailsPage({
     Key? key,
-    this.giftName,
-    this.category,
-    this.isAvailable = false,
-    this.minBudget = 0,
-    this.maxBudget = 1000,
+    required this.eventId,
+    required this.eventName,
+    this.gift,
   }) : super(key: key);
 
   @override
-  _GiftDetailsPageState createState() => _GiftDetailsPageState();
+  State<GiftDetailsPage> createState() => _GiftDetailsPageState();
 }
 
 class _GiftDetailsPageState extends State<GiftDetailsPage> {
-  final _formKey = GlobalKey<FormState>(); // Create a key for the form state
-  final TextEditingController giftNameController = TextEditingController();
-  final TextEditingController giftEventController = TextEditingController();
-  final TextEditingController customCategoryController = TextEditingController();
-  String selectedCategory = "Select Category";
-  bool isOtherCategory = false;
-  bool isAvailable = false;
-  double minBudget = 0;
-  double maxBudget = 1000;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  bool _isAvailable = true;
+
+  late GiftDomainRepository giftDomainRepository;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    giftDomainRepository = Provider.of<GiftDomainRepository>(context, listen: false);
+  }
 
   @override
   void initState() {
     super.initState();
-    giftNameController.text = widget.giftName ?? '';
-    giftEventController.text = widget.giftName ?? '';
-    selectedCategory = widget.category ?? "Select Category";
-    isAvailable = widget.isAvailable ?? false;
-    minBudget = widget.minBudget ?? 0;
-    maxBudget = widget.maxBudget ?? 1000;
+    if (widget.gift != null) {
+      _nameController.text = widget.gift!.name;
+      _descriptionController.text = widget.gift!.description;
+      _categoryController.text = widget.gift!.category;
+      _priceController.text = widget.gift!.price.toString();
+      _isAvailable = widget.gift!.status == 'Available';
+    }
   }
+
+  Future<void> _saveGift() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (giftDomainRepository == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Gift repository is not initialized')),
+      );
+      return;
+    }
+
+    final gift = Gift(
+      id: widget.gift?.id ?? '',
+      name: _nameController.text,
+      description: _descriptionController.text,
+      category: _categoryController.text,
+      price: double.tryParse(_priceController.text) ?? 0.0,
+      status: _isAvailable ? 'Available' : 'Pledged',
+      eventId: widget.eventId,
+      isPledged: false,
+    );
+
+    try {
+      await giftDomainRepository.upsertGift(gift);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(widget.gift == null ? 'Gift added!' : 'Gift updated!')),
+      );
+      Navigator.of(context).pop();
+    } catch (e) {
+      print('Failed to save gift: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,237 +92,87 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
         backgroundColor: AppColors.navyBlue,
         title: Center(
           child: Text(
-            //TODO: Gift here should be replaced with the actual gift name navigated from
-            'Gift Details',
-            style: TextStyle(
-              color: AppColors.gold,
-              fontFamily: "Pacifico",
-            ),
+            widget.gift == null ? 'Add Gift' : 'Edit Gift',
+            style: const TextStyle(color: AppColors.gold, fontFamily: "Pacifico"),
           ),
         ),
-        iconTheme: IconThemeData(
-          color: AppColors.gold,
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.card_giftcard),
-            onPressed: () {
-              // Action for the button goes here
-            },
-          ),
-        ],
       ),
       body: GradientBackground(
         child: Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Form( // Wrap the form around the column
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Gift Name",
-                    style: TextStyle(
-                      color: AppColors.gold,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomTextFormField(
+                  controller: _nameController,
+                  labelText: 'Gift Name',
+                  hintText: 'Enter gift name',
+                  validator: (value) => value == null || value.isEmpty ? 'Enter a gift name' : null,
+                ),
+                CustomTextFormField(
+                  controller: _descriptionController,
+                  labelText: 'Description',
+                  hintText: 'Enter gift description',
+                ),
+                CustomDropdownButton(
+                  hint: Text(
+                    'Select Category',
+                    style: TextStyle(color: AppColors.gold.withOpacity(0.6)),
                   ),
-                  //TODO: All Text fields should be using our own customized textformfield
-                  TextField(
-                    controller: giftNameController,
-                    decoration: InputDecoration(
-                      hintText: "Enter Gift Name...",
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.brightBlue,
-                          width: 2.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.gold,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  //TODO: This should fetch all events names from the events collection and maybe do smth like suggestions? underneath the textfield when the user starts typing the event name and the letters start matching one of our collections user events name
-                  Text("Gift Associated Event",
-                    style: TextStyle(
-                      color: AppColors.gold,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  TextField(
-                    controller: giftEventController,
-                    decoration: InputDecoration(
-                      hintText: "Enter Gift Event Name...",
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 18,
-                      ),
-                      filled: true,
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.brightBlue,
-                          width: 2.0,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(
-                          color: AppColors.gold,
-                          width: 2.0,
-                        ),
+                  items: const ['Electronics', 'Books', 'Clothing', 'Toys'],
+                  value: _categoryController.text.isEmpty ? null : _categoryController.text,
+                  onChanged: (value) => setState(() {
+                    _categoryController.text = value ?? '';
+                  }),
+                  iconColor: AppColors.gold,
+                  dropdownColor: Colors.white,
+                  selectedTextStyle: const TextStyle(color: AppColors.gold),
+                ),
+                CustomTextFormField(
+                  controller: _priceController,
+                  labelText: 'Price',
+                  hintText: 'Enter price',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) return 'Enter a price';
+                    if (int.tryParse(value) == null) return 'Enter a valid number';
+                    return null;
+                  },
+                  keyboardType: TextInputType.number,
+                ),
+                SwitchListTile(
+                  title: const Text('Available'),
+                  value: _isAvailable,
+                  onChanged: (value) {
+                    setState(() {
+                      //Todo: this should be a readonly defaulted to available
+                      _isAvailable = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: _saveGift,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.gold,
+                      foregroundColor: AppColors.navyBlue,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 10),
-                  Text("Category",
-                    style: TextStyle(
-                        color: AppColors.gold,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20),
-                  ),
-                  //TODO: This should use our drop down list customized
-                  DropdownButtonHideUnderline(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(5),
-                        border: Border.all(color: AppColors.brightBlue, width: 2),
-                      ),
-                      padding: EdgeInsets.symmetric(horizontal: 12),
-                      child: DropdownButton<String>(
-                        value: selectedCategory,
-                        dropdownColor: Colors.white,
-                        iconEnabledColor: AppColors.navyBlue,
-                        items: <String>["Select Category", "Birthday", "Wedding", "Anniversary", "Other"]
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                color: value == selectedCategory
-                                    ? AppColors.brightBlue
-                                    : AppColors.navyBlue,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          setState(() {
-                            selectedCategory = value!;
-                            isOtherCategory = value == "Other";
-                          });
-                        },
-                      ),
+                    child: Text(
+                      widget.gift == null ? 'Add Gift' : 'Update Gift',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  //TODO: I wanna remove this pop up text thing
-                  if (isOtherCategory)
-                    Padding(
-                      padding: const EdgeInsets.all(3.0),
-                      child: TextField(
-                        controller: customCategoryController,
-                        decoration: InputDecoration(
-                          hintText: "Enter Custom Category...",
-                          hintStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.brightBlue,
-                              width: 2.0,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: AppColors.gold,
-                              width: 2.0,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  SizedBox(height: 16),
-                  Text("Available",
-                    style: TextStyle(
-                      color: AppColors.gold,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Switch(
-                    value: isAvailable,
-                    activeColor: AppColors.gold,
-                    activeTrackColor: AppColors.gold.withOpacity(0.5),
-                    onChanged: (bool value) {
-                      setState(() {
-                        isAvailable = value;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  //TODO: I wanna change the slider to just a textformfield that takes a fixed price
-                  Text("Budget: \$${minBudget.toInt()} - \$${maxBudget.toInt()}",
-                    style: TextStyle(
-                      color: AppColors.gold,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  RangeSlider(
-                    min: 0,
-                    max: 5000,
-                    activeColor: AppColors.gold,
-                    inactiveColor: AppColors.navyBlue.withOpacity(0.3),
-                    values: RangeValues(minBudget, maxBudget),
-                    onChanged: (RangeValues values) {
-                      setState(() {
-                        minBudget = values.start;
-                        maxBudget = values.end;
-                      });
-                    },
-                  ),
-                  SizedBox(height: 16),
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.gold,
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          //TODO: This should call the upsertGift function and then navigate back to gift list page showing the new updates
-                        }
-                      },
-                      child: Text(
-                        'Save',
-                        style: TextStyle(
-                          fontFamily: "Pacifico",
-                          fontSize: 25,
-                          color: AppColors.navyBlue,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+        ),
       ),
-      );
+    );
   }
 }

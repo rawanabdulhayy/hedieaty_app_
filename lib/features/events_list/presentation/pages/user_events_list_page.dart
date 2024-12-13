@@ -134,6 +134,7 @@ class _EventListPageState extends State<EventListPage> {
                       eventName: event.name,
                       status: eventStatus, // Pass the calculated status
                       category: event.type,
+                      eventId: event.id,
                     );
                   },
                 ),

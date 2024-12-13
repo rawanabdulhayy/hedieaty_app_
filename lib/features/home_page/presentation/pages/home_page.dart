@@ -233,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context); // Close the dialog
-                                Navigator.pushNamed(context, '/add_gift_list');
+                                Navigator.pushNamed(context, '/gift_details');
                               },
                               child: Text(
                                 'New Gift List',

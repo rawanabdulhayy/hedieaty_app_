@@ -7,10 +7,14 @@ import 'package:hedieaty_app_mvc/core/data/remote/repositories/remote_user_repo.
 import 'package:hedieaty_app_mvc/features/authentication/wrapper/presentation/page/sign_in_tabs_wrapper.dart';
 import 'package:hedieaty_app_mvc/features/navigation_bar/domain/list_of_nav_bar_items.dart';
 import 'package:provider/provider.dart';
+import 'core/config/routes/App_Router.dart';
 import 'core/domain/repositories/domain_user_repo.dart';
 import 'core/presentation/providers/User_Provider.dart';
 import 'features/events_list/data/repositories/remote_event_list_repo.dart';
 import 'features/events_list/domain/repositories/domain_event_repo.dart';
+import 'features/gifts_list/data/remote/repositories/gift_remote_repo.dart';
+import 'features/gifts_list/domain/repositories/domain_gift_repo.dart';
+import 'features/gifts_list/presentation/providers/gift_provider.dart';
 import 'features/home_page/presentation/pages/home_page.dart';
 import 'features/navigation_bar/presentation/providers/Navigation_Provider.dart';
 import 'features/screenwrapper/presentation/pages/screenwrapper.dart';
@@ -40,6 +44,13 @@ void main() async {
         ProxyProvider<EventRemoteRepository, DomainEventRepository>(
           update: (_, remoteRepo, __) => DomainEventRepository(remoteRepo),
         ),
+        Provider<GiftRemoteRepository>(
+          create: (_) => GiftRemoteRepository(),
+        ),
+        ProxyProvider<GiftRemoteRepository, GiftDomainRepository>(
+          update: (_, remoteRepo, __) => GiftDomainRepository(remoteRepo),
+        ),
+        ChangeNotifierProvider(create: (_) => GiftProvider()),
       ],
       child: HedieatyApp(),
     ),
@@ -70,11 +81,15 @@ class HedieatyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Hedieaty',
       theme: appTheme,
-      // initialRoute: '/',
-      routes: appRoutes,
+      initialRoute: '/',
+      routes: appRoutes, // For static routes
+      onGenerateRoute: AppRouter.generateRoute, // For dynamic routes
     );
   }
 }
+// Static Routes (appRoutes): You continue using appRoutes for static routes that don't require dynamic parameters.
+// Dynamic Routes (onGenerateRoute): Use onGenerateRoute to handle routes that need parameters or custom logic, such as passing eventName to GiftListPage.
+// Separation of Concerns: The AppRouter class keeps the route handling logic clean and isolated from the rest of the app.
 //TODO: Authentication Feature built and working
 //TODO: DB Tables built and manipulating
 //TODO: Milestone one added and resorted
