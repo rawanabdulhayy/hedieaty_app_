@@ -69,7 +69,8 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
       price: double.tryParse(_priceController.text) ?? 0.0,
       status: _isAvailable ? 'Available' : 'Pledged',
       eventId: widget.eventId,
-      isPledged: false,
+      isPledged: _isAvailable ? false : true,
+      pledgedBy: _isAvailable ? "Nobody yet" : "Friend's Name",
     );
 
     try {
@@ -116,19 +117,22 @@ class _GiftDetailsPageState extends State<GiftDetailsPage> {
                   labelText: 'Description',
                   hintText: 'Enter gift description',
                 ),
-                CustomDropdownButton(
-                  hint: Text(
-                    'Select Category',
-                    style: TextStyle(color: AppColors.gold.withOpacity(0.6)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 125.0),
+                  child: CustomDropdownButton(
+                    hint: Text(
+                      'Select Category',
+                      style: TextStyle(color: AppColors.lightAmber),
+                    ),
+                    items: const ['Electronics', 'Books', 'Clothing', 'Toys'],
+                    value: _categoryController.text.isEmpty ? null : _categoryController.text,
+                    onChanged: (value) => setState(() {
+                      _categoryController.text = value ?? '';
+                    }),
+                    iconColor: AppColors.gold,
+                    dropdownColor: Colors.white,
+                    selectedTextStyle: const TextStyle(color: AppColors.lightAmber),
                   ),
-                  items: const ['Electronics', 'Books', 'Clothing', 'Toys'],
-                  value: _categoryController.text.isEmpty ? null : _categoryController.text,
-                  onChanged: (value) => setState(() {
-                    _categoryController.text = value ?? '';
-                  }),
-                  iconColor: AppColors.gold,
-                  dropdownColor: Colors.white,
-                  selectedTextStyle: const TextStyle(color: AppColors.gold),
                 ),
                 CustomTextFormField(
                   controller: _priceController,

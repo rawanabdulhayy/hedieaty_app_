@@ -194,6 +194,7 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 FloatingActionButton(
+                  heroTag: 'uniqueTag1',
                   backgroundColor: AppColors.gold,
                   onPressed: () {
                     showDialog(
@@ -254,9 +255,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 FloatingActionButton(
+                  heroTag: 'uniqueTag2',
                   backgroundColor: AppColors.gold,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/create_event_list');
+                    Navigator.pushNamed(context, '/add_friend');
                   },
                   child: Icon(
                     Icons.person,

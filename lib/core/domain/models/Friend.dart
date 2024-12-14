@@ -16,14 +16,21 @@ class Friend {
   }
 
   // Create Friend from Map
-  //Q: What does factory constructor do in the fromMap?
-  //A: Factory Constructor in fromMap
-  //A factory constructor allows you to create a new instance of a class without directly invoking its default constructor.
-  //It's used here for converting a Map (e.g., database query result or JSON object) into a Dart object.
   factory Friend.fromMap(Map<String, dynamic> map) {
     return Friend(
       userId: map['userId'],
       friendId: map['friendId'],
+    );
+  }
+
+  // CopyWith method
+  Friend copyWith({
+    String? userId,
+    String? friendId,
+  }) {
+    return Friend(
+      userId: userId ?? this.userId,
+      friendId: friendId ?? this.friendId,
     );
   }
 }
