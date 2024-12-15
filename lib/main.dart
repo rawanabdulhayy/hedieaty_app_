@@ -8,6 +8,8 @@ import 'package:hedieaty_app_mvc/features/authentication/wrapper/presentation/pa
 import 'package:hedieaty_app_mvc/features/navigation_bar/domain/list_of_nav_bar_items.dart';
 import 'package:provider/provider.dart';
 import 'core/config/routes/App_Router.dart';
+import 'core/data/remote/repositories/remote_friend_repo.dart';
+import 'core/domain/repositories/domain_friend_repo.dart';
 import 'core/domain/repositories/domain_user_repo.dart';
 import 'core/presentation/providers/User_Provider.dart';
 import 'features/events_list/data/repositories/remote_event_list_repo.dart';
@@ -49,6 +51,12 @@ void main() async {
         ),
         ProxyProvider<GiftRemoteRepository, GiftDomainRepository>(
           update: (_, remoteRepo, __) => GiftDomainRepository(remoteRepo),
+        ),
+        Provider<FriendRemoteRepository>(
+          create: (_) => FriendRemoteRepository(), // Replace with actual remote repo implementation
+        ),
+        ProxyProvider<FriendRemoteRepository, DomainFriendRepository>(
+          update: (_, remoteRepo, __) => DomainFriendRepository(remoteRepo),
         ),
         ChangeNotifierProvider(create: (_) => GiftProvider()),
       ],

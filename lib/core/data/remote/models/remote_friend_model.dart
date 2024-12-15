@@ -3,10 +3,14 @@ import '../../../domain/models/Friend.dart';
 class FriendRemoteModel {
   final String userId;
   final String friendId;
+  final String friendName;
+  final String friendEmail;
 
   FriendRemoteModel({
     required this.userId,
     required this.friendId,
+    required this.friendName,
+    required this.friendEmail,
   });
 
   // Convert FriendRemoteModel to Map
@@ -14,6 +18,8 @@ class FriendRemoteModel {
     return {
       'userId': userId,
       'friendId': friendId,
+      'friendName': friendName,
+      'friendEmail': friendEmail,
     };
   }
 
@@ -22,6 +28,8 @@ class FriendRemoteModel {
     return FriendRemoteModel(
       userId: map['userId'],
       friendId: map['friendId'],
+      friendName: map['friendName'],
+      friendEmail: map['friendEmail'],
     );
   }
 
@@ -29,10 +37,14 @@ class FriendRemoteModel {
   FriendRemoteModel copyWith({
     String? userId,
     String? friendId,
+    String? friendName,
+    String? friendEmail,
   }) {
     return FriendRemoteModel(
       userId: userId ?? this.userId,
       friendId: friendId ?? this.friendId,
+      friendName: friendName ?? this.friendName,
+      friendEmail: friendEmail ?? this.friendEmail,
     );
   }
 
@@ -41,6 +53,8 @@ class FriendRemoteModel {
     return Friend(
       userId: userId,
       friendId: friendId,
+      friendName: friendName,
+      friendEmail: friendEmail,
     );
   }
 
@@ -49,6 +63,8 @@ class FriendRemoteModel {
     return FriendRemoteModel(
       userId: friend.userId,
       friendId: friend.friendId,
+      friendName: friend.friendName,
+      friendEmail: friend.friendEmail,
     );
   }
 }

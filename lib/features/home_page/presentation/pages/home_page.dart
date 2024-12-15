@@ -1,119 +1,8 @@
-// import 'package:flutter/material.dart';
-// import 'package:hedieaty_app_mvc/core/widgets/search_bar.dart';
-// import '../../core/app_colors.dart';
-// import '../../data/data_repo/sample_friends.dart';
-// import '../../data/entity/friend.dart';
-// import '../widgets/friend_card.dart';
-//
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-//
-// class _HomePageState extends State<HomePage> {
-//
-//   // Controller for the search text field
-//   TextEditingController searchController = TextEditingController();
-//   List<Friend> filteredFriends = [];
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     filteredFriends = sampleFriends; // Initialize filteredFriends with sampleFriends
-//   }
-//
-//   // Function to filter friends based on search query
-//   void filterFriends(String query) {
-//     final results = sampleFriends.where((friend) {
-//       final name = friend.name.toLowerCase();
-//       final events = friend.events.map((event) => event.toLowerCase()).join(" ");
-//       final searchQuery = query.toLowerCase();
-//
-//       return name.contains(searchQuery) || events.contains(searchQuery);
-//     }).toList();
-//
-//     setState(() {
-//       filteredFriends = results;
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       height: double.infinity,
-//       decoration: BoxDecoration(
-//         gradient: LinearGradient(
-//           colors: [AppColors.navyBlue, AppColors.brightBlue],
-//         ),
-//       ),
-//       child: Column(
-//         children: [
-//           // Search text field
-//           Padding(
-//             padding: EdgeInsets.all(16.0),
-//             child: CustomSearchBar(controller: searchController, onChanged: (String ) {},),
-//           ),
-//           SizedBox(height: 16),
-//
-//           // List of friends
-//           Expanded(
-//             child: Padding(
-//               padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-//               child: ListView.builder(
-//                 itemCount: filteredFriends.length,
-//                 itemBuilder: (context, index) {
-//                   final friend = filteredFriends[index];
-//                   final events = friend.events; // Get events from the Friend model
-//                   final eventCount = events.length;
-//
-//                   return FriendCard(
-//                     friendName: friend.name,
-//                     events: events,
-//                     eventCount: eventCount,
-//                     onTap: () {
-//                       Navigator.pushNamed(
-//                         context,
-//                         '/friend_event_list',
-//                         arguments: friend,
-//                       );
-//                     },
-//                   );
-//                 },
-//               ),
-//             ),
-//           ),
-//
-//           // Floating action button
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Align(
-//               alignment: Alignment.bottomRight,
-//               child: FloatingActionButton(
-//                 backgroundColor: AppColors.gold,
-//                 onPressed: () {
-//                   Navigator.pushNamed(context, '/add_friend');
-//                 },
-//                 child: Icon(
-//                   Icons.add,
-//                   color: AppColors.navyBlue,
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import '../../../../core/app_colors.dart';
-import '../../../../core/domain/models/User.dart';
-import '../../../../core/presentation/widgets/search_bar/search_bar.dart';
-import '../../data/repository/friend_repository.dart';
-import '../../domain/usecases/filter_friends_use_case.dart';
+import '../../data/repository/friend_repository.dart'; // Adjust import paths accordingly
+import '../../domain/usecases/fetch_User_Friends_and_Their_Events.dart';
 import '../widgets/friend_card.dart';
 
 class HomePage extends StatefulWidget {
@@ -122,24 +11,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Controller for the search text field
   TextEditingController searchController = TextEditingController();
-  List<User> filteredFriends = [];
-  final FilterFriendsUseCase _filterFriendsUseCase = FilterFriendsUseCase();
-  final FriendRepository _friendRepository = FriendRepository();
+  List<Map<String, dynamic>> friendsData = []; // Full list of friends and events
+  List<Map<String, dynamic>> filteredFriendsData = []; // Filtered list for search
 
   @override
   void initState() {
     super.initState();
-    filteredFriends =
-        _friendRepository.getFriends(); // Initialize with all friends
+    fetchFriendsAndEvents(); // Fetch friends and their events on page load
+  }
+
+  // Function to fetch friends and their events
+  void fetchFriendsAndEvents() async {
+    try {
+      final data = await fetchAllFriendsAndEvents(); // Use the updated fetch function
+      setState(() {
+        friendsData = data;
+        filteredFriendsData = data;
+      });
+    } catch (e) {
+      print('Error fetching friends and events: $e');
+    }
   }
 
   // Function to filter friends based on search query
   void filterFriends(String query) {
     setState(() {
-      filteredFriends =
-          _filterFriendsUseCase.execute(_friendRepository.getFriends(), query);
+      filteredFriendsData = friendsData
+          .where((friend) =>
+          friend['name'].toLowerCase().contains(query.toLowerCase()))
+          .toList();
     });
   }
 
@@ -148,46 +49,69 @@ class _HomePageState extends State<HomePage> {
     return GradientBackground(
       child: Column(
         children: [
-          // Search text field
+          // Search Bar
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: CustomSearchBar(
+            child: TextField(
               controller: searchController,
               onChanged: filterFriends,
-              hintText: "Search friends...",
+              decoration: InputDecoration(
+                hintText: 'Search friends...',
+                prefixIcon: Icon(Icons.search, color: AppColors.navyBlue),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide.none,
+                ),
+              ),
             ),
           ),
           SizedBox(height: 16),
 
-          // List of friends
+          // Friends and Events List
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 10),
-              child: ListView.builder(
-                itemCount: filteredFriends.length,
-                itemBuilder: (context, index) {
-                  final friend = filteredFriends[index];
-                  final events = friend.events;
-                  final eventCount = events.length;
+            child: filteredFriendsData.isEmpty
+                ? Center(
+              child: Text(
+                'No friends found',
+                style: TextStyle(
+                  color: AppColors.navyBlue,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+                : ListView.builder(
+              itemCount: filteredFriendsData.length,
+              itemBuilder: (context, index) {
+                final friend = filteredFriendsData[index];
+                final events = friend['events'] as List<dynamic>;
+                final eventCount = events.length;
 
-                  return FriendCard(
-                    friendName: friend.name,
-                    events: events,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: FriendCard(
+                    friendName: friend['name'] as String,
+                    events: (friend['events'] as List<dynamic>?)
+                        ?.map((event) => event['name'] as String)
+                        .toList() ??
+                        [],
                     eventCount: eventCount,
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        '/friend_event_list',
+                        '/user_events_list',
                         arguments: friend,
                       );
                     },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
 
-          // Floating action button
+          // Floating Action Buttons
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -205,43 +129,47 @@ class _HomePageState extends State<HomePage> {
                           title: Text(
                             'What would you like to create?',
                             style: TextStyle(
-                                color: AppColors.navyBlue,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
+                              color: AppColors.navyBlue,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          content:
-                             Text(
-                              'Choose an option to proceed:',
-                              style: TextStyle(
-                                  color: AppColors.navyBlue,
-                                  fontSize: 15,
-                                  fontStyle: FontStyle.italic),
+                          content: Text(
+                            'Choose an option to proceed:',
+                            style: TextStyle(
+                              color: AppColors.navyBlue,
+                              fontSize: 15,
+                              fontStyle: FontStyle.italic,
+                            ),
                           ),
                           actions: [
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context); // Close the dialog
-                                Navigator.pushNamed(context, '/create_event_list');
+                                Navigator.pop(context); // Close dialog
+                                Navigator.pushNamed(
+                                    context, '/create_event_list');
                               },
                               child: Text(
                                 'New Event List',
                                 style: TextStyle(
-                                    color: AppColors.navyBlue,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold),
+                                  color: AppColors.navyBlue,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pop(context); // Close the dialog
+                                Navigator.pop(context); // Close dialog
                                 Navigator.pushNamed(context, '/gift_details');
                               },
                               child: Text(
                                 'New Gift List',
                                 style: TextStyle(
-                                    color: AppColors.navyBlue,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.bold),
+                                  color: AppColors.navyBlue,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
@@ -273,48 +201,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-// Positioned buttons with the 'add' button at the bottom right
-//           Stack(
-//             children: [
-//               // Person button, placed above the add button
-//               Align(
-//                 alignment: Alignment.bottomCenter,
-//                 child: Padding(
-//                   padding: const EdgeInsets.only(bottom: 80), // Space between person and add button
-//                   child: FloatingActionButton(
-//                     backgroundColor: AppColors.gold,
-//                     onPressed: () {
-//                       Navigator.pushNamed(context, '/friend_profile');
-//                     },
-//                     child: Icon(
-//                       Icons.person,
-//                       color: AppColors.navyBlue,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//
-//               // Add button at the bottom right
-//               Align(
-//                 alignment: Alignment.bottomRight,
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(16.0),
-//                   child: FloatingActionButton(
-//                     backgroundColor: AppColors.gold,
-//                     onPressed: () {
-//                       Navigator.pushNamed(context, '/add_friend');
-//                     },
-//                     child: Icon(
-//                       Icons.add,
-//                       color: AppColors.navyBlue,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

@@ -1,10 +1,14 @@
 class Friend {
   final String userId;
   final String friendId;
+  final String friendName;
+  final String friendEmail;
 
   Friend({
     required this.userId,
     required this.friendId,
+    required this.friendName,
+    required this.friendEmail,
   });
 
   // Convert Friend to Map
@@ -12,6 +16,8 @@ class Friend {
     return {
       'userId': userId,
       'friendId': friendId,
+      'friendName': friendName,
+      'friendEmail': friendEmail,
     };
   }
 
@@ -20,6 +26,8 @@ class Friend {
     return Friend(
       userId: map['userId'],
       friendId: map['friendId'],
+      friendName: map['friendName'],
+      friendEmail: map['friendEmail'],
     );
   }
 
@@ -27,10 +35,14 @@ class Friend {
   Friend copyWith({
     String? userId,
     String? friendId,
+    String? friendName,
+    String? friendEmail,
   }) {
     return Friend(
       userId: userId ?? this.userId,
       friendId: friendId ?? this.friendId,
+      friendName: friendName ?? this.friendName,
+      friendEmail: friendEmail ?? this.friendEmail,
     );
   }
 }

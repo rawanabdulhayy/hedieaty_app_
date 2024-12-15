@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/app_colors.dart';
+import '../../../../core/domain/models/Friend.dart';
+import '../../../../core/domain/repositories/domain_friend_repo.dart';
 import '../../../../core/presentation/widgets/text_fields/text_form_field.dart';
-
 
 class AddFriendPage extends StatefulWidget {
   @override
@@ -15,6 +17,9 @@ class _AddFriendPageState extends State<AddFriendPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Access the DomainFriendRepository from the Provider
+    final friendRepository = context.read<DomainFriendRepository>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.navyBlue,
@@ -78,7 +83,7 @@ class _AddFriendPageState extends State<AddFriendPage> {
                       return "Please enter the friend's email address";
                     }
                     // Basic email validation
-                    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+\$').hasMatch(value)) {
+                    if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value)) {
                       return "Please enter a valid email address";
                     }
                     return null;
@@ -87,10 +92,36 @@ class _AddFriendPageState extends State<AddFriendPage> {
                 SizedBox(height: 32),
                 Center(
                   child: ElevatedButton(
-                    onPressed: () {
-                      //TODO: this should call the add_friend function from the domain repo
+                    onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
-                        // Add functionality to save only if the form is valid
+                        final name = friendNameController.text.trim();
+                        final email = friendEmailController.text.trim();
+
+                        try {
+                          // Create Friend domain model and call the domain repository
+                          // final friend = Friend(userId: '', friendId: '', friendName: name, friendEmail: email);
+                          await friendRepository.addFriend(name, email);
+
+                          friendNameController.clear();
+                          friendEmailController.clear();
+                          // Show success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Friend added successfully!"),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                          Navigator.pop(context);
+                        } catch (error) {
+                          // Handle errors (e.g., FirebaseAuth issues, validation failures)
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Failed to add friend: $error"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                          print(error);
+                        }
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -112,5 +143,13 @@ class _AddFriendPageState extends State<AddFriendPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    // Dispose controllers to avoid memory leaks
+    friendNameController.dispose();
+    friendEmailController.dispose();
+    super.dispose();
   }
 }
