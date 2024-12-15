@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import '../../../../core/app_colors.dart';
+import '../../../../core/presentation/widgets/search_bar/search_bar.dart';
 import '../../data/repository/friend_repository.dart'; // Adjust import paths accordingly
 import '../../domain/usecases/fetch_User_Friends_and_Their_Events.dart';
 import '../widgets/friend_card.dart';
@@ -52,19 +53,10 @@ class _HomePageState extends State<HomePage> {
           // Search Bar
           Padding(
             padding: EdgeInsets.all(16.0),
-            child: TextField(
-              controller: searchController,
-              onChanged: filterFriends,
-              decoration: InputDecoration(
-                hintText: 'Search friends...',
-                prefixIcon: Icon(Icons.search, color: AppColors.navyBlue),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: BorderSide.none,
-                ),
-              ),
+            child: CustomSearchBar(
+                controller: searchController,
+                onChanged: filterFriends,
+                hintText: "Search Friends...",
             ),
           ),
           SizedBox(height: 16),
@@ -101,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        '/user_events_list',
+                        '/friend_event_list',
                         arguments: friend,
                       );
                     },
