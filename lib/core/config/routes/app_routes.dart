@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/features/authentication/sign_in/presentation/pages/signin.dart';
+import '../../../features/friend_gift_list/presentation/pages/friend_gift_list.dart';
 import '../../../features/friends_events/presentation/pages/friend_event_list.dart';
 import '../../../features/home_page/presentation/pages/add_friend.dart';
 import '../../../features/authentication/log_out/presentation/log_out.dart';
@@ -16,6 +17,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/create_event_list': (context) => CreateEventPage(),
   '/add_friend': (context) => AddFriendPage(),
   '/friend_event_list': (context) => FriendEventListPage(),
+  '/friend_gift_list': (context) => FriendGiftListPage(),
   // '/user_events_list': (context) => EventListPage(),
   // In the routes configuration, when defining the navigation for the GiftListPage,
   // you need to ensure that you pass the required eventName dynamically.

@@ -38,7 +38,7 @@ Future<List<Map<String, dynamic>>> fetchAllFriendsAndEvents() async {
 
       print('Number of events for friend ($friendId): ${eventsSnapshot.docs.length}');
       final events = eventsSnapshot.docs.map((eventDoc) {
-        return {'eventId': eventDoc.id, ...eventDoc.data()};
+        return {'eventId': eventDoc.data()['id'], ...eventDoc.data()};
       }).toList();
 
       allFriendsData.add({

@@ -8,10 +8,14 @@ class FriendEventListPage extends StatelessWidget {
     // Retrieve arguments from `HomePage`
     final Map<String, dynamic> friend = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     final String friendName = friend['name'];
-    // Extracting event names from the list of maps
-    final List<String> events = (friend['events'] as List<dynamic>?)
-        ?.map((event) => event['name'] as String)
+    // Extracting event names and Ids from the list of maps
+    final List<Map<String, dynamic>> events = (friend['events'] as List<dynamic>?)
+        ?.map((event) => {
+      'name': event['name'],
+      'id': event['id'],
+    })
         .toList() ?? [];
+
 
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +57,7 @@ class FriendEventListPage extends StatelessWidget {
                 color: AppColors.navyBlue.withOpacity(0.1),
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: ListTile(
-                  title: Text(event,
+                  title: Text(event['name'],
                     style: TextStyle(
                         color: AppColors.gold,
                         fontWeight: FontWeight.bold,
@@ -64,10 +68,12 @@ class FriendEventListPage extends StatelessWidget {
                   trailing: IconButton(
                     icon: Icon(Icons.search, color: AppColors.gold),
                     onPressed: () {
+                      print('Event Name: ${event['name']}');
+                      print('Event ID: ${event['id']}');
                       Navigator.pushNamed(
                         context,
                         '/friend_gift_list',
-                        arguments: {'friendName': friendName, 'event': event},
+                        arguments: {'friendName': friendName, 'eventName': event['name'], 'eventId': event['id'],},
                       );
                     },
                   ),
