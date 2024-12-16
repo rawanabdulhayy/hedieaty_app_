@@ -8,7 +8,7 @@ class User {
   final String email;
   final String phoneNumber;
   final DateTime birthDate;
-  final List<String> events;
+  final List<String> pledgedGifts;
   //final Wishlist wishlist;
   // DateTime updatedAt;
   // Add if needed for syncing
@@ -23,7 +23,7 @@ class User {
     required this.email,
     required this.phoneNumber,
     required this.birthDate,
-    required this.events,
+    required this.pledgedGifts,
     //required this.wishlist,
     DateTime? updatedAt,
       }) ;
@@ -35,7 +35,7 @@ class User {
     required this.username,
     required this.phoneNumber,
     required this.birthDate,
-    this.events = const [],
+    this.pledgedGifts = const [],
     //required this.wishlist,
   });
 
@@ -44,7 +44,7 @@ class User {
     'id': id,
     'name': name,
     'email': email,
-    'events': events,
+    'pledgedGifts': pledgedGifts,
     //'wishlist': wishlist as Map<String, dynamic>,
     // 'updatedAt': updatedAt.toIso8601String(),
     'username': username,
@@ -58,7 +58,7 @@ class User {
     id: map['id'],
     name: map['name'],
     email: map['email'],
-    events: map['events'],
+    pledgedGifts: map['pledgedGifts'],
     //wishlist: map['wishlist'],
     // updatedAt: DateTime.parse(map['updatedAt']),
     username: map['username'],

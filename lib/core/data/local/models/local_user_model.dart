@@ -59,7 +59,7 @@ class LocalUserModel {
       email: email,
       phoneNumber: phoneNumber,
       birthDate: birthDate,
-      events: events,
+      pledgedGifts: events,
       // wishlist: Wishlist.fromJson(wishlist),
       //wishlist: wishlist,
       // No need for toJson() here, it's directly a Wishlist object and since the user domain class holds objects, so all set
@@ -128,7 +128,7 @@ class LocalUserModel {
       email: user.email,
       phoneNumber: user.phoneNumber,
       birthDate: user.birthDate,
-      events: user.events,
+      events: user.pledgedGifts,
       //wishlist: user.wishlist.toJson(),
       //wishlist: user.wishlist,  // Directly use the Wishlist object
       // updatedAt: user.updatedAt, // Converting Wishlist object to JSON string
@@ -142,7 +142,7 @@ class LocalUserModel {
       email: remoteModel.email,
       phoneNumber: remoteModel.phoneNumber,
       birthDate: remoteModel.birthDate,
-      events: remoteModel.events,
+      events: remoteModel.pledgedGifts,
       //wishlist: remoteModel.wishlist,
       // updatedAt: remoteModel.updatedAt, // Ensure the formats align
     );

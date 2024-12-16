@@ -9,7 +9,7 @@ class RemoteUserModel {
   final String email;
   final String phoneNumber;
   final DateTime birthDate;
-  final List<String> events;
+  final List<String> pledgedGifts;
  // final Wishlist wishlist;
   // final DateTime updatedAt;
 
@@ -21,7 +21,7 @@ class RemoteUserModel {
     required this.email,
     required this.phoneNumber,
     required this.birthDate,
-    required this.events,
+    required this.pledgedGifts,
    // required this.wishlist,
     // required this.updatedAt,
   });
@@ -34,7 +34,7 @@ class RemoteUserModel {
       email: map['email'],
       phoneNumber: map['phoneNumber'],
       birthDate: map['birthDate'],
-      events: map['events'],
+      pledgedGifts: map['pledgedGifts'],
       //wishlist: map['wishlist'],
       // updatedAt: DateTime.parse(map['updatedAt']),
     );
@@ -46,7 +46,7 @@ class RemoteUserModel {
     'phoneNumber': phoneNumber,
     'birthDate': birthDate,
     'email': email,
-    'events': events,
+    'pledgedGifts': pledgedGifts,
    // 'wishlist': wishlist,
     // 'updatedAt': updatedAt.toIso8601String(),
   };
@@ -59,7 +59,7 @@ class RemoteUserModel {
       email: email,
       phoneNumber: phoneNumber,
       birthDate: birthDate,
-      events: events,
+      pledgedGifts: pledgedGifts,
       //wishlist: wishlist,
       // updatedAt: updatedAt,
     );
@@ -73,7 +73,7 @@ class RemoteUserModel {
       email: user.email,
       phoneNumber: user.phoneNumber,
       birthDate: user.birthDate,
-      events: user.events,
+      pledgedGifts: user.pledgedGifts,
       //wishlist: user.wishlist,
       // updatedAt: user.updatedAt,
     );
@@ -86,7 +86,7 @@ class RemoteUserModel {
       email: json['email'],
       phoneNumber: json['phoneNumber'],
       birthDate: DateTime.parse(json['birthDate']),
-      events: List<String>.from(json['events'] ?? []),
+      pledgedGifts: List<String>.from(json['pledgedGifts'] ?? []),
       //wishlist: Wishlist.fromMap(json['wishlist'] ?? {}),
       // updatedAt: json['updatedAt'],
     );
@@ -99,7 +99,7 @@ class RemoteUserModel {
       'email': email,
       'phoneNumber': phoneNumber,
       'birthDate': birthDate.toIso8601String(),
-      'events': events,
+      'pledgedGifts': pledgedGifts,
       //'wishlist': wishlist.toMap(),
       // 'updatedAt': updatedAt,
     };
@@ -113,7 +113,7 @@ class RemoteUserModel {
     String? email,
     String? phoneNumber,
     DateTime? birthDate,
-    List<String>? events,
+    List<String>? pledgedGifts,
     // Wishlist? wishlist,
     // DateTime? updatedAt,
   }) {
@@ -124,7 +124,7 @@ class RemoteUserModel {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       birthDate: birthDate ?? this.birthDate,
-      events: events ?? this.events,
+      pledgedGifts: pledgedGifts ?? this.pledgedGifts,
       // wishlist: wishlist ?? this.wishlist,
       // updatedAt: updatedAt ?? this.updatedAt,
     );

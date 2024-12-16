@@ -6,6 +6,7 @@ import '../../../features/home_page/presentation/pages/add_friend.dart';
 import '../../../features/authentication/log_out/presentation/log_out.dart';
 import '../../../features/authentication/wrapper/presentation/page/sign_in_tabs_wrapper.dart';
 import '../../../features/events_list/presentation/pages/create_event_list.dart';
+import '../../../features/pledged_gifts/presentation/pages/user_pledged_gifts.dart';
 import '../../../features/screenwrapper/presentation/pages/screenwrapper.dart';
 final Map<String, WidgetBuilder> appRoutes = {
   // '/': (context) => ChangeNotifierProvider(create: (context) => NavigationController(),
@@ -18,6 +19,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/add_friend': (context) => AddFriendPage(),
   '/friend_event_list': (context) => FriendEventListPage(),
   '/friend_gift_list': (context) => FriendGiftListPage(),
+  '/user_pledged_gifts': (context) => PledgedGiftsPage(),
   // '/user_events_list': (context) => EventListPage(),
   // In the routes configuration, when defining the navigation for the GiftListPage,
   // you need to ensure that you pass the required eventName dynamically.

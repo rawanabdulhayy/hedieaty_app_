@@ -552,7 +552,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: GestureDetector(
           onTap: () {
             // Navigate to the pledged gifts page
-            Navigator.pushNamed(context, '/pledged_gifts');
+            Navigator.pushNamed(context, '/user_pledged_gifts');
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

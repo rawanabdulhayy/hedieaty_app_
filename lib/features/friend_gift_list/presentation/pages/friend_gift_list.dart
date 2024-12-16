@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import '../../../../core/app_colors.dart';
@@ -61,14 +63,31 @@ class _FriendGiftListPageState extends State<FriendGiftListPage> {
       print('Error loading gifts: $e');
     }
   }
-
   Future<void> _pledgeGift(String giftId, String friendName, String giftName, String status) async {
     if (status != 'Available') return;
-//TODO: These should be moved from presentation layer
+
     try {
+      // Get the current user's authentication ID
+      final currentUserId = FirebaseAuth.instance.currentUser?.uid;
+
+      if (currentUserId == null) {
+        throw Exception("User not logged in.");
+      }
+
+      // Fetch the current user's name (if necessary)
       final currentUserName = await getCurrentUserName();
+
+      // Pledge the gift
       await pledgeGift(giftId, currentUserName);
 
+      // Update the Firestore users collection
+      final userRef = FirebaseFirestore.instance.collection('users').doc(currentUserId);
+
+      await userRef.update({
+        'pledgedGifts': FieldValue.arrayUnion(["$giftId"])
+      });
+
+      // Update local state
       setState(() {
         allGifts = allGifts.map((gift) {
           if (gift.giftName == giftName) {
@@ -80,8 +99,7 @@ class _FriendGiftListPageState extends State<FriendGiftListPage> {
               price: gift.price,
               isPledged: true,
               pledgedBy: currentUserName,
-              onPledge: gift.onPledge, // Keep the callback
-              //Todo: what does the voidcallback function do?
+              onPledge: gift.onPledge,
             );
           }
           return gift;

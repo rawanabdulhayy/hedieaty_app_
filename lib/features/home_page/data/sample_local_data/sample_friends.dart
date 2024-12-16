@@ -9,7 +9,7 @@ List<User> sampleUsers = [
     email: 'john.doe@example.com',
     phoneNumber: '+1234567890',
     birthDate: DateTime(1998, 5, 14),
-    events: ['Birthday on May 14', 'Wedding on October 5th'],
+    pledgedGifts: ['Birthday on May 14', 'Wedding on October 5th'],
    // wishlist: Wishlist(items: ['Camera', 'Headphones']), // Sample wishlist for John
   ),
   User(
@@ -19,7 +19,7 @@ List<User> sampleUsers = [
     email: 'susan.green@example.com',
     phoneNumber: '+1987654321',
     birthDate: DateTime(1995, 8, 22),
-    events: ['Birthday on August 22'],
+    pledgedGifts: ['Birthday on August 22'],
     //wishlist: Wishlist(items: ['Necklace', 'Book']), // Sample wishlist for Susan
   ),
   User(
@@ -29,7 +29,7 @@ List<User> sampleUsers = [
     email: 'mike.white@example.com',
     phoneNumber: '+1029384756',
     birthDate: DateTime(1991, 2, 10),
-    events: ['Birthday on February 10'],
+    pledgedGifts: ['Birthday on February 10'],
     //wishlist: Wishlist(items: ['Gaming Console']), // Sample wishlist for Mike
   ),
   User(
@@ -39,7 +39,7 @@ List<User> sampleUsers = [
     email: 'lisa.black@example.com',
     phoneNumber: '+1039485764',
     birthDate: DateTime(1996, 4, 19),
-    events: ['Birthday on April 19'],
+    pledgedGifts: ['Birthday on April 19'],
     //wishlist: Wishlist(items: ['Art Supplies', 'Perfume']), // Sample wishlist for Lisa
   ),
   User(
@@ -49,7 +49,7 @@ List<User> sampleUsers = [
     email: 'tom.brown@example.com',
     phoneNumber: '+1098765432',
     birthDate: DateTime(1993, 11, 30),
-    events: ['Birthday on November 30'],
+    pledgedGifts: ['Birthday on November 30'],
     //wishlist: Wishlist(items: ['Smartwatch']), // Sample wishlist for Tom
   ),
   User(
@@ -59,7 +59,7 @@ List<User> sampleUsers = [
     email: 'emily.white@example.com',
     phoneNumber: '+1231231234',
     birthDate: DateTime(1999, 7, 9),
-    events: [], // No events for Emily
+    pledgedGifts: [], // No events for Emily
   //  wishlist: Wishlist(items: ['Laptop', 'Sunglasses']), // Sample wishlist for Emily
   ),
 ];
