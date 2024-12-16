@@ -13,9 +13,14 @@ Future<List<Map<String, dynamic>>> fetchGiftsForEvent(String eventId) async {
     // Extract and return the gift data as a list of maps
     final List<Map<String, dynamic>> giftsList = querySnapshot.docs.map((doc) {
       return {
+        'id': doc ['id'],
         'name': doc['name'],
         'status': doc['status'],
         'category': doc['category'],
+        'price': (doc['price'] is int) ? doc['price'] : (doc['price'] as num).toInt(),
+        'isPledged': doc['isPledged'],
+        'pledgedBy': doc['pledgedBy'],
+
       };
     }).toList();
 

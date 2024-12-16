@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import '../../../../core/app_colors.dart';
+import '../../../../core/presentation/widgets/dropdown_list/custom_dropdown_button.dart';
+import '../../../../core/presentation/widgets/search_bar/search_bar.dart';
 import '../../../friend_gift_list/presentation/widgets/friend_gift_card.dart';
 import '../usecases/fetch_gifts_for_events.dart';
+import '../usecases/get_current_user_name.dart';
+import '../usecases/pledge_gift.dart';
+
 
 class FriendGiftListPage extends StatefulWidget {
   @override
@@ -10,9 +16,9 @@ class FriendGiftListPage extends StatefulWidget {
 
 class _FriendGiftListPageState extends State<FriendGiftListPage> {
   TextEditingController searchController = TextEditingController();
-  String dropdownValue = 'Status'; // Default value
-  List<GiftCard> allGifts = [];
-  List<GiftCard> displayedGifts = [];
+  String? dropdownValue; // No default to allow hint to display initially
+  List<FriendGiftCard> allGifts = [];
+  List<FriendGiftCard> displayedGifts = [];
 
   @override
   void didChangeDependencies() {
@@ -21,22 +27,82 @@ class _FriendGiftListPageState extends State<FriendGiftListPage> {
   }
 
   Future<void> _loadGifts() async {
-    final Map<String, dynamic> args = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    final String eventId = args['eventId']; // Retrieve the eventId passed from FriendEventListPage
+    final Map<String, dynamic> args =
+    ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    final String eventId = args['eventId'];
 
     try {
-      final giftsData = await fetchGiftsForEvent(eventId); // Use eventId to fetch gifts
+      final giftsData = await fetchGiftsForEvent(eventId);
       setState(() {
-        displayedGifts = giftsData.map((gift) {
-          return GiftCard(
+        allGifts = giftsData.map((gift) {
+          print('onPledge for gift ${gift['name']} is ${gift['status'] == 'Available' ? "set" : "default"}');
+          return FriendGiftCard(
             giftName: gift['name'],
+            giftId : gift ['id'],
             status: gift['status'],
             category: gift['category'],
+            price: gift['price'],
+            isPledged: gift['isPledged'] ?? false,
+            pledgedBy: gift['pledgedBy'] ?? '',
+            onPledge: gift['status'] == 'Available'
+                ? () => _pledgeGift(
+              gift['id'],
+              args['friendName'],
+              gift['name'],
+              gift['status'],
+            )
+                : FriendGiftCard.defaultOnPledge, // Use default when not available
           );
         }).toList();
+        displayedGifts = allGifts;
+
       });
     } catch (e) {
       print('Error loading gifts: $e');
+    }
+  }
+
+  Future<void> _pledgeGift(String giftId, String friendName, String giftName, String status) async {
+    if (status != 'Available') return;
+//TODO: These should be moved from presentation layer
+    try {
+      final currentUserName = await getCurrentUserName();
+      await pledgeGift(giftId, currentUserName);
+
+      setState(() {
+        allGifts = allGifts.map((gift) {
+          if (gift.giftName == giftName) {
+            return FriendGiftCard(
+              giftId: gift.giftId,
+              giftName: gift.giftName,
+              status: 'Pledged',
+              category: gift.category,
+              price: gift.price,
+              isPledged: true,
+              pledgedBy: currentUserName,
+              onPledge: gift.onPledge, // Keep the callback
+              //Todo: what does the voidcallback function do?
+            );
+          }
+          return gift;
+        }).toList();
+
+        displayedGifts = allGifts;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gift pledged successfully!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error pledging gift: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
     }
   }
 
@@ -52,7 +118,8 @@ class _FriendGiftListPageState extends State<FriendGiftListPage> {
     setState(() {
       if (newValue != null) {
         dropdownValue = newValue;
-        // Sorting logic here
+
+        // Sorting logic
         if (dropdownValue == 'Name') {
           displayedGifts.sort((a, b) => a.giftName.compareTo(b.giftName));
         } else if (dropdownValue == 'Category') {
@@ -107,56 +174,38 @@ class _FriendGiftListPageState extends State<FriendGiftListPage> {
           ),
         ],
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [AppColors.navyBlue, AppColors.brightBlue],
-          ),
-        ),
+      body: GradientBackground(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.all(10.0),
-              child: TextField(
+              padding: const EdgeInsets.all(10.0),
+              child: CustomSearchBar(
                 controller: searchController,
                 onChanged: filterGifts,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.brightBlue, width: 2.0),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.gold, width: 2.0),
-                  ),
-                  hintText: 'Search gifts...',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
+                hintText: 'Search gifts...',
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(3.0),
-              child: DropdownButton<String>(
+              padding: const EdgeInsets.symmetric(horizontal: 150.0, vertical: 5.0),
+              child: CustomDropdownButton(
                 value: dropdownValue,
-                items: <String>['Status', 'Category', 'Name']
-                    .map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                items: ['Status', 'Category', 'Name'],
                 onChanged: sortGifts,
-                hint: Text('Sort by'),
+                hint: Text(
+                  'Sort by',
+                  style: TextStyle(color: AppColors.gold),
+                ),
+                iconColor: AppColors.gold,
+                dropdownColor: AppColors.brightBlue.withOpacity(0.9),
+                selectedTextStyle: TextStyle(color: AppColors.gold),
               ),
             ),
             Expanded(
-              child: ListView(
-                children: displayedGifts,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: ListView(
+                  children: displayedGifts,
+                ),
               ),
             ),
           ],

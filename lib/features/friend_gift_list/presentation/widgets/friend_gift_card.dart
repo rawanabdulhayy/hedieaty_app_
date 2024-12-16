@@ -1,28 +1,40 @@
 import 'package:flutter/material.dart';
-
 import '../../../../core/app_colors.dart';
 
-class GiftCard extends StatelessWidget {
+class FriendGiftCard extends StatelessWidget {
+  final String giftId;
   final String giftName;
   final String status;
   final String category;
+  final num price;
+  final bool isPledged;
+  final String pledgedBy;
+  final VoidCallback onPledge;
 
-  GiftCard({
+  FriendGiftCard({
+    required this.giftId,
     required this.giftName,
     required this.status,
     required this.category,
-  });
+    required this.price,
+    required this.pledgedBy,
+    required this.isPledged,
+    VoidCallback? onPledge, // Allow null here
+    Key? key,
+  }) : onPledge = onPledge ?? defaultOnPledge, // Assign default when null
+        super(key: key);
 
+  static void defaultOnPledge() {}
+  // This ensures that if no function is provided for onPledge, a no-op function is used instead, preventing the Null error.
   @override
   Widget build(BuildContext context) {
     return Card(
       color: AppColors.navyBlue.withOpacity(0.1),
-      margin: EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         child: Row(
           children: [
-            // Left side with color-coded circle, gift name, and subtitle
             Row(
               children: [
                 Container(
@@ -33,7 +45,7 @@ class GiftCard extends StatelessWidget {
                     color: status == 'Available' ? Colors.green : Colors.red,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -45,28 +57,21 @@ class GiftCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '$status | $category',
+                      '$status | $category | $price',
                       style: TextStyle(color: AppColors.gold),
                     ),
                   ],
                 ),
               ],
             ),
-            Spacer(),
-            // Right side with the "Pledge" button
+            const Spacer(),
             ElevatedButton(
-              onPressed: status == 'Available'
-                  ? () {
-                // Action to pledge the gift
-                // and actually change status to pledged
-                //yet only because this very user is the one who pledged
-                //he has an option to depledge
-              }
-                  : null, //disabled button
+              onPressed: status == 'Available' ? onPledge : null,
               style: ElevatedButton.styleFrom(
-                backgroundColor: status == 'Available' ? AppColors.gold : Colors.grey,
+                backgroundColor:
+                status == 'Available' ? AppColors.gold : Colors.grey,
               ),
-              child: Text(
+              child: const Text(
                 'Pledge',
                 style: TextStyle(color: Colors.white),
               ),
