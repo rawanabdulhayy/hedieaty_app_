@@ -1,3 +1,5 @@
+import '../../data/local/models/local_gift_model.dart';
+
 class Gift {
   final String id;
   final String name;
@@ -115,4 +117,19 @@ class Gift {
       pledgedBy: pledgedBy ?? this.pledgedBy,
     );
   }
+
+  LocalGiftModel toLocalModel() {
+    return LocalGiftModel(
+      id: id,
+      name: name,
+      description: description,
+      category: category,
+      price: price,
+      status: status,
+      eventId: eventId,
+      isPledged: isPledged,
+      pledgedBy: pledgedBy,
+    );
+  }
+
 }

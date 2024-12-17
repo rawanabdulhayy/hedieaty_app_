@@ -15,7 +15,10 @@ class EventLocalRepository {
           id TEXT PRIMARY KEY,
           userId TEXT,
           title TEXT,
-          date TEXT
+          date TEXT,
+          location TEXT,
+          type TEXT,
+          description TEXT,
         );
       ''');
     });
@@ -33,6 +36,26 @@ class EventLocalRepository {
       tableName: _tableName,
       data: event.toMap(),
     );
+  }
+  Future<LocalEventModel?> getEventById(String eventId) async {
+    final result = await _dbHelper.query(
+      tableName: _tableName,
+      column: 'id',
+      value: eventId,
+    );
+
+    if (result.isNotEmpty) {
+      return LocalEventModel.fromMap(result.first);
+    }
+    return null; // Return null if no event is found
+  }
+
+  Future<List<LocalEventModel>> getAllEvents() async {
+    final result = await _dbHelper.getAll(
+      tableName: _tableName,
+    );
+
+    return result.map((map) => LocalEventModel.fromMap(map)).toList();
   }
 
   /// Fetch events by user ID

@@ -1,49 +1,125 @@
+// import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:uuid/uuid.dart';
+//
+// import '../../data/models/event_list_remote_model.dart';
+// import '../../data/repositories/remote_event_list_repo.dart';
+// import '../entities/Event.dart';
+//
+//
+// class DomainEventRepository {
+//   final EventRemoteRepository _eventRemoteRepository;
+//
+//   DomainEventRepository(this._eventRemoteRepository);
+//
+//   Future<void> upsertEvent(Event event) async {
+//     final uid = FirebaseAuth.instance.currentUser?.uid;
+//     if (uid == null) {
+//       throw Exception('No authenticated user found. Ensure the user is logged in.');
+//     }
+//
+//     final eventId = event.id.isEmpty ? const Uuid().v4() : event.id;
+//     final remoteEventModel = EventRemoteModel.fromDomain(event).copyWith(
+//       id: eventId,
+//       userId: uid,
+//     );
+//
+//     await _eventRemoteRepository.upsertEvent(remoteEventModel);
+//   }
+//
+//
+//   Future<Event?> getEventById(String eventId) async {
+//     final remoteEventModel = await _eventRemoteRepository.getEventById(eventId);
+//     if (remoteEventModel == null) return null;
+//     return remoteEventModel.toDomain();
+//   }
+//
+//   Future<List<Event>> getAllEvents() async {
+//     final remoteEvents = await _eventRemoteRepository.getAllEvents();
+//     return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
+//   }
+//
+//   Future<List<Event>> getEventsByUserId(String userId) async {
+//     final remoteEvents = await _eventRemoteRepository.getEventsByUserId(userId);
+//     return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
+//   }
+//
+//   Future<void> deleteEvent(String eventId) async {
+//     await _eventRemoteRepository.deleteEvent(eventId);
+//   }
+// }
+// Updated DomainEventRepository
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
-
+import '../../data/local/repositories/local_event_repo.dart';
 import '../../data/models/event_list_remote_model.dart';
 import '../../data/repositories/remote_event_list_repo.dart';
 import '../entities/Event.dart';
-
-
+//TODO: Revise differences in functions between this and the previous version that only used remote repo
 class DomainEventRepository {
   final EventRemoteRepository _eventRemoteRepository;
+  final EventLocalRepository _eventLocalRepository;
 
-  DomainEventRepository(this._eventRemoteRepository);
+  DomainEventRepository({
+    required EventRemoteRepository remoteRepo,
+    required EventLocalRepository localRepo,
+  })  : _eventRemoteRepository = remoteRepo,
+        _eventLocalRepository = localRepo;
 
   Future<void> upsertEvent(Event event) async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) {
-      throw Exception('No authenticated user found. Ensure the user is logged in.');
+    if (_shouldUseLocal()) {
+      await _eventLocalRepository.upsertEvent(event.toLocalModel());
+    } else {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null) {
+        throw Exception('No authenticated user found. Ensure the user is logged in.');
+      }
+
+      final eventId = event.id.isEmpty ? const Uuid().v4() : event.id;
+      final remoteEventModel = EventRemoteModel.fromDomain(event).copyWith(
+        id: eventId,
+        userId: uid,
+      );
+
+      await _eventRemoteRepository.upsertEvent(remoteEventModel);
     }
-
-    final eventId = event.id.isEmpty ? const Uuid().v4() : event.id;
-    final remoteEventModel = EventRemoteModel.fromDomain(event).copyWith(
-      id: eventId,
-      userId: uid,
-    );
-
-    await _eventRemoteRepository.upsertEvent(remoteEventModel);
   }
-
 
   Future<Event?> getEventById(String eventId) async {
-    final remoteEventModel = await _eventRemoteRepository.getEventById(eventId);
-    if (remoteEventModel == null) return null;
-    return remoteEventModel.toDomain();
+    if (_shouldUseLocal()) {
+      final localEvent = await _eventLocalRepository.getEventById(eventId);
+      return localEvent?.toDomain();
+    } else {
+      final remoteEventModel = await _eventRemoteRepository.getEventById(eventId);
+      return remoteEventModel?.toDomain();
+    }
   }
 
-  Future<List<Event>> getAllEvents() async {
-    final remoteEvents = await _eventRemoteRepository.getAllEvents();
-    return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
-  }
-
-  Future<List<Event>> getEventsByUserId(String userId) async {
+    Future<List<Event>> getEventsByUserId(String userId) async {
     final remoteEvents = await _eventRemoteRepository.getEventsByUserId(userId);
     return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
   }
 
+  Future<List<Event>> getAllEvents() async {
+    if (_shouldUseLocal()) {
+      final localEvents = await _eventLocalRepository.getAllEvents();
+      return localEvents.map((e) => e.toDomain()).toList();
+    } else {
+      final remoteEvents = await _eventRemoteRepository.getAllEvents();
+      return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
+    }
+  }
+
   Future<void> deleteEvent(String eventId) async {
-    await _eventRemoteRepository.deleteEvent(eventId);
+    if (_shouldUseLocal()) {
+      await _eventLocalRepository.deleteEvent(eventId);
+    } else {
+      await _eventRemoteRepository.deleteEvent(eventId);
+    }
+  }
+
+  bool _shouldUseLocal() {
+    // Example logic to determine if local should be used
+    // Replace with your actual condition
+    return false;
   }
 }

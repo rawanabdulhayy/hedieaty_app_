@@ -1,3 +1,5 @@
+import '../../../domain/entity/Gift.dart';
+
 class LocalGiftModel {
   final String id; // Primary key
   final String name;
@@ -48,6 +50,21 @@ class LocalGiftModel {
       eventId: map['eventId'],
       isPledged: map['isPledged'] == 1, // Convert integer back to boolean
       pledgedBy: map['pledgedBy'],
+    );
+  }
+
+  // Convert GiftLocalModel back to Gift
+  Gift toDomain() {
+    return Gift(
+      id: id,
+      name: name,
+      description: description,
+      category: category,
+      price: price,
+      status: status,
+      eventId: eventId,
+      isPledged: isPledged,
+      pledgedBy: pledgedBy,
     );
   }
 }

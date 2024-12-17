@@ -44,6 +44,20 @@ class GiftLocalRepository {
     return result.map((map) => LocalGiftModel.fromMap(map)).toList();
   }
 
+  Future<LocalGiftModel?> getGiftById(String giftId) async {
+    final result = await _dbHelper.query(
+      tableName: _tableName,
+      column: 'id',
+      value: giftId,
+    );
+
+    if (result.isNotEmpty) {
+      return LocalGiftModel.fromMap(result.first);
+    }
+    return null; // Return null if no gift is found
+  }
+
+
   Future<void> deleteGift(String giftId) async {
     await _dbHelper.deleteById(
       tableName: _tableName,

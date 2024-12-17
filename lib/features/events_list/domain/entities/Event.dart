@@ -1,3 +1,5 @@
+import 'package:hedieaty_app_mvc/features/events_list/data/local/models/local_event_model.dart';
+
 class Event {
   final String id;
   final String name;
@@ -96,6 +98,19 @@ class Event {
       description: description ?? this.description,
       userId: userId ?? this.userId,
       type: type?? this.type,
+    );
+  }
+
+  // Add the toLocalModel() method
+  LocalEventModel toLocalModel() {
+    return LocalEventModel(
+      id: id,
+      name: name,
+      description: description,
+      date: date.toIso8601String(), // Convert DateTime to String
+      location: location,
+      type: type,
+      userId: userId,
     );
   }
 }

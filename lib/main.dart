@@ -1,20 +1,21 @@
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/routes/app_routes.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/app_theme.dart';
 import 'package:hedieaty_app_mvc/core/data/remote/repositories/remote_user_repo.dart';
-import 'package:hedieaty_app_mvc/features/navigation_bar/domain/list_of_nav_bar_items.dart';
 import 'package:provider/provider.dart';
 import 'core/config/routes/App_Router.dart';
+import 'core/data/local/helpers/database_helper.dart';
 import 'core/data/remote/repositories/remote_friend_repo.dart';
 import 'core/data/services_and_utilities/messaging_service.dart';
 import 'core/domain/repositories/domain_friend_repo.dart';
 import 'core/domain/repositories/domain_user_repo.dart';
 import 'core/presentation/providers/User_Provider.dart';
+import 'features/events_list/data/local/repositories/local_event_repo.dart';
 import 'features/events_list/data/repositories/remote_event_list_repo.dart';
 import 'features/events_list/domain/repositories/domain_event_repo.dart';
+import 'features/gifts_list/data/local/repositories/local_gift_repo.dart';
 import 'features/gifts_list/data/remote/repositories/gift_remote_repo.dart';
 import 'features/gifts_list/domain/repositories/domain_gift_repo.dart';
 import 'features/gifts_list/presentation/providers/gift_provider.dart';
@@ -45,7 +46,8 @@ void main() async {
   // Initialize Firebase Messaging
   await FirebaseMessagingService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // final FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  //Initialize dbhelper
+  final dbHelper = DBHelper();
 
   runApp(
     MultiProvider(
@@ -55,20 +57,32 @@ void main() async {
         Provider(
           create: (_) => DomainUserRepository(RemoteUserRepository()),
         ),
-        Provider<EventRemoteRepository>(
-          create: (_) => EventRemoteRepository(),
+        // Provider<EventRemoteRepository>(
+        //   create: (_) => EventRemoteRepository(),
+        // ),
+        // ProxyProvider<EventRemoteRepository, DomainEventRepository>(
+        //   update: (_, remoteRepo, __) => DomainEventRepository(remoteRepo),
+        // ),
+        // Provider<GiftRemoteRepository>(
+        //   create: (_) => GiftRemoteRepository(),
+        // ),
+        // ProxyProvider<GiftRemoteRepository, GiftDomainRepository>(
+        //   update: (_, remoteRepo, __) => GiftDomainRepository(remoteRepo),
+        // ),
+        // Provider<FriendRemoteRepository>(
+        //   create: (_) => FriendRemoteRepository(),
+        // ),
+        Provider(create: (_) => EventLocalRepository(dbHelper: dbHelper)),
+        Provider(create: (_) => EventRemoteRepository()),
+        ProxyProvider2<EventLocalRepository, EventRemoteRepository, DomainEventRepository>(
+          update: (_, localRepo, remoteRepo, __) =>
+              DomainEventRepository(localRepo: localRepo, remoteRepo: remoteRepo),
         ),
-        ProxyProvider<EventRemoteRepository, DomainEventRepository>(
-          update: (_, remoteRepo, __) => DomainEventRepository(remoteRepo),
-        ),
-        Provider<GiftRemoteRepository>(
-          create: (_) => GiftRemoteRepository(),
-        ),
-        ProxyProvider<GiftRemoteRepository, GiftDomainRepository>(
-          update: (_, remoteRepo, __) => GiftDomainRepository(remoteRepo),
-        ),
-        Provider<FriendRemoteRepository>(
-          create: (_) => FriendRemoteRepository(),
+        Provider(create: (_) => GiftLocalRepository(dbHelper: dbHelper)),
+        Provider(create: (_) => GiftRemoteRepository()),
+        ProxyProvider2<GiftLocalRepository, GiftRemoteRepository, GiftDomainRepository>(
+          update: (_, localRepo, remoteRepo, __) =>
+              GiftDomainRepository(localRepo: localRepo, remoteRepo: remoteRepo),
         ),
         ProxyProvider<FriendRemoteRepository, DomainFriendRepository>(
           update: (_, remoteRepo, __) => DomainFriendRepository(remoteRepo),
