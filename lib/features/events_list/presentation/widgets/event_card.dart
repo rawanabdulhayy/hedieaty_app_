@@ -55,8 +55,10 @@
 // }
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../core/app_colors.dart';
+import '../../domain/repositories/domain_event_repo.dart';
 
 class EventCard extends StatelessWidget {
   final String eventName;
@@ -66,6 +68,7 @@ class EventCard extends StatelessWidget {
   final String location;
   final String description;
   final String date;
+  final VoidCallback onDelete;
 
 
   const EventCard({
@@ -77,10 +80,13 @@ class EventCard extends StatelessWidget {
     required this.date,
     required this.description,
     required this.location,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
+    final domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
+
     return Card(
       color: AppColors.navyBlue.withOpacity(0.1),
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
@@ -124,8 +130,18 @@ class EventCard extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.delete, color: AppColors.gold),
-              onPressed: () {
-                // Delete event action
+              onPressed: ()  async {
+                try {
+                  await domainEventRepository.deleteEvent(eventId);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Event deleted successfully!')),
+                  );
+                  onDelete();
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error deleting event: $e')),
+                  );
+                }
               },
             ),
           ],

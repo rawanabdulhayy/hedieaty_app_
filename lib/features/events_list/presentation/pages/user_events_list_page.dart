@@ -139,6 +139,8 @@ class _EventListPageState extends State<EventListPage> {
                       location: event.location,
                       description: event.description,
                       date: DateFormat('dd/MM/yyyy').format(event.date), // Convert DateTime to String
+                      onDelete: _loadEvents, // Pass the reload function as a callback
+
                     );
                   },
                 ),
