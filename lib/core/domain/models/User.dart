@@ -1,4 +1,3 @@
-import 'Wishlist.dart';
 //TODO: User table structure holds preferences?
 //TODO: User events should be an instance of a separate class to events
 class User {

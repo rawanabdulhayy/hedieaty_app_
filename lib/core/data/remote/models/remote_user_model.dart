@@ -1,5 +1,4 @@
 import '../../../domain/models/User.dart';
-import '../../../domain/models/Wishlist.dart';
 
 class RemoteUserModel {
   // Fields

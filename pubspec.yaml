@@ -47,6 +47,8 @@ dependencies:
   api_service_helper: ^0.1.2
   intl: ^0.18.0
   uuid: ^3.0.7
+  firebase_in_app_messaging: ^0.8.0+11
+  firebase_analytics: ^11.3.6
 
 
 

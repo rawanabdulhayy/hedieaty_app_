@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/presentation/widgets/search_bar/search_bar.dart';
-import '../../data/repository/friend_repository.dart'; // Adjust import paths accordingly
 import '../../domain/usecases/fetch_User_Friends_and_Their_Events.dart';
 import '../widgets/friend_card.dart';
 
@@ -19,9 +18,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    fetchFriendsAndEvents(); // Fetch friends and their events on page load
+    fetchFriendsAndEvents();
   }
-
   // Function to fetch friends and their events
   void fetchFriendsAndEvents() async {
     try {

@@ -1,5 +1,4 @@
 import '../../../../core/domain/models/User.dart';
-import '../../../../core/domain/models/Wishlist.dart';
 
 List<User> sampleUsers = [
   User(
