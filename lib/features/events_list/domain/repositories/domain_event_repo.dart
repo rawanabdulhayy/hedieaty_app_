@@ -55,6 +55,9 @@ import '../../data/models/event_list_remote_model.dart';
 import '../../data/repositories/remote_event_list_repo.dart';
 import '../entities/Event.dart';
 //TODO: Revise differences in functions between this and the previous version that only used remote repo
+//TODO: Implement the syncing from local to remote methods.
+//TODO: Implement the syncing from remote to local methods (bas 34an an2l ldata l already mwguda bas mlhash lazma tany0
+//TODO: Implement the logic for when to use the local repo (most likely h5lei l condition true bas hseb brdu lremote repo option m32nha gifts w events for future changes of reqs)
 class DomainEventRepository {
   final EventRemoteRepository _eventRemoteRepository;
   final EventLocalRepository _eventLocalRepository;

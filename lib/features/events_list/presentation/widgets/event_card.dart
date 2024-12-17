@@ -63,6 +63,10 @@ class EventCard extends StatelessWidget {
   final String eventId;
   final String status;
   final String category;
+  final String location;
+  final String description;
+  final String date;
+
 
   const EventCard({
     super.key,
@@ -70,6 +74,9 @@ class EventCard extends StatelessWidget {
     required this.status,
     required this.category,
     required this.eventId,
+    required this.date,
+    required this.description,
+    required this.location,
   });
 
   @override
@@ -101,7 +108,18 @@ class EventCard extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.edit, color: AppColors.gold),
               onPressed: () {
-                Navigator.pushNamed(context, '/gift_details');
+                Navigator.pushNamed(
+                  context,
+                  '/create_event_list',
+                  arguments: {
+                    'eventId' : eventId,
+                    'eventName': eventName,
+                    'eventLocation': location,
+                    'eventDate': date,
+                    'eventDescription': description,
+                    'eventType': category,
+                  },
+                );
               },
             ),
             IconButton(

@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-
 import '../../../../core/data/remote/firebase/crud_operations.dart';
 import '../models/event_list_remote_model.dart';
 

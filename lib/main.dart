@@ -74,15 +74,21 @@ void main() async {
         // ),
         Provider(create: (_) => EventLocalRepository(dbHelper: dbHelper)),
         Provider(create: (_) => EventRemoteRepository()),
-        ProxyProvider2<EventLocalRepository, EventRemoteRepository, DomainEventRepository>(
-          update: (_, localRepo, remoteRepo, __) =>
-              DomainEventRepository(localRepo: localRepo, remoteRepo: remoteRepo),
+        ProxyProvider2<EventRemoteRepository, EventLocalRepository,
+            DomainEventRepository>(
+          update: (_, remoteRepo, localRepo, __) => DomainEventRepository(
+            remoteRepo: remoteRepo,
+            localRepo: localRepo,
+          ),
         ),
         Provider(create: (_) => GiftLocalRepository(dbHelper: dbHelper)),
         Provider(create: (_) => GiftRemoteRepository()),
-        ProxyProvider2<GiftLocalRepository, GiftRemoteRepository, GiftDomainRepository>(
-          update: (_, localRepo, remoteRepo, __) =>
-              GiftDomainRepository(localRepo: localRepo, remoteRepo: remoteRepo),
+        ProxyProvider2<GiftLocalRepository, GiftRemoteRepository,
+            GiftDomainRepository>(
+          update: (_, localRepo, remoteRepo, __) => GiftDomainRepository(
+              localRepo: localRepo,
+              remoteRepo: remoteRepo
+          ),
         ),
         ProxyProvider<FriendRemoteRepository, DomainFriendRepository>(
           update: (_, remoteRepo, __) => DomainFriendRepository(remoteRepo),
@@ -95,7 +101,6 @@ void main() async {
 }
 
 class HedieatyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

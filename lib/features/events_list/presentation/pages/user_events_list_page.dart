@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/gradient_background.dart';
 import 'package:hedieaty_app_mvc/core/presentation/widgets/search_bar/search_bar.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/app_colors.dart';
 import '../../../../core/presentation/widgets/dropdown_list/custom_dropdown_button.dart';
 import '../../domain/entities/Event.dart';
@@ -135,6 +136,9 @@ class _EventListPageState extends State<EventListPage> {
                       status: eventStatus, // Pass the calculated status
                       category: event.type,
                       eventId: event.id,
+                      location: event.location,
+                      description: event.description,
+                      date: DateFormat('dd/MM/yyyy').format(event.date), // Convert DateTime to String
                     );
                   },
                 ),
