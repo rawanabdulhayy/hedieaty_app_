@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/app_colors.dart';
+import '../../domain/repositories/domain_gift_repo.dart';
 
 class GiftCard extends StatelessWidget {
   final Map<String, dynamic> giftData;
-  final VoidCallback onEdit;
+  final String eventName;
+  final String eventId;
   final VoidCallback onDelete;
 
   const GiftCard({
     required this.giftData,
-    required this.onEdit,
     required this.onDelete,
+    required this.eventId,
+    required this.eventName,
     Key? key,
   }) : super(key: key);
 
@@ -17,6 +21,9 @@ class GiftCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isPledged = giftData['isPledged'] ?? false;
     final statusColor = isPledged ? Colors.red : Colors.green;
+    final giftId = giftData['id'];
+    final domainGiftRepository = Provider.of<GiftDomainRepository>(context, listen: false);
+
 
     return Card(
       color: AppColors.navyBlue.withOpacity(0.1),
@@ -60,20 +67,25 @@ class GiftCard extends StatelessWidget {
                 Expanded(
                   child: IconButton(
                     icon: Icon(Icons.edit, color: AppColors.gold),
-                    onPressed: onEdit,
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/gift_details',
+                        arguments: {
+                          'eventName' : eventName,
+                          'eventId': eventId,
+                          'giftId' : giftId,
+                          'giftName': giftData['name'],
+                          'giftDescription': giftData['description'],
+                          'giftCategory': giftData['category'],
+                          'giftPrice': giftData['price'],
+                          'giftStatus': giftData['status'],
+                        },
+                      );
+                    },
                   ),
                 ),
                 SizedBox(height: 25),
-                Expanded(
-                  child: Text(
-                    'Edit',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.gold,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
               ],
             ),
             const SizedBox(width: 8),
@@ -83,20 +95,23 @@ class GiftCard extends StatelessWidget {
                 Expanded(
                   child: IconButton(
                     icon: Icon(Icons.delete, color: AppColors.gold),
-                    onPressed: onDelete,
+                    onPressed: () async {
+                      try {
+                        await domainGiftRepository.deleteGift(giftId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              content: Text('Gift deleted successfully!')),
+                        );
+                        onDelete();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Error deleting gift: $e')),
+                        );
+                      }
+                    },
                   ),
                 ),
                 SizedBox(height: 25),
-                Expanded(
-                  child: Text(
-                    'Delete',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.gold,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
               ],
             ),
           ],

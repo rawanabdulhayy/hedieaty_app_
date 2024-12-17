@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                         return AlertDialog(
                           backgroundColor: Colors.amber,
                           title: Text(
-                            'What would you like to create?',
+                            'Create a new event list',
                             style: TextStyle(
                               color: AppColors.navyBlue,
                               fontSize: 20,
@@ -125,7 +125,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           content: Text(
-                            'Choose an option to proceed:',
+                            'Would you like to create an event list?',
                             style: TextStyle(
                               color: AppColors.navyBlue,
                               fontSize: 15,
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
                                     context, '/create_event_list');
                               },
                               child: Text(
-                                'New Event List',
+                                'Yes, take me there!',
                                 style: TextStyle(
                                   color: AppColors.navyBlue,
                                   fontSize: 17,
@@ -151,10 +151,9 @@ class _HomePageState extends State<HomePage> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pop(context); // Close dialog
-                                Navigator.pushNamed(context, '/gift_details');
                               },
                               child: Text(
-                                'New Gift List',
+                                'Nevermind',
                                 style: TextStyle(
                                   color: AppColors.navyBlue,
                                   fontSize: 17,

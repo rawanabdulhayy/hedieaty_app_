@@ -46,7 +46,7 @@ void main() async {
   // Initialize Firebase Messaging
   await FirebaseMessagingService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  //Initialize dbhelper
+  //Initialize dbHelper
   final dbHelper = DBHelper();
 
   runApp(
