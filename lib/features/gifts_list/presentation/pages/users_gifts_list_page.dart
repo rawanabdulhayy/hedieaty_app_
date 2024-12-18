@@ -307,6 +307,9 @@ class _GiftListPageState extends State<GiftListPage> {
   void initState() {
     super.initState();
     _reloadGifts();
+    super.initState();
+    final provider = Provider.of<GiftProvider>(context, listen: false);
+    provider.fetchGifts(widget.eventId); // Fetch gifts on init
   }
 
   void _reloadGifts() {
@@ -410,3 +413,4 @@ class _GiftListPageState extends State<GiftListPage> {
     );
   }
 }
+//TODO: Apply the provider functions here

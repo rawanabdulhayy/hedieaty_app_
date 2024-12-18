@@ -48,15 +48,17 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   //Initialize dbHelper
   final dbHelper = DBHelper();
+  Provider.debugCheckInvalidValueType = null;
 
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => NavigationController()),
         Provider(
           create: (_) => DomainUserRepository(RemoteUserRepository()),
         ),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => NavigationController()),
+
         // Provider<EventRemoteRepository>(
         //   create: (_) => EventRemoteRepository(),
         // ),
@@ -93,7 +95,11 @@ void main() async {
         ProxyProvider<FriendRemoteRepository, DomainFriendRepository>(
           update: (_, remoteRepo, __) => DomainFriendRepository(remoteRepo),
         ),
-        ChangeNotifierProvider(create: (_) => GiftProvider()),
+        ChangeNotifierProvider(
+          create: (context) => GiftProvider(
+            Provider.of<GiftDomainRepository>(context, listen: false),
+          ),
+        ),
       ],
       child: HedieatyApp(),
     ),

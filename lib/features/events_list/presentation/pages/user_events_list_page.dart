@@ -42,16 +42,17 @@ class _EventListPageState extends State<EventListPage> {
         });
       }
     } catch (e) {
-      // Handle any errors that occur during fetching events
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to load events: $e')),
-      );
+      // Defer ScaffoldMessenger usage to the widget tree
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to load events: $e')),
+        );
+      });
       setState(() {
         _isLoading = false; // Set loading to false even in case of error
       });
     }
   }
-
   // Determine the status based on the event date
   String getEventStatus(DateTime eventDate) {
     final currentDate = DateTime.now();

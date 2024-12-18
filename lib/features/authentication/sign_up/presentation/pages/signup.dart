@@ -62,6 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       children: [
                         // Name Field
                         CustomTextFormField(
+                          key: const ValueKey("name"),
                           controller: _nameController,
                           labelText: 'Name',
                           hintText: 'Adam Sandler',
@@ -70,6 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // Email Field
                         CustomTextFormField(
+                          key: const ValueKey("email"),
                           controller: _emailController,
                           labelText: 'Email',
                           hintText: 'example@mail.com',
@@ -78,6 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // Username Field
                         CustomTextFormField(
+                          key: const ValueKey("username"),
                           controller: _usernameController,
                           labelText: 'Username',
                           hintText: 'Your Username',
@@ -85,6 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // Phone Number Field
                         CustomTextFormField(
+                          key: const ValueKey("phone"),
                           controller: _phoneController,
                           labelText: 'Phone Number',
                           hintText: '+1234567890',
@@ -93,6 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // Password Field
                         CustomTextFormField(
+                          key: const ValueKey("password"),
                           controller: _passwordController,
                           labelText: 'Password',
                           hintText: '******',
@@ -100,6 +105,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         // Confirm Password Field
                         CustomTextFormField(
+                          key: const ValueKey("confirmPassword"),
                           controller: _confirmPasswordController,
                           labelText: 'Confirm Password',
                           hintText: '******',

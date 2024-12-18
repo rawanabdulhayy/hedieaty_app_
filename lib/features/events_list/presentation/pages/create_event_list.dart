@@ -157,7 +157,7 @@
 //                   GestureDetector(
 //                     onTap: () => _selectEventDate(context),
 //                     child: AbsorbPointer(
-//                       child: CustomTextFormField(
+//                       child: (
 //                         controller: _eventDateController,
 //                         labelText: 'Event Date',
 //                         hintText: 'DD/MM/YYYY',
@@ -266,10 +266,13 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _eventNameController = TextEditingController();
-  final TextEditingController _eventLocationController = TextEditingController();
-  final TextEditingController _otherEventTypeController = TextEditingController();
+  final TextEditingController _eventLocationController =
+      TextEditingController();
+  final TextEditingController _otherEventTypeController =
+      TextEditingController();
   final TextEditingController _eventDateController = TextEditingController();
-  final TextEditingController _eventDescriptionController = TextEditingController();
+  final TextEditingController _eventDescriptionController =
+      TextEditingController();
   late DomainEventRepository domainEventRepository;
   late String eventId = '';
 
@@ -278,11 +281,12 @@ class _CreateEventPageState extends State<CreateEventPage> {
     super.didChangeDependencies();
 
     // Check for arguments passed via Navigator
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
     if (args != null) {
       //had to pass the id as well for updating with unique id
-      eventId= args['eventId']?? '';
+      eventId = args['eventId'] ?? '';
       _eventNameController.text = args['eventName'] ?? '';
       _eventLocationController.text = args['eventLocation'] ?? '';
       _eventDateController.text = args['eventDate'] ?? '';
@@ -295,7 +299,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
       }
     }
 
-    domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
+    domainEventRepository =
+        Provider.of<DomainEventRepository>(context, listen: false);
   }
 
   @override
@@ -316,10 +321,192 @@ class _CreateEventPageState extends State<CreateEventPage> {
       lastDate: DateTime(2100),
     );
     if (pickedDate != null) {
-      _eventDateController.text = '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
+      _eventDateController.text =
+          '${pickedDate.day}/${pickedDate.month}/${pickedDate.year}';
     }
   }
 
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: AppColors.navyBlue,
+//         title: Center(
+//           child: Text(
+//             'Create an Event List',
+//             style: TextStyle(
+//               color: AppColors.gold,
+//               fontFamily: "Pacifico",
+//             ),
+//           ),
+//         ),
+//         iconTheme: IconThemeData(
+//           color: AppColors.gold,
+//         ),
+//       ),
+//       body: GradientBackground(
+//         child: SingleChildScrollView(
+//           child: Padding(
+//             padding: const EdgeInsets.all(16.0),
+//             child: Form(
+//               key: _formKey,
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.stretch,
+//                 children: [
+//                   CustomTextFormField(
+//                     key: const ValueKey('eventNameField'),
+//                     controller: _eventNameController,
+//                     labelText: 'Event Name',
+//                     hintText: 'My Birthday Event...',
+//                     validator: (value) {
+//                       if (value == null || value.isEmpty) {
+//                         return 'Please enter an event name';
+//                       }
+//                       return null;
+//                     },
+//                   ),
+//                   const SizedBox(height: 16.0),
+//                   CustomTextFormField(
+//                     key: const ValueKey('eventLocationField'),
+//                     controller: _eventLocationController,
+//                     labelText: 'Event Location',
+//                     hintText: 'My Place @ Dubai...',
+//                     validator: (value) {
+//                       if (value == null || value.isEmpty) {
+//                         return 'Please enter an event location';
+//                       }
+//                       return null;
+//                     },
+//                   ),
+//                   const SizedBox(height: 16.0),
+//                   Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 120),
+//                     child: CustomDropdownButton(
+//                       key: const ValueKey('eventTypeDropdown'),
+//                       value: selectedEventType,
+//                       items: ['Birthday', 'Wedding', 'Anniversary', 'Other'],
+//                       onChanged: (String? newValue) {
+//                         setState(() {
+//                           selectedEventType = newValue;
+//                           isOtherEventType = newValue == 'Other';
+//                         });
+//                       },
+//                       hint: Text(
+//                         'Select Type',
+//                         style: TextStyle(color: AppColors.gold),
+//                       ),
+//                       iconColor: AppColors.gold,
+//                       dropdownColor: Colors.white,
+//                       selectedTextStyle: TextStyle(color: AppColors.gold),
+//                     ),
+//                   ),
+//                   const SizedBox(height: 16.0),
+//                   if (isOtherEventType)
+//                     Column(
+//                       children: [
+//                         CustomTextFormField(
+//                           controller: _otherEventTypeController,
+//                           labelText: 'Other Event Type',
+//                           hintText: 'Specify Event Type',
+//                           validator: (value) {
+//                             if (value == null || value.isEmpty) {
+//                               return 'Please specify the event type';
+//                             }
+//                             return null;
+//                           },
+//                         ),
+//                         const SizedBox(height: 16.0),
+//                       ],
+//                     ),
+//                   GestureDetector(
+//                     onTap: () => _selectEventDate(context),
+//                     child: AbsorbPointer(
+//                       key: const ValueKey('parentWidgetKey'),
+//                       child: CustomTextFormField(
+//                         key: const ValueKey('eventDateField2'),
+//                         controller: _eventDateController,
+//                         labelText: 'Event Date',
+//                         hintText: 'DD/MM/YYYY',
+//                         validator: (value) {
+//                           if (value == null || value.isEmpty) {
+//                             return 'Please enter an event date';
+//                           }
+//                           return null;
+//                         },
+//                       ),
+//                     ),
+//                   ),
+//                   const SizedBox(height: 16.0),
+//
+//                   CustomTextFormField(
+//                     key: const ValueKey('eventDescriptionField'),
+//                     controller: _eventDescriptionController,
+//                     labelText: 'Event Description',
+//                     hintText: 'Enter event details...',
+//                     keyboardType: TextInputType.multiline,
+//                     validator: (value) {
+//                       if (value == null || value.isEmpty) {
+//                         return 'Please enter a description';
+//                       }
+//                       return null;
+//                     },
+//                   ),
+//                   const SizedBox(height: 24.0),
+//                   ElevatedButton(
+//                     style: ElevatedButton.styleFrom(
+//                       backgroundColor: AppColors.gold,
+//                       minimumSize: Size(double.infinity, 50),
+//                     ),
+//                     onPressed: () async {
+//                       if (_formKey.currentState!.validate()) {
+//                         final selectedType = isOtherEventType
+//                             ? _otherEventTypeController.text
+//                             : selectedEventType ?? '';
+//
+//                         final event = Event(
+//                           id: eventId, // Assign an ID dynamically
+//                           name: _eventNameController.text,
+//                           date: DateFormat('dd/MM/yyyy').parse(_eventDateController.text),
+//                           location: _eventLocationController.text,
+//                           description: _eventDescriptionController.text,
+//                           type: selectedType,
+//                           userId: '',
+//                         );
+//
+//                         try {
+//                           await domainEventRepository.upsertEvent(event);
+//                           ScaffoldMessenger.of(context).showSnackBar(
+//                             const SnackBar(content: Text('Event created successfully!')),
+//                           );
+//                           Navigator.pushNamed(context, '/screen_wrapper');
+//                         } catch (e) {
+//                           ScaffoldMessenger.of(context).showSnackBar(
+//                             SnackBar(content: Text('Failed to add event: $e')),
+//                           );
+//                         }
+//                       }
+//                     },
+//                     child: Text(
+//                       'Add Event',
+//                       style: TextStyle(
+//                         fontFamily: "Pacifico",
+//                         fontSize: 20,
+//                         color: AppColors.navyBlue,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ),
+//           ),
+//         ),
+//       ),
+//       bottomNavigationBar: BottomNavigationBarWidget(),
+//     );
+//   }
+// }
+//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -347,33 +534,35 @@ class _CreateEventPageState extends State<CreateEventPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  // Event Name Field
                   CustomTextFormField(
+                    key: const ValueKey('eventNameField'),
                     controller: _eventNameController,
                     labelText: 'Event Name',
                     hintText: 'My Birthday Event...',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter an event name';
-                      }
-                      return null;
-                    },
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please enter an event name'
+                        : null,
                   ),
                   const SizedBox(height: 16.0),
+
+                  // Event Location Field
                   CustomTextFormField(
+                    key: const ValueKey('eventLocationField'),
                     controller: _eventLocationController,
                     labelText: 'Event Location',
                     hintText: 'My Place @ Dubai...',
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter an event location';
-                      }
-                      return null;
-                    },
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please enter an event location'
+                        : null,
                   ),
                   const SizedBox(height: 16.0),
+
+                  // Event Type Dropdown
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 120),
                     child: CustomDropdownButton(
+                      key: const ValueKey('eventTypeDropdown'),
                       value: selectedEventType,
                       items: ['Birthday', 'Wedding', 'Anniversary', 'Other'],
                       onChanged: (String? newValue) {
@@ -392,54 +581,52 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     ),
                   ),
                   const SizedBox(height: 16.0),
+
+                  // Conditional "Other Event Type" Field
                   if (isOtherEventType)
-                    Column(
-                      children: [
-                        CustomTextFormField(
-                          controller: _otherEventTypeController,
-                          labelText: 'Other Event Type',
-                          hintText: 'Specify Event Type',
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please specify the event type';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16.0),
-                      ],
+                    CustomTextFormField(
+                      key: const ValueKey('otherEventTypeField'),
+                      controller: _otherEventTypeController,
+                      labelText: 'Other Event Type',
+                      hintText: 'Specify Event Type',
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Please specify the event type'
+                          : null,
                     ),
+
+                  const SizedBox(height: 16.0),
+
+                  // Event Date Field
                   GestureDetector(
+                    key: const ValueKey('eventDateField'),
                     onTap: () => _selectEventDate(context),
                     child: AbsorbPointer(
                       child: CustomTextFormField(
                         controller: _eventDateController,
                         labelText: 'Event Date',
                         hintText: 'DD/MM/YYYY',
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter an event date';
-                          }
-                          return null;
-                        },
+                        validator: (value) => value == null || value.isEmpty
+                            ? 'Please enter an event date'
+                            : null,
                       ),
                     ),
                   ),
                   const SizedBox(height: 16.0),
 
+                  // Event Description Field
                   CustomTextFormField(
+                    key: const ValueKey('eventDescriptionField'),
                     controller: _eventDescriptionController,
                     labelText: 'Event Description',
                     hintText: 'Enter event details...',
                     keyboardType: TextInputType.multiline,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a description';
-                      }
-                      return null;
-                    },
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please enter a description'
+                        : null,
                   ),
                   const SizedBox(height: 24.0),
+
+                  // Submit Button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.gold,
@@ -452,9 +639,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             : selectedEventType ?? '';
 
                         final event = Event(
-                          id: eventId, // Assign an ID dynamically
+                          id: eventId,
                           name: _eventNameController.text,
-                          date: DateFormat('dd/MM/yyyy').parse(_eventDateController.text),
+                          date: DateFormat('dd/MM/yyyy')
+                              .parse(_eventDateController.text),
                           location: _eventLocationController.text,
                           description: _eventDescriptionController.text,
                           type: selectedType,
@@ -464,7 +652,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                         try {
                           await domainEventRepository.upsertEvent(event);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Event created successfully!')),
+                            const SnackBar(
+                                content: Text('Event created successfully!')),
                           );
                           Navigator.pushNamed(context, '/screen_wrapper');
                         } catch (e) {
@@ -493,4 +682,3 @@ class _CreateEventPageState extends State<CreateEventPage> {
     );
   }
 }
-
