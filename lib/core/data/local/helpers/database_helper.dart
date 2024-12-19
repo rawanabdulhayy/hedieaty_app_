@@ -173,6 +173,38 @@ class DBHelper {
     }
   }
 
+  Future<int> update({
+    required String tableName,
+    required Map<String, dynamic> data,
+    required String where,
+    required List<dynamic> whereArgs,
+  }) async {
+    final db = await database;
+    try {
+      return await db.update(
+        tableName,
+        data,
+        where: where,
+        whereArgs: whereArgs,
+      );
+    } catch (e) {
+      print('Error updating record in table $tableName: $e');
+      throw Exception('Error updating record in table $tableName: $e');
+    }
+  }
+
+  /// Drop a table by name
+  Future<void> dropTable(String tableName) async {
+    final db = await database;
+    try {
+      await db.execute('DROP TABLE IF EXISTS $tableName');
+      print('Table $tableName dropped successfully.');
+    } catch (e) {
+      print('Error dropping table $tableName: $e');
+      throw Exception('Error dropping table $tableName: $e');
+    }
+  }
+
   /// Close the database connection
   Future<void> closeDatabase() async {
     if (_database != null) {

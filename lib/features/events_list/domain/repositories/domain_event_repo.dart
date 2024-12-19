@@ -68,6 +68,25 @@ class DomainEventRepository {
   })  : _eventRemoteRepository = remoteRepo,
         _eventLocalRepository = localRepo;
 
+  Future<List<Event>> getUnsyncedEvents() async {
+    try {
+      final unsyncedEvents = await _eventLocalRepository.getUnsyncedEvents();
+      if (unsyncedEvents.isEmpty) {
+        print("No events to sync..");
+        return []; // Return an empty list if no unsynced events found
+      }
+      print("Returning Unsynced Events");
+      return unsyncedEvents.map((localEvent) => localEvent.toDomain()).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch unsynced events from local repository: $e');
+    }
+  }
+
+  Future<void> markEventAsSynced(String eventId) async {
+    await _eventLocalRepository.markAsSynced(eventId);
+  }
+
+
   Future<void> upsertEvent(Event event) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
@@ -91,6 +110,25 @@ class DomainEventRepository {
       final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
       await _eventRemoteRepository.upsertEvent(remoteEventModel);
     }
+  }
+
+  Future<void> upsertRemoteEvent(Event event) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      throw Exception('No authenticated user found. Ensure the user is logged in.');
+    }
+
+    // Ensure the event has an ID; if not, generate a new one
+    final eventId = event.id.isEmpty ? const Uuid().v4() : event.id;
+
+    // Assign the userId to the event (to ensure consistency across local and remote)
+    final eventWithUser = event.copyWith(
+      id: eventId,
+      userId: uid,
+    );
+      // Convert to RemoteEventModel with the correct userId and eventId
+      final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
+      await _eventRemoteRepository.upsertEvent(remoteEventModel);
   }
 
   Future<Event?> getEventById(String eventId) async {
@@ -155,6 +193,6 @@ class DomainEventRepository {
   bool _shouldUseLocal() {
     // Example logic to determine if local should be used
     // Replace with your actual condition
-    return true;
+    return false;
   }
 }

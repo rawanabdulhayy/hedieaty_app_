@@ -5,7 +5,8 @@ class EventLocalRepository {
   final DBHelper _dbHelper;
   final String _tableName = 'events';
 
-  EventLocalRepository({DBHelper? dbHelper}) : _dbHelper = dbHelper ?? DBHelper() {
+  EventLocalRepository({DBHelper? dbHelper})
+      : _dbHelper = dbHelper ?? DBHelper() {
     _initialize();
   }
 
@@ -20,17 +21,19 @@ class EventLocalRepository {
           date TEXT,
           location TEXT,
           type TEXT,
-          description TEXT
-        );
+          description TEXT,
+          isSynced TEXT DEFAULT '0'  
+       );
       ''';
       await db.execute(query);
     });
-
   }
+
   void updateTables() {
     _dbHelper.registerUpgrade(2, (db) async {
-      print('Updating name EventLocalRepository...');
-      await db.execute('ALTER TABLE events ADD COLUMN name TEXT;');
+      print('Updating isSynced EventLocalRepository...');
+      await db.execute('ALTER TABLE events ADD COLUMN isSynced TEXT;');
+      print('Updated isSynced EventLocalRepository.');
     });
   }
 
@@ -64,7 +67,6 @@ class EventLocalRepository {
     return result.map((map) => LocalEventModel.fromMap(map)).toList();
   }
 
-
   Future<List<LocalEventModel>> getEventsByUserId(String userId) async {
     final result = await _dbHelper.query(
       tableName: _tableName,
@@ -75,7 +77,6 @@ class EventLocalRepository {
     return result.map((map) => LocalEventModel.fromMap(map)).toList();
   }
 
-
   Future<void> deleteEvent(String eventId) async {
     await _dbHelper.deleteById(
       tableName: _tableName,
@@ -83,4 +84,50 @@ class EventLocalRepository {
       id: eventId,
     );
   }
+  // Future<List<LocalEventModel>> getUnsyncedEvents() async {
+  //   try {
+  //     return await _dbHelper.query(
+  //       tableName: _tableName,
+  //       column: 'isSynced',
+  //       value: 0, // Assuming 0 means unsynced
+  //     ).map((map) => LocalEventModel.fromMap(map)).toList();
+  //   } catch (e) {
+  //     // Log the error or handle it accordingly
+  //     throw Exception('Failed to fetch unsynced events: $e');
+  //   }
+  // }
+
+  Future<List<LocalEventModel>> getUnsyncedEvents() async {
+    final queryResult = await _dbHelper.query(
+      tableName: _tableName,
+      column: 'isSynced',
+      value: '0', // Assuming 0 means unsynced
+    );
+    return queryResult.map((map) => LocalEventModel.fromMap(map)).toList();
+  }
+
+  Future<void> markAsSynced(String eventId) async {
+    try {
+      await _dbHelper.update(
+        tableName: _tableName,
+        data: {'isSynced': '1'}, // Assuming 1 means synced
+        where: 'id = ?',
+        whereArgs: [eventId],
+      );
+    } catch (e) {
+      // Log the error or handle it accordingly
+      throw Exception('Failed to mark event as synced: $e');
+    }
+  }
+
+  Future<void> dropEventsTable() async {
+    try {
+      await _dbHelper.dropTable(_tableName);
+      print('Table $_tableName dropped successfully.');
+    } catch (e) {
+      print('Error dropping table $_tableName: $e');
+      throw Exception('Error dropping table $_tableName: $e');
+    }
+  }
+
 }
