@@ -40,7 +40,7 @@ class DBHelper {
       path,
       version: 2, // Update this version for schema changes
       onCreate: (db, version) async {
-        print("Database created.");
+        print('Database created with version $version');
         for (var operation in _createOperations) {
           await operation(db);
         }
@@ -59,19 +59,32 @@ class DBHelper {
   }
 
   /// Register a table creation operation
-  void registerTableCreation(TableOperation operation) {
+  Future<void> registerTableCreation(TableOperation operation) async {
+    print('Registering table creation...');
     _createOperations.add(operation);
+    // If the database is already initialized, apply the creation operation immediately
+    if (_database != null) {
+      print('Executing table creation operation on existing database...');
+      await operation(_database!);
+      print('Executed.');
+
+    }
+
   }
 
   /// Register upgrade operations for a specific version
-  void registerUpgrade(int version, TableOperation operation) {
+  Future<void> registerUpgrade(int version, TableOperation operation) async {
     if (_upgradeOperations[version] == null) {
       _upgradeOperations[version] = [];
     }
     _upgradeOperations[version]!.add(operation);
-  }
+    if (_database != null) {
+      print('updating table creation operation on existing database...');
+      await operation(_database!);
+      print('updated.');
 
-  /// Insert or update (upsert) a record into the table
+    }
+  }
   Future<void> upsert({
     required String tableName,
     required Map<String, dynamic> data,
@@ -84,9 +97,11 @@ class DBHelper {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     } catch (e) {
+      print('Error inserting/updating in table $tableName: $e');
       throw Exception('Error inserting/updating in table $tableName: $e');
     }
   }
+
 
   /// Fetch all rows from a table
   Future<List<Map<String, dynamic>>> getAll({
@@ -119,7 +134,6 @@ class DBHelper {
     }
   }
 
-  /// Query rows with a specific condition
   Future<List<Map<String, dynamic>>> query({
     required String tableName,
     required String column,
@@ -127,15 +141,19 @@ class DBHelper {
   }) async {
     final db = await database;
     try {
-      return await db.query(
+      final result = await db.query(
         tableName,
         where: '$column = ?',
         whereArgs: [value],
       );
+      print('Query result from $tableName for $column=$value: $result');
+      return result;
     } catch (e) {
+      print('Error querying table $tableName: $e');
       throw Exception('Error querying table $tableName: $e');
     }
   }
+
 
   /// Delete a record by its primary key
   Future<void> deleteById({

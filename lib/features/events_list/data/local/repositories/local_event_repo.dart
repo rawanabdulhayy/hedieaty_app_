@@ -5,38 +5,45 @@ class EventLocalRepository {
   final DBHelper _dbHelper;
   final String _tableName = 'events';
 
-  EventLocalRepository({DBHelper? dbHelper}) : _dbHelper = dbHelper ?? DBHelper();
+  EventLocalRepository({DBHelper? dbHelper}) : _dbHelper = dbHelper ?? DBHelper() {
+    _initialize();
+  }
 
-  /// Initialize the repository by registering table creation
-  void initialize() {
+  void _initialize() {
+    print('Initializing EventLocalRepository...');
     _dbHelper.registerTableCreation((db) async {
-      await db.execute('''
-        CREATE TABLE IF NOT EXISTS $_tableName (
+      const query = '''
+        CREATE TABLE IF NOT EXISTS events (
           id TEXT PRIMARY KEY,
+          name TEXT,
           userId TEXT,
-          title TEXT,
           date TEXT,
           location TEXT,
           type TEXT,
-          description TEXT,
+          description TEXT
         );
-      ''');
+      ''';
+      await db.execute(query);
     });
 
+  }
+  void updateTables() {
     _dbHelper.registerUpgrade(2, (db) async {
-      await db.execute('''
-        ALTER TABLE $_tableName ADD COLUMN location TEXT;
-      ''');
+      print('Updating name EventLocalRepository...');
+      await db.execute('ALTER TABLE events ADD COLUMN name TEXT;');
     });
   }
 
-  /// Add or update an event
   Future<void> upsertEvent(LocalEventModel event) async {
+    print('Upserting event: ${event.toMap()}');
+
     await _dbHelper.upsert(
       tableName: _tableName,
       data: event.toMap(),
     );
+    print('Event upserted successfully');
   }
+
   Future<LocalEventModel?> getEventById(String eventId) async {
     final result = await _dbHelper.query(
       tableName: _tableName,
@@ -47,28 +54,28 @@ class EventLocalRepository {
     if (result.isNotEmpty) {
       return LocalEventModel.fromMap(result.first);
     }
-    return null; // Return null if no event is found
+    return null;
   }
 
   Future<List<LocalEventModel>> getAllEvents() async {
     final result = await _dbHelper.getAll(
       tableName: _tableName,
     );
-
     return result.map((map) => LocalEventModel.fromMap(map)).toList();
   }
 
-  /// Fetch events by user ID
+
   Future<List<LocalEventModel>> getEventsByUserId(String userId) async {
     final result = await _dbHelper.query(
       tableName: _tableName,
       column: 'userId',
       value: userId,
     );
+    print('Local events fetched for userId=$userId: $result');
     return result.map((map) => LocalEventModel.fromMap(map)).toList();
   }
 
-  /// Delete an event
+
   Future<void> deleteEvent(String eventId) async {
     await _dbHelper.deleteById(
       tableName: _tableName,

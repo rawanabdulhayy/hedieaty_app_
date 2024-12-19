@@ -67,6 +67,7 @@ void main() async {
   }
   //Initialize dbHelper
   final dbHelper = DBHelper();
+  await dbHelper.database; // Initialize the database
 
   runApp(
     MultiProvider(

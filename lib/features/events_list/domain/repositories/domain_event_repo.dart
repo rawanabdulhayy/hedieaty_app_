@@ -69,20 +69,26 @@ class DomainEventRepository {
         _eventLocalRepository = localRepo;
 
   Future<void> upsertEvent(Event event) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      throw Exception('No authenticated user found. Ensure the user is logged in.');
+    }
+
+    // Ensure the event has an ID; if not, generate a new one
+    final eventId = event.id.isEmpty ? const Uuid().v4() : event.id;
+
+    // Assign the userId to the event (to ensure consistency across local and remote)
+    final eventWithUser = event.copyWith(
+      id: eventId,
+      userId: uid,
+    );
+
     if (_shouldUseLocal()) {
-      await _eventLocalRepository.upsertEvent(event.toLocalModel());
+      // Convert to LocalEventModel with the correct userId and eventId
+      await _eventLocalRepository.upsertEvent(eventWithUser.toLocalModel());
     } else {
-      final uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid == null) {
-        throw Exception('No authenticated user found. Ensure the user is logged in.');
-      }
-
-      final eventId = event.id.isEmpty ? const Uuid().v4() : event.id;
-      final remoteEventModel = EventRemoteModel.fromDomain(event).copyWith(
-        id: eventId,
-        userId: uid,
-      );
-
+      // Convert to RemoteEventModel with the correct userId and eventId
+      final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
       await _eventRemoteRepository.upsertEvent(remoteEventModel);
     }
   }
@@ -96,11 +102,37 @@ class DomainEventRepository {
       return remoteEventModel?.toDomain();
     }
   }
+  //
+  // Future<List<Event>> getEventsByUserId(String userId) async {
+  //   if (_shouldUseLocal()) {
+  //     // Fetch events from the local repository (SQLite database)
+  //     final localEvents = await _eventLocalRepository.getEventsByUserId(userId);
+  //
+  //     // Map the local events to domain models and return them
+  //     return localEvents.map((localEvent) => localEvent.toDomain()).toList();
+  //   }
+  //
+  //   // Fetch events from the remote repository
+  //   final remoteEvents = await _eventRemoteRepository.getEventsByUserId(userId);
+  //
+  //   // Map the remote events to domain models and return them
+  //   return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
+  // }
+  Future<List<Event>> getEventsByUserId(String userId) async {
+    if (_shouldUseLocal()) {
+      final localEvents = await _eventLocalRepository.getEventsByUserId(userId);
+      print('Fetched local events: $localEvents');
+      final mappedEvents = localEvents.map((localEvent) => localEvent.toDomain()).toList();
+      print('Mapped domain events: $mappedEvents');
+      return mappedEvents;
+    }
 
-    Future<List<Event>> getEventsByUserId(String userId) async {
     final remoteEvents = await _eventRemoteRepository.getEventsByUserId(userId);
+    print('Fetched remote events: $remoteEvents');
     return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
   }
+
+
 
   Future<List<Event>> getAllEvents() async {
     if (_shouldUseLocal()) {
@@ -123,6 +155,6 @@ class DomainEventRepository {
   bool _shouldUseLocal() {
     // Example logic to determine if local should be used
     // Replace with your actual condition
-    return false;
+    return true;
   }
 }

@@ -32,16 +32,15 @@ class LocalEventModel {
     };
   }
 
-  // Create LocalEventModel from SQLite row
   factory LocalEventModel.fromMap(Map<String, dynamic> map) {
     return LocalEventModel(
-      id: map['id'],
-      name: map['name'],
-      date: map['date'],
-      location: map['location'],
-      description: map['description'],
-      type: map ['type'],
-      userId: map ['userId'],
+      id: map['id'] as String,
+      name: map['name'] as String,
+      date: map['date'] as String,
+      location: map['location'] as String,
+      description: map['description'] as String,
+      type: map['type'] as String,
+      userId: map['userId'] as String,
     );
   }
 

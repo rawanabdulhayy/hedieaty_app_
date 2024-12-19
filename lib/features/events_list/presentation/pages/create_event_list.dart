@@ -660,6 +660,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Failed to add event: $e')),
                           );
+                          print(e);
                         }
                       }
                     },

@@ -28,31 +28,61 @@ class _EventListPageState extends State<EventListPage> {
     _loadEvents();
   }
 
+  // Future<void> _loadEvents() async {
+  //   try {
+  //     final user = FirebaseAuth.instance.currentUser; // Get the current user
+  //     if (user != null) {
+  //       final domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
+  //       final events = await domainEventRepository.getEventsByUserId(user.uid); // Fetch events directly as Event objects
+  //
+  //       setState(() {
+  //         _events = events; // Assign directly if already a List<Event>
+  //         _filteredEvents = _events; // Initialize the filtered events
+  //         _isLoading = false; // Data is loaded
+  //       });
+  //     }
+  //   } catch (e) {
+  //     // Defer ScaffoldMessenger usage to the widget tree
+  //     WidgetsBinding.instance.addPostFrameCallback((_) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('Failed to load events: $e')),
+  //       );
+  //     });
+  //     setState(() {
+  //       _isLoading = false; // Set loading to false even in case of error
+  //     });
+  //   }
+  // }
   Future<void> _loadEvents() async {
     try {
-      final user = FirebaseAuth.instance.currentUser; // Get the current user
-      if (user != null) {
-        final domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
-        final events = await domainEventRepository.getEventsByUserId(user.uid); // Fetch events directly as Event objects
-
-        setState(() {
-          _events = events; // Assign directly if already a List<Event>
-          _filteredEvents = _events; // Initialize the filtered events
-          _isLoading = false; // Data is loaded
-        });
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        print('No authenticated user found.');
+        return;
       }
+
+      final domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
+      final events = await domainEventRepository.getEventsByUserId(user.uid);
+
+      print('Events loaded: $events');
+      setState(() {
+        _events = events;
+        _filteredEvents = events;
+        _isLoading = false;
+      });
     } catch (e) {
-      // Defer ScaffoldMessenger usage to the widget tree
+      print('Error loading events: $e');
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Failed to load events: $e')),
         );
       });
       setState(() {
-        _isLoading = false; // Set loading to false even in case of error
+        _isLoading = false;
       });
     }
   }
+
   // Determine the status based on the event date
   String getEventStatus(DateTime eventDate) {
     final currentDate = DateTime.now();
