@@ -42,7 +42,7 @@ class BottomNavigationBarWidget extends StatelessWidget {
           //currentIndex: my own custom? Step 5: Controller for controlling the currentIndex
           currentIndex :navigationController.currentIndex,
           onTap: (index) {
-            navigationController.updateIndex(index);
+            navigationController.navigateToPage(index);
           },
 
         );

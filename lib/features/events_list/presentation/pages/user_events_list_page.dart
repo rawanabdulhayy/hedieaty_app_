@@ -90,8 +90,7 @@ class _EventListPageState extends State<EventListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GradientBackground(
+    return  GradientBackground(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -147,8 +146,7 @@ class _EventListPageState extends State<EventListPage> {
               ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   @override
