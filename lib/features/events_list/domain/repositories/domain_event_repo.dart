@@ -54,6 +54,7 @@ import '../../data/local/repositories/local_event_repo.dart';
 import '../../data/models/event_list_remote_model.dart';
 import '../../data/repositories/remote_event_list_repo.dart';
 import '../entities/Event.dart';
+
 //TODO: Revise differences in functions between this and the previous version that only used remote repo
 //TODO: Implement the syncing from local to remote methods.
 //TODO: Implement the syncing from remote to local methods (bas 34an an2l ldata l already mwguda bas mlhash lazma tany0
@@ -78,7 +79,8 @@ class DomainEventRepository {
       print("Returning Unsynced Events");
       return unsyncedEvents.map((localEvent) => localEvent.toDomain()).toList();
     } catch (e) {
-      throw Exception('Failed to fetch unsynced events from local repository: $e');
+      throw Exception(
+          'Failed to fetch unsynced events from local repository: $e');
     }
   }
 
@@ -86,11 +88,11 @@ class DomainEventRepository {
     await _eventLocalRepository.markAsSynced(eventId);
   }
 
-
   Future<void> upsertEvent(Event event) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
-      throw Exception('No authenticated user found. Ensure the user is logged in.');
+      throw Exception(
+          'No authenticated user found. Ensure the user is logged in.');
     }
 
     // Ensure the event has an ID; if not, generate a new one
@@ -115,7 +117,8 @@ class DomainEventRepository {
   Future<void> upsertRemoteEvent(Event event) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
-      throw Exception('No authenticated user found. Ensure the user is logged in.');
+      throw Exception(
+          'No authenticated user found. Ensure the user is logged in.');
     }
 
     // Ensure the event has an ID; if not, generate a new one
@@ -126,9 +129,9 @@ class DomainEventRepository {
       id: eventId,
       userId: uid,
     );
-      // Convert to RemoteEventModel with the correct userId and eventId
-      final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
-      await _eventRemoteRepository.upsertEvent(remoteEventModel);
+    // Convert to RemoteEventModel with the correct userId and eventId
+    final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
+    await _eventRemoteRepository.upsertEvent(remoteEventModel);
   }
 
   Future<Event?> getEventById(String eventId) async {
@@ -136,10 +139,12 @@ class DomainEventRepository {
       final localEvent = await _eventLocalRepository.getEventById(eventId);
       return localEvent?.toDomain();
     } else {
-      final remoteEventModel = await _eventRemoteRepository.getEventById(eventId);
+      final remoteEventModel =
+          await _eventRemoteRepository.getEventById(eventId);
       return remoteEventModel?.toDomain();
     }
   }
+
   //
   // Future<List<Event>> getEventsByUserId(String userId) async {
   //   if (_shouldUseLocal()) {
@@ -160,17 +165,17 @@ class DomainEventRepository {
     if (_shouldUseLocal()) {
       final localEvents = await _eventLocalRepository.getEventsByUserId(userId);
       print('Fetched local events: $localEvents');
-      final mappedEvents = localEvents.map((localEvent) => localEvent.toDomain()).toList();
+      final mappedEvents =
+          localEvents.map((localEvent) => localEvent.toDomain()).toList();
       print('Mapped domain events: $mappedEvents');
       return mappedEvents;
+    } else {
+      final remoteEvents =
+          await _eventRemoteRepository.getEventsByUserId(userId);
+      print('Fetched remote events: $remoteEvents');
+      return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
     }
-
-    final remoteEvents = await _eventRemoteRepository.getEventsByUserId(userId);
-    print('Fetched remote events: $remoteEvents');
-    return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
   }
-
-
 
   Future<List<Event>> getAllEvents() async {
     if (_shouldUseLocal()) {
@@ -193,6 +198,6 @@ class DomainEventRepository {
   bool _shouldUseLocal() {
     // Example logic to determine if local should be used
     // Replace with your actual condition
-    return false;
+    return true;
   }
 }

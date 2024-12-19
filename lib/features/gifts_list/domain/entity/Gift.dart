@@ -124,10 +124,10 @@ class Gift {
       name: name,
       description: description,
       category: category,
-      price: price,
+      price: price as String,
       status: status,
       eventId: eventId,
-      isPledged: isPledged,
+      isPledged: isPledged as String,
       pledgedBy: pledgedBy,
     );
   }

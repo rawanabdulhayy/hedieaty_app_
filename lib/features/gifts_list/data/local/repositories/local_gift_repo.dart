@@ -16,17 +16,29 @@ class GiftLocalRepository {
           id TEXT PRIMARY KEY,
           eventId TEXT,
           name TEXT,
-          price REAL
+          price TEXT,
+          description TEXT,
+          category TEXT,
+          status TEXT,
+          pledgedBy TEXT,
+          isPledged TEXT DEFAULT '0',
+          isSynced TEXT DEFAULT '0'
+          
         );
       ''';
       await db.execute(query);
     });
+  }
 
-    // Example upgrade operation for version 2 (add a new column)
+
+  void updateTables() {
     _dbHelper.registerUpgrade(2, (db) async {
-      await db.execute('ALTER TABLE gifts ADD COLUMN description TEXT;');
+      print('Updating isSynced EventLocalRepository...');
+      await db.execute('ALTER TABLE gifts ADD COLUMN isSynced TEXT;');
+      print('Updated isSynced EventLocalRepository.');
     });
   }
+
 
   Future<void> upsertGift(LocalGiftModel gift) async {
     await _dbHelper.upsert(
@@ -64,5 +76,16 @@ class GiftLocalRepository {
       primaryKey: 'id',
       id: giftId,
     );
+  }
+
+
+  Future<void> dropEventsTable() async {
+    try {
+      await _dbHelper.dropTable(_tableName);
+      print('Table $_tableName dropped successfully.');
+    } catch (e) {
+      print('Error dropping table $_tableName: $e');
+      throw Exception('Error dropping table $_tableName: $e');
+    }
   }
 }

@@ -7,10 +7,10 @@ import '../../profile/presentation/pages/profile_page.dart';
 List <NavigationBarItem> listOfNavigationBarItems = [homepage, profilepage, eventspage];
 
 // NavigationBarItem homepage = NavigationBarItem(title: "Home", icon: Icons.home, page: HomePage());
-NavigationBarItem homepage = NavigationBarItem(title: "Home", icon: Icons.home);
+NavigationBarItem homepage = NavigationBarItem(title: "Home", icon: Icons.home, page: HomePage());
 
 //TODO Why is the pages in the initial skeleton left as container?
 
-NavigationBarItem profilepage = NavigationBarItem(title: "Profile", icon: Icons.person);
+NavigationBarItem profilepage = NavigationBarItem(title: "Profile", icon: Icons.person, page: ProfilePage());
 
-NavigationBarItem eventspage = NavigationBarItem(title: "Events", icon: Icons.list);
+NavigationBarItem eventspage = NavigationBarItem(title: "Events", icon: Icons.list, page: EventListPage());

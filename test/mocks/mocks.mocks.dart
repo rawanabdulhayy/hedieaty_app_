@@ -34,9 +34,38 @@ class MockDomainEventRepository extends _i1.Mock
   }
 
   @override
+  _i3.Future<List<_i4.Event>> getUnsyncedEvents() => (super.noSuchMethod(
+        Invocation.method(
+          #getUnsyncedEvents,
+          [],
+        ),
+        returnValue: _i3.Future<List<_i4.Event>>.value(<_i4.Event>[]),
+      ) as _i3.Future<List<_i4.Event>>);
+
+  @override
+  _i3.Future<void> markEventAsSynced(String? eventId) => (super.noSuchMethod(
+        Invocation.method(
+          #markEventAsSynced,
+          [eventId],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+
+  @override
   _i3.Future<void> upsertEvent(_i4.Event? event) => (super.noSuchMethod(
         Invocation.method(
           #upsertEvent,
+          [event],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+
+  @override
+  _i3.Future<void> upsertRemoteEvent(_i4.Event? event) => (super.noSuchMethod(
+        Invocation.method(
+          #upsertRemoteEvent,
           [event],
         ),
         returnValue: _i3.Future<void>.value(),

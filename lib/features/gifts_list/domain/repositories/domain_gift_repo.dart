@@ -49,15 +49,20 @@ class GiftDomainRepository {
         _giftLocalRepository = localRepo;
 
   Future<void> upsertGift(Gift gift) async {
+    // Generate the gift ID if it doesn't already exist
+    final giftId = gift.id.isEmpty ? const Uuid().v4() : gift.id;
+
+    // Create a domain model with the updated ID
+    final updatedGift = gift.copyWith(id: giftId);
+
     if (_shouldUseLocal()) {
-      await _giftLocalRepository.upsertGift(gift.toLocalModel());
+      await _giftLocalRepository.upsertGift(updatedGift.toLocalModel());
     } else {
-      final giftId = gift.id.isEmpty ? const Uuid().v4() : gift.id;
-      final remoteGiftModel =
-          GiftRemoteModel.fromDomain(gift).copyWith(id: giftId);
-      await _giftRemoteRepository.upsertGift(remoteGiftModel);
+      await _giftRemoteRepository.upsertGift(
+          GiftRemoteModel.fromDomain(updatedGift));
     }
   }
+
 
   Future<Gift?> getGiftById(String giftId) async {
     if (_shouldUseLocal()) {
@@ -91,6 +96,6 @@ class GiftDomainRepository {
   bool _shouldUseLocal() {
 // Example logic to determine if local should be used
 // Replace with your actual condition
-    return false;
+    return true;
   }
 }

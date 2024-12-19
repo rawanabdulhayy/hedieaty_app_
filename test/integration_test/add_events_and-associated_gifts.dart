@@ -7,8 +7,10 @@ import 'package:hedieaty_app_mvc/features/events_list/domain/entities/Event.dart
 import 'package:hedieaty_app_mvc/features/events_list/domain/repositories/domain_event_repo.dart';
 import 'package:hedieaty_app_mvc/features/events_list/presentation/pages/create_event_list.dart';
 import 'package:hedieaty_app_mvc/features/events_list/presentation/pages/user_events_list_page.dart';
+import 'package:hedieaty_app_mvc/features/events_list/presentation/widgets/event_card.dart';
 import 'package:hedieaty_app_mvc/features/home_page/presentation/pages/home_page.dart';
 import 'package:hedieaty_app_mvc/features/navigation_bar/presentation/providers/Navigation_Provider.dart';
+import 'package:hedieaty_app_mvc/features/screenwrapper/presentation/pages/screenwrapper.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
@@ -16,22 +18,24 @@ import '../mocks/firebase_init_mock.dart';
 import '../mocks/mocks.mocks.dart';
 
 void main() {
-  // Create a mock user for authentication
-  final mockUser = MockUser(
-    isAnonymous: true,
-    uid: 'testUser',
-    email: 'test@example.com',
-  );
-
-  // Initialize the mock FirebaseAuth instance
-  final mockFirebaseAuth = MockFirebaseAuth(mockUser: mockUser);
+  // // Create a mock user for authentication
+  // final mockUser = MockUser(
+  //   isAnonymous: true,
+  //   uid: 'testUser',
+  //   email: 'test@example.com',
+  // );
 
   setupFirebaseAuthMocks(); // Set up Firebase mocks before running tests
-
+  // setUpAll(() async {
+  //   await Firebase.initializeApp(); // Initialize Firebase
+  // });
   testWidgets(
     'Add an event and verify it on EventListPage',
         (WidgetTester tester) async {
-      // // Step 1: Initialize Firebase and sign in mock user
+      print("initializing firebase");
+          await Firebase.initializeApp(); // Initialize Firebase
+      print("firebase done");
+          // // Step 1: Initialize Firebase and sign in mock user
       // print('Initializing Firebase...');
       // await Firebase.initializeApp(); // Mock Firebase initialization
       // print('Firebase initialized.');
@@ -49,6 +53,7 @@ void main() {
       await mockFirebaseAuth.signInAnonymously();
       final currentUser = mockFirebaseAuth.currentUser;
       expect(currentUser?.uid, 'testUser'); // Verify user is authenticated
+      print ('User id matches the current user id');
 
       final mockEventList = <Event>[];
 
@@ -84,7 +89,8 @@ void main() {
           child: MaterialApp(
             home: Scaffold(body: HomePage()), // Start with HomePage
             routes: {
-              '/create_event_list': (_) => CreateEventPage(), // Define route for CreateEventPage
+              '/create_event_list': (_) => CreateEventPage(),
+              '/screen_wrapper': (_) => ScreenWrapper()// Define route for CreateEventPage
             },
           ),
         ),
@@ -127,7 +133,7 @@ void main() {
       final eventLocationField = find.byKey(ValueKey('eventLocationField'));
       final eventDescriptionField = find.byKey(ValueKey('eventDescriptionField'));
 
-      await tester.enterText(eventNameField, 'Birthday Party');
+      await tester.enterText(eventNameField, 'Birthday Party2');
       await tester.enterText(eventLocationField, 'Downtown Hall');
       await tester.enterText(eventDescriptionField, 'A fun birthday celebration.');
       print('Event details entered.');
@@ -143,7 +149,7 @@ void main() {
       expect(find.byType(DatePickerDialog), findsOneWidget);
 
       // Select a date from the DatePicker
-      await tester.tap(find.text('25')); // Select day 25
+      await tester.tap(find.text('30')); // Select day 25
       await tester.pumpAndSettle();
 
       final datePickerOkButton = find.text('OK'); // Confirm button
@@ -164,11 +170,11 @@ void main() {
       print('Adding Event in List.');
       // Add the event to the mock repository list
       mockEventList.add(Event(
-        id: '1',
-        name: 'Birthday Party',
+        id: '12',
+        name: 'Birthday Party2',
         location: 'Downtown Hall',
         description: 'A fun birthday celebration.',
-        date: DateTime(2024, 12, 25),
+        date: DateTime(2024, 12, 30),
         type: 'Birthday',
         userId: 'testUser',
       ));
@@ -194,15 +200,18 @@ void main() {
             Provider<DomainEventRepository>.value(value: mockDomainEventRepository),
             ChangeNotifierProvider(create: (_) => NavigationController()),
           ],
-          child: MaterialApp(home: EventListPage()),
+          child: MaterialApp(home: Scaffold(body: EventListPage()),
+          ),
         ),
       );
       await tester.pumpAndSettle();
-      await tester.pumpAndSettle();
       print('EventListPage is displayed.');
+      expect(find.text('Search Friends...'), findsOneWidget);
+      print('Search Friends Search Bar is found.');
 
       // Verify the created event is listed
-      expect(find.text('Birthday Party'), findsOneWidget);
+      expect(find.byType(EventCard), findsOneWidget);
+      expect(find.text('Birthday Party2'), findsOneWidget);
       expect(find.text('Downtown Hall'), findsOneWidget);
       print('Event appears in EventListPage.');
     },

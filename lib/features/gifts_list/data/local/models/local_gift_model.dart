@@ -5,10 +5,10 @@ class LocalGiftModel {
   final String name;
   final String description;
   final String category;
-  final double price;
+  final String price; // Kept as String
   final String status;
   final String eventId; // Foreign key reference to LocalEventModel
-  final bool isPledged;
+  final String isPledged; // Stored as String ("true" or "false")
   final String? pledgedBy;
 
   LocalGiftModel({
@@ -33,7 +33,7 @@ class LocalGiftModel {
       'price': price,
       'status': status,
       'eventId': eventId,
-      'isPledged': isPledged ? 1 : 0, // Store boolean as integer
+      'isPledged': isPledged == "true" ? 1 : 0, // Store boolean as integer (1 or 0)
       'pledgedBy': pledgedBy,
     };
   }
@@ -41,29 +41,29 @@ class LocalGiftModel {
   // Create LocalGiftModel from SQLite row
   factory LocalGiftModel.fromMap(Map<String, dynamic> map) {
     return LocalGiftModel(
-      id: map['id'],
-      name: map['name'],
-      description: map['description'],
-      category: map['category'],
-      price: map['price'],
-      status: map['status'],
-      eventId: map['eventId'],
-      isPledged: map['isPledged'] == 1, // Convert integer back to boolean
-      pledgedBy: map['pledgedBy'],
+      id: map['id'] as String,
+      name: map['name'] as String,
+      description: map['description'] as String,
+      category: map['category'] as String,
+      price: map['price'].toString(), // Ensure price is a String
+      status: map['status'] as String,
+      eventId: map['eventId'] as String,
+      isPledged: map['isPledged'].toString() == "1" ? "true" : "false", // Handle String or int conversion
+      pledgedBy: map['pledgedBy'] as String?,
     );
   }
 
-  // Convert GiftLocalModel back to Gift
+  // Convert LocalGiftModel back to Gift
   Gift toDomain() {
     return Gift(
       id: id,
       name: name,
       description: description,
       category: category,
-      price: price,
+      price: double.tryParse(price) ?? 0.0, // Convert price from String to double
       status: status,
       eventId: eventId,
-      isPledged: isPledged,
+      isPledged: isPledged.toLowerCase() == "true", // Convert isPledged from String to bool
       pledgedBy: pledgedBy,
     );
   }
