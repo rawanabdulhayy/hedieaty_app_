@@ -48,6 +48,16 @@ class GiftDomainRepository {
   })  : _giftRemoteRepository = remoteRepo,
         _giftLocalRepository = localRepo;
 
+  Future<List<Gift>> getUnsyncedGifts() async {
+    final localGifts = await _giftLocalRepository.getUnsyncedGifts();
+    return localGifts.map((e) => e.toDomain()).toList();
+  }
+
+  Future<void> markGiftAsSynced(String giftId) async {
+    await _giftLocalRepository.markGiftAsSynced(giftId);
+  }
+
+
   Future<void> upsertGift(Gift gift) async {
     // Generate the gift ID if it doesn't already exist
     final giftId = gift.id.isEmpty ? const Uuid().v4() : gift.id;
@@ -62,6 +72,19 @@ class GiftDomainRepository {
           GiftRemoteModel.fromDomain(updatedGift));
     }
   }
+
+  Future<void> upsertRemoteGift(Gift gift) async {
+    // Generate the gift ID if it doesn't already exist
+    final giftId = gift.id.isEmpty ? const Uuid().v4() : gift.id;
+
+    // Create a domain model with the updated ID
+    final updatedGift = gift.copyWith(id: giftId);
+
+      await _giftRemoteRepository.upsertGift(
+          GiftRemoteModel.fromDomain(updatedGift));
+
+  }
+
 
 
   Future<Gift?> getGiftById(String giftId) async {

@@ -43,10 +43,10 @@ class Gift {
     'name': name,
     'description': description,
     'category': category,
-    'price': price,
+    'price': price.toString(), // Explicitly convert double to String
     'status': status,
     'eventId': eventId,
-    'isPledged': isPledged,
+    'isPledged': isPledged, // Converts bool to String ("true" or "false")
     'pledgedBy': pledgedBy,
   };
 
@@ -124,10 +124,10 @@ class Gift {
       name: name,
       description: description,
       category: category,
-      price: price as String,
+      price: price.toString(), // Convert double to String
       status: status,
       eventId: eventId,
-      isPledged: isPledged as String,
+      isPledged: isPledged.toString(), // Convert bool to String
       pledgedBy: pledgedBy,
     );
   }

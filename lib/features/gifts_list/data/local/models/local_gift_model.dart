@@ -48,7 +48,7 @@ class LocalGiftModel {
       price: map['price'].toString(), // Ensure price is a String
       status: map['status'] as String,
       eventId: map['eventId'] as String,
-      isPledged: map['isPledged'].toString() == "1" ? "true" : "false", // Handle String or int conversion
+      isPledged: (map['isPledged'] == 1 || map['isPledged'].toString().toLowerCase() == "true") ? "true" : "false",
       pledgedBy: map['pledgedBy'] as String?,
     );
   }

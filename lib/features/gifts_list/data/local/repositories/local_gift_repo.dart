@@ -88,4 +88,24 @@ class GiftLocalRepository {
       throw Exception('Error dropping table $_tableName: $e');
     }
   }
+
+  Future<List<LocalGiftModel>> getUnsyncedGifts() async {
+    final result = await _dbHelper.query(
+      tableName: _tableName,
+      column: 'isSynced',
+      value: '0', // Assuming '0' means not synced
+    );
+    return result.map((map) => LocalGiftModel.fromMap(map)).toList();
+  }
+
+  Future<void> markGiftAsSynced(String giftId) async {
+    await _dbHelper.upsert(
+      tableName: _tableName,
+      data: {
+        'id': giftId,
+        'isSynced': '1', // Mark as synced
+      },
+    );
+  }
+
 }
