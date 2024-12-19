@@ -1,9 +1,11 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/config/routes/app_routes.dart';
 import 'package:hedieaty_app_mvc/core/config/theme/app_theme.dart';
 import 'package:hedieaty_app_mvc/core/data/remote/repositories/remote_user_repo.dart';
+import 'package:hedieaty_app_mvc/core/local_notifications/notification_controller.dart';
 import 'package:provider/provider.dart';
 import 'core/config/routes/App_Router.dart';
 import 'core/data/local/helpers/database_helper.dart';
@@ -11,6 +13,7 @@ import 'core/data/remote/repositories/remote_friend_repo.dart';
 import 'core/data/services_and_utilities/messaging_service.dart';
 import 'core/domain/repositories/domain_friend_repo.dart';
 import 'core/domain/repositories/domain_user_repo.dart';
+import 'core/local_notifications/firestoreGiftListener.dart';
 import 'core/presentation/providers/User_Provider.dart';
 import 'features/events_list/data/local/repositories/local_event_repo.dart';
 import 'features/events_list/data/repositories/remote_event_list_repo.dart';
@@ -46,9 +49,24 @@ void main() async {
   // Initialize Firebase Messaging
   await FirebaseMessagingService.initialize();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await AwesomeNotifications().initialize(null, [
+    NotificationChannel(
+        channelGroupKey:"Basic_channel_group",
+        channelKey: "basic_channel",
+        channelName: "basic_notifications",
+        channelDescription: "channelDescription"
+    )
+  ],
+    channelGroups: [
+      NotificationChannelGroup(channelGroupKey: "Basic_channel_group", channelGroupName: "basic_status_change_notifications")
+    ]
+  );
+  bool isAllowedToSendNotifications = await AwesomeNotifications().isNotificationAllowed();
+  if (!isAllowedToSendNotifications) {
+    AwesomeNotifications().requestPermissionToSendNotifications();
+  }
   //Initialize dbHelper
   final dbHelper = DBHelper();
-  Provider.debugCheckInvalidValueType = null;
 
   runApp(
     MultiProvider(
@@ -106,15 +124,47 @@ void main() async {
   );
 }
 
-class HedieatyApp extends StatelessWidget {
+// class HedieatyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       title: 'Hedieaty',
+//       theme: appTheme,
+//       initialRoute: '/',
+//       routes: appRoutes, // For static routes
+//       onGenerateRoute: AppRouter.generateRoute, // For dynamic routes
+//     );
+//   }
+// }
+
+class HedieatyApp extends StatefulWidget {
+  const HedieatyApp({super.key});
+  @override
+  State<HedieatyApp> createState() => _HedieatyAppState();
+}
+
+class _HedieatyAppState extends State<HedieatyApp> {
+  @override
+  void initState() {
+    AwesomeNotifications().setListeners(onActionReceivedMethod: NotificationController.onActionReceivedMethod,
+    onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
+    onNotificationCreatedMethod:NotificationController.onNotificationCreatedMethod,
+    onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod);
+    FirestoreGiftListener().startListening();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hedieaty',
       theme: appTheme,
       initialRoute: '/',
-      routes: appRoutes, // For static routes
+      routes: appRoutes,
+      // For static routes
       onGenerateRoute: AppRouter.generateRoute, // For dynamic routes
     );
   }
 }
+
+
+

@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/domain/repositories/domain_user_repo.dart';
 import 'package:hedieaty_app_mvc/features/authentication/sign_in/data/data_sources/firebase_sign_in_auth_data_source.dart';
@@ -78,6 +79,7 @@ class _SignInPageState extends State<SignInPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Signed In Successfully')),
                                 );
+                                // AwesomeNotifications().createNotification(content: NotificationContent(id: 1, channelKey: "basic_channel", title: "Signed up, baby!", body: "Yay, I have local notifications working now!"));
                                  // Navigate to the homepage after successful sign-in
                                 Navigator.pushNamed(context, '/screen_wrapper'); // Replace with the actual route name of your homepage
                                 // Navigate to the next page or dashboard
