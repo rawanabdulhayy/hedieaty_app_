@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/core/domain/repositories/domain_user_repo.dart';
 import 'package:hedieaty_app_mvc/features/authentication/sign_in/data/data_sources/firebase_sign_in_auth_data_source.dart';
@@ -7,6 +8,7 @@ import '../../../../../core/config/theme/gradient_background.dart';
 import '../../../../../core/presentation/widgets/buttons/custom_golden_button.dart';
 import '../../../../../core/presentation/widgets/text_fields/text_form_field.dart';
 import '../../../sign_up/domain/Auth_Input_Validator.dart';
+import '../../data/data_sources/firebase_forget_password_auth.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -19,7 +21,8 @@ class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final FirebaseSignInAuthDataSource _authService = FirebaseSignInAuthDataSource(); // Use AuthService instance
+  final Firebase_Auth_Data_Service _authService = Firebase_Auth_Data_Service(); // Use AuthService instance
+  final ForgetPasswordAuthService _authService2 = ForgetPasswordAuthService(); // Use AuthService instance
 
   @override
   void dispose() {
@@ -94,12 +97,36 @@ class _SignInPageState extends State<SignInPage> {
                         // Optional: Add Forgot Password or Register Links
                         const SizedBox(height: 8.0),
                         TextButton(
-                          onPressed: () {
-                            // Navigate to Forgot Password screen or other action
+                          onPressed: () async {
+                            final email = _emailController.text.trim();
+                            if (email.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Please enter your email address and press the forget password button after'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                              return;
+                            }
+
+                            try {
+                              await _authService2.sendPasswordResetEmail(email: email);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Password reset email sent successfully!'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            } catch (error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Failed to send password reset email: $error'),
+                                  backgroundColor: Colors.red,
+                                ),
+                              );
+                            }
                           },
                           child: const Text(
-                            //TODO: Needed Forget Password Firebase Authentication
-                            //TODO: Needed UseCases Update for signin, signup, forget passwords merely called at UI, each holding validator call, firebase authentication and db manipulation (at signup)
                             'Forgot Password?',
                             style: TextStyle(color: Colors.white),
                           ),

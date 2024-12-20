@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-class FirebaseSignInAuthDataSource {
+class Firebase_Auth_Data_Service {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   // Sign-in method
