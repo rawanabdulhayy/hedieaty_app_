@@ -14,6 +14,7 @@ class ScreenWrapper extends StatelessWidget {
     return Consumer<NavigationController>(
       builder: (context, navigationController, child) {
         return Scaffold(
+
           appBar: CustomAppBar(
             title: listOfNavigationBarItems[navigationController.currentIndex]
                 .title,

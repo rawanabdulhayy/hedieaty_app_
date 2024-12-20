@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hedieaty_app_mvc/features/authentication/sign_in/presentation/pages/signin.dart';
+import 'package:hedieaty_app_mvc/features/events_list/presentation/pages/user_events_list_page.dart';
 import 'package:hedieaty_app_mvc/features/gifts_list/presentation/pages/gift_details.dart';
 import '../../../features/friend_gift_list/presentation/pages/friend_gift_list.dart';
 import '../../../features/friends_events/presentation/pages/friend_event_list.dart';
@@ -21,6 +22,7 @@ final Map<String, WidgetBuilder> appRoutes = {
   '/friend_event_list': (context) => FriendEventListPage(),
   '/friend_gift_list': (context) => FriendGiftListPage(),
   '/user_pledged_gifts': (context) => PledgedGiftsPage(),
+  '/user_event_list' : (context) => EventListPage(),
   // '/gift_details': (context) => GiftDetailsPage(),
   // '/user_events_list': (context) => EventListPage(),
   // In the routes configuration, when defining the navigation for the GiftListPage,

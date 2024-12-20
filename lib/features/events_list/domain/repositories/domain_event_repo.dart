@@ -144,23 +144,6 @@ class DomainEventRepository {
       return remoteEventModel?.toDomain();
     }
   }
-
-  //
-  // Future<List<Event>> getEventsByUserId(String userId) async {
-  //   if (_shouldUseLocal()) {
-  //     // Fetch events from the local repository (SQLite database)
-  //     final localEvents = await _eventLocalRepository.getEventsByUserId(userId);
-  //
-  //     // Map the local events to domain models and return them
-  //     return localEvents.map((localEvent) => localEvent.toDomain()).toList();
-  //   }
-  //
-  //   // Fetch events from the remote repository
-  //   final remoteEvents = await _eventRemoteRepository.getEventsByUserId(userId);
-  //
-  //   // Map the remote events to domain models and return them
-  //   return remoteEvents.map((remoteEvent) => remoteEvent.toDomain()).toList();
-  // }
   Future<List<Event>> getEventsByUserId(String userId) async {
     if (_shouldUseLocal()) {
       final localEvents = await _eventLocalRepository.getEventsByUserId(userId);
@@ -198,6 +181,6 @@ class DomainEventRepository {
   bool _shouldUseLocal() {
     // Example logic to determine if local should be used
     // Replace with your actual condition
-    return true;
+    return false;
   }
 }

@@ -655,6 +655,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                             const SnackBar(
                                 content: Text('Event created successfully!')),
                           );
+                          Navigator.pop(context);
                           Navigator.pushNamed(context, '/screen_wrapper');
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -679,7 +680,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBarWidget(),
+      // bottomNavigationBar: BottomNavigationBarWidget(),
     );
   }
 }

@@ -26,16 +26,15 @@ class _EventListPageState extends State<EventListPage> {
   @override
   void initState() {
     super.initState();
-    print("Printing Events");
-    _loadEvents();
-    print("Printed Events");
+    loadEvents();
   }
 
-  Future<void> _loadEvents() async {
+  Future<void> loadEvents() async {
     try {
       final user = FirebaseAuth.instance.currentUser; // Get the current user
+      print(user?.uid);
       if (user != null) {
-        print("please");
+        print("btd5ul hena?");
         final domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
         final events = await domainEventRepository.getEventsByUserId(user.uid); // Fetch events directly as Event objects
 
@@ -57,33 +56,6 @@ class _EventListPageState extends State<EventListPage> {
       });
     }
   }
-  // Future<void> _loadEvents() async {
-  //   try {
-  //     final user = FirebaseAuth.instance.currentUser;
-  //     if (user != null) {
-  //       final domainEventRepository = Provider.of<DomainEventRepository>(
-  //           context, listen: false);
-  //       final events = await domainEventRepository.getEventsByUserId(user.uid);
-  //
-  //       print('Events loaded: $events');
-  //       setState(() {
-  //         _events = events;
-  //         _filteredEvents = events;
-  //         _isLoading = false;
-  //       });
-  //     }
-  //   } catch (e) {
-  //     print('Error loading events: $e');
-  //     WidgetsBinding.instance.addPostFrameCallback((_) {
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(content: Text('Failed to load events: $e')),
-  //       );
-  //     });
-  //     setState(() {
-  //       _isLoading = false;
-  //     });
-  //   }
-  // }
 
   // Determine the status based on the event date
   String getEventStatus(DateTime eventDate) {
@@ -121,74 +93,6 @@ class _EventListPageState extends State<EventListPage> {
       }
     });
   }
-  //
-  //
-  // @override
-  // Widget build(BuildContext context) {
-  //   return GradientBackground(
-  //     child: Column(
-  //       crossAxisAlignment: CrossAxisAlignment.start,
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.all(10.0),
-  //           child: CustomSearchBar(
-  //             controller: _searchController,
-  //             onChanged: (value) => _filterEvents(value),
-  //             hintText: "Search events...",
-  //           ),
-  //         ),
-  //         Padding(
-  //           padding: const EdgeInsets.symmetric(horizontal: 150.0),
-  //           child: CustomDropdownButton(
-  //             items: ['Status', 'Category', 'Name'],
-  //             value: _selectedFilter,
-  //             onChanged: _sortEvents,
-  //             hint: Text(
-  //                 'Sort by', style: TextStyle(color: AppColors.lightAmber)),
-  //             iconColor: AppColors.lightAmber,
-  //             dropdownColor: Colors.white,
-  //             selectedTextStyle: TextStyle(
-  //                 color: AppColors.gold), // Set the selected item color to gold
-  //           ),
-  //         ),
-  //         // Show CircularProgressIndicator while loading
-  //         if (_isLoading)
-  //           Expanded(
-  //             child: Center(
-  //               child: CircularProgressIndicator(
-  //                 valueColor: AlwaysStoppedAnimation<Color>(
-  //                     AppColors.gold), // Customize color
-  //               ),
-  //             ),
-  //           )
-  //         else
-  //           Expanded(
-  //             child: ListView.builder(
-  //               padding: const EdgeInsets.all(10.0),
-  //               itemCount: _filteredEvents.length,
-  //               itemBuilder: (context, index) {
-  //                 final event = _filteredEvents[index];
-  //                 final eventStatus = getEventStatus(
-  //                     event.date); // Calculate the event status
-  //                 return EventCard(
-  //                   eventName: event.name,
-  //                   status: eventStatus,
-  //                   // Pass the calculated status
-  //                   category: event.type,
-  //                   eventId: event.id,
-  //                   location: event.location,
-  //                   description: event.description,
-  //                   date: DateFormat('dd/MM/yyyy').format(event.date),
-  //                   // Convert DateTime to String
-  //                   onDelete: _loadEvents, // Pass the reload function as a callback
-  //                 );
-  //               },
-  //             ),
-  //           ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   @override
   void dispose() {
@@ -255,7 +159,7 @@ class _EventListPageState extends State<EventListPage> {
                         description: event.description,
                         date: DateFormat('dd/MM/yyyy').format(event.date),
                         // Convert DateTime to String
-                        onDelete: _loadEvents, // Pass the reload function as a callback
+                        onDelete: loadEvents, // Pass the reload function as a callback
                       );
                     },
                   ),

@@ -21,6 +21,7 @@ void listenForGiftStatusChanges() async {
   FirebaseFirestore.instance.collection('gifts').snapshots().listen((snapshot) {
     for (var docChange in snapshot.docChanges) {
       if (docChange.type == DocumentChangeType.modified) {
+
         print("Document changed: ${docChange.doc.data()}"); // Debug log
         var giftData = docChange.doc.data() as Map<String, dynamic>;
 
