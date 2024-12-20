@@ -104,15 +104,33 @@ class DomainEventRepository {
       userId: uid,
     );
 
-    if (_shouldUseLocal()) {
-      // Convert to LocalEventModel with the correct userId and eventId
-      await _eventLocalRepository.upsertEvent(eventWithUser.toLocalModel());
-    } else {
-      // Convert to RemoteEventModel with the correct userId and eventId
+    // Check if the event exists in either repository
+    final localEvent = await _eventLocalRepository.getEventById(eventId);
+    final remoteEvent = await _eventRemoteRepository.getEventById(eventId);
+
+    if (remoteEvent != null && localEvent != null )
+      {
+        final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
+        await _eventRemoteRepository.upsertEvent(remoteEventModel);
+        print ('updated remote one');
+
+        await _eventLocalRepository.upsertEvent(eventWithUser.toLocalModel());
+        print ('updated local one');
+
+      }
+    if (remoteEvent != null) {
+      // Event exists remotely, upsert to the remote repository
       final remoteEventModel = EventRemoteModel.fromDomain(eventWithUser);
       await _eventRemoteRepository.upsertEvent(remoteEventModel);
+    } else if (localEvent != null) {
+      // Event exists locally, upsert to the local repository
+      await _eventLocalRepository.upsertEvent(eventWithUser.toLocalModel());
+    } else {
+      // Event does not exist in either repository, default to local
+      await _eventLocalRepository.upsertEvent(eventWithUser.toLocalModel());
     }
   }
+
 
   Future<void> upsertRemoteEvent(Event event) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -171,16 +189,13 @@ class DomainEventRepository {
   }
 
   Future<void> deleteEvent(String eventId) async {
-    if (_shouldUseLocal()) {
       await _eventLocalRepository.deleteEvent(eventId);
-    } else {
       await _eventRemoteRepository.deleteEvent(eventId);
-    }
   }
 
   bool _shouldUseLocal() {
     // Example logic to determine if local should be used
     // Replace with your actual condition
-    return false;
+    return true;
   }
 }

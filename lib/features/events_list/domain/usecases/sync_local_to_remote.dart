@@ -14,6 +14,7 @@ Future<void> syncLocalToRemote(BuildContext context) async {
 
       // Mark the event as synced in the local database
       await domainEventRepository.markEventAsSynced(event.id);
+
     }
   } catch (e) {
     throw Exception('Error during synchronization: $e');

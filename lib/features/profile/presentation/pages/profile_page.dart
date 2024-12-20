@@ -329,36 +329,10 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../core/app_colors.dart';
 import '../../../../core/config/theme/gradient_background.dart';
+import '../../../friend_gift_list/presentation/usecases/get_current_user_name.dart';
 
-Future<String> getCurrentUserName() async {
-  final user = FirebaseAuth.instance.currentUser;
-
-  if (user == null) {
-    throw Exception('User not logged in');
-  }
-
-  try {
-    final userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .get();
-
-    if (userDoc.exists) {
-      final userData = userDoc.data();
-      return userData?['name'] ?? 'Anonymous';
-
-    } else {
-      throw Exception('User document not found in Firestore');
-    }
-  } catch (e) {
-    throw Exception('Error fetching user data: $e');
-  }
-}
 
 class ProfilePage extends StatefulWidget {
   @override
