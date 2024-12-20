@@ -86,7 +86,7 @@ class PledgedGiftsPage extends StatelessWidget {
                                   ),
                                   Text(
                                     "Event Date: ${gift['eventDate'] != null
-                                        ? DateFormat('yyyy-MM-dd').format(DateTime.parse(gift['eventDate']))
+                                        ? gift['eventDate']
                                         : 'Unknown'}",
                                     style: const TextStyle(
                                       fontSize: 20,

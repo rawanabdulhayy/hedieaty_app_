@@ -28,13 +28,13 @@ class ScreenWrapper extends StatelessWidget {
               ),
             ],
           ),
-          body: listOfNavigationBarItems[navigationController.currentIndex].page,
-          // body: PageView(
-          //     controller: navigationController.pageController,
-          //     onPageChanged: (index) {
-          //       navigationController.navigateToPage(index);
-          //     },
-          //     children: listOfMainScreens),
+          // body: listOfNavigationBarItems[navigationController.currentIndex].page,
+          body: PageView(
+              controller: navigationController.pageController,
+              onPageChanged: (index) {
+                navigationController.navigateToPage(index);
+              },
+              children: listOfMainScreens),
           bottomNavigationBar: BottomNavigationBarWidget(),
         );
       },

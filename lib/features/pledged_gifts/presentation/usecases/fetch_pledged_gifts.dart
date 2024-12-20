@@ -37,6 +37,7 @@
 // }
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 Stream<List<Map<String, dynamic>>> fetchPledgedGifts() async* {
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
@@ -86,9 +87,24 @@ Stream<List<Map<String, dynamic>>> fetchPledgedGifts() async* {
             final friendName = userSnapshot?.data() != null
                 ? (userSnapshot!.data() as Map<String, dynamic>)['name']
                 : 'Unknown';
+            String _parseEventDate(dynamic date) {
+              if (date == null) return 'Unknown';
+
+              if (date is Timestamp) {
+                // Convert Firestore Timestamp to DateTime and format it
+                return DateFormat('yyyy-MM-dd').format(date.toDate());
+              }
+
+              if (date is DateTime) {
+                // Directly format DateTime objects
+                return DateFormat('yyyy-MM-dd').format(date);
+              }
+
+              return 'Invalid Date';
+            }
 
             final eventDate = eventSnapshot?.data() != null
-                ? (eventSnapshot!.data() as Map<String, dynamic>)['date']
+                ? _parseEventDate((eventSnapshot!.data() as Map<String, dynamic>)['date'])
                 : 'Unknown';
 
             return {
