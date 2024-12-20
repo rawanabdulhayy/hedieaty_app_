@@ -78,7 +78,8 @@ class GiftCard extends StatelessWidget {
                           'giftName': giftData['name'],
                           'giftDescription': giftData['description'],
                           'giftCategory': giftData['category'],
-                          'giftPrice': giftData['price'],
+                          // 'giftPrice': giftData['price'],
+                          'giftPrice': double.tryParse(giftData['price'].toString()) ?? 0.0,
                           'giftStatus': giftData['status'],
                         },
                       );

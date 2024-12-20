@@ -64,27 +64,28 @@ class GiftDomainRepository {
   }
 
   Future<List<Gift>> getGiftsByEventId(String eventId) async {
-    if (_shouldUseLocal()) {
-      final localGifts = await _giftLocalRepository.getGiftsByEventId(eventId);
+    // Attempt to fetch gifts from the local repository
+    final localGifts = await _giftLocalRepository.getGiftsByEventId(eventId);
+
+    // If local gifts are found, return them
+    if (localGifts.isNotEmpty) {
       return localGifts.map((e) => e.toDomain()).toList();
-    } else {
-      final remoteGifts =
-          await _giftRemoteRepository.getGiftsByEventId(eventId);
-      return remoteGifts.map((remoteGift) => remoteGift.toDomain()).toList();
     }
+
+    // Otherwise, fetch from the remote repository
+    final remoteGifts = await _giftRemoteRepository.getGiftsByEventId(eventId);
+    return remoteGifts.map((remoteGift) => remoteGift.toDomain()).toList();
   }
 
+
   Future<void> deleteGift(String giftId) async {
-    if (_shouldUseLocal()) {
       await _giftLocalRepository.deleteGift(giftId);
-    } else {
       await _giftRemoteRepository.deleteGift(giftId);
-    }
   }
 
   bool _shouldUseLocal() {
 // Example logic to determine if local should be used
 // Replace with your actual condition
-    return false;
+    return true;
   }
 }

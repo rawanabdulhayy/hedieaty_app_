@@ -57,7 +57,8 @@ class Gift {
       name: map['name'],
       description: map['description'],
       category: map['category'],
-      price: (map['price'] as num).toDouble(),
+      price: (map['price'] is num ? map['price'] : double.tryParse(map['price']))?.toDouble() ?? 0.0, // Handle both num and String
+      // price: map['price'],
       status: map['status'],
       eventId: map['eventId'],
       isPledged: map['isPledged'] ?? false,
@@ -65,33 +66,33 @@ class Gift {
     );
   }
 
-  // Convert Gift to JSON for remote operations
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'description': description,
-    'category': category,
-    'price': price,
-    'status': status,
-    'eventId': eventId,
-    'isPledged': isPledged,
-    'pledgedBy': pledgedBy,
-  };
-
-  // Convert from JSON to Gift instance
-  factory Gift.fromJson(Map<String, dynamic> json) {
-    return Gift(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      category: json['category'],
-      price: (json['price'] as num).toDouble(),
-      status: json['status'],
-      eventId: json['eventId'],
-      isPledged: json['isPledged'] ?? false,
-      pledgedBy: json['pledgedBy'],
-    );
-  }
+  // // Convert Gift to JSON for remote operations
+  // Map<String, dynamic> toJson() => {
+  //   'id': id,
+  //   'name': name,
+  //   'description': description,
+  //   'category': category,
+  //   'price': price,
+  //   'status': status,
+  //   'eventId': eventId,
+  //   'isPledged': isPledged,
+  //   'pledgedBy': pledgedBy,
+  // };
+  //
+  // // Convert from JSON to Gift instance
+  // factory Gift.fromJson(Map<String, dynamic> json) {
+  //   return Gift(
+  //     id: json['id'],
+  //     name: json['name'],
+  //     description: json['description'],
+  //     category: json['category'],
+  //     price: (json['price'] as num).toDouble(),
+  //     status: json['status'],
+  //     eventId: json['eventId'],
+  //     isPledged: json['isPledged'] ?? false,
+  //     pledgedBy: json['pledgedBy'],
+  //   );
+  // }
 
   // CopyWith method for creating a new instance with updated values
   Gift copyWith({

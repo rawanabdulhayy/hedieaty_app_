@@ -35,6 +35,7 @@ class LocalGiftModel {
       'eventId': eventId,
       'isPledged': isPledged == "true" ? 1 : 0, // Store boolean as integer (1 or 0)
       'pledgedBy': pledgedBy,
+
     };
   }
 

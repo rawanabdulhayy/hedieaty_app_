@@ -51,7 +51,8 @@ class AppRouter {
         final giftName = args?['giftName'] ?? '';
         final giftDescription = args?['giftDescription'] ?? '';
         final giftCategory = args?['giftCategory'] ?? '';
-        final giftPrice = args?['giftPrice'] ?? '';
+        // final giftPrice = args?['giftPrice'] ?? 0.0;
+        final giftPrice = double.tryParse(args?['giftPrice']?.toString() ?? '0') ?? 0.0;
         final giftStatus = args?['giftStatus'] ?? '';
 
         return MaterialPageRoute(
