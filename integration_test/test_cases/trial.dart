@@ -153,3 +153,36 @@ void main() {
     debugPrint('Verified event details on EventListPage: Birthday Party at Downtown Hall');
   });
 }
+// // Step 7: Navigate to EventListPage and verify the event appears
+// print('Navigating to EventListPage...');
+// await tester.pumpWidget(
+// MultiProvider(
+// providers: [
+// Provider<FirebaseAuth>.value(value: mockFirebaseAuth),
+// Provider<DomainEventRepository>.value(value: mockDomainEventRepository),
+// ChangeNotifierProvider(create: (_) => NavigationController()),
+// ],
+// child: MaterialApp(home: Scaffold(body: EventListPage()),
+// ),
+// ),
+// );
+// await tester.pumpAndSettle();
+//
+// expect(find.byType(EventCard), findsOneWidget);
+// print('EventListPage is displayed.');
+// print('Search Friends Search Bar is found.');
+//
+// // Verify the created event is listed
+// // expect(find.byType(EventCard), findsOneWidget);
+// expect(find.text('Birthday Party2'), findsOneWidget);
+// expect(find.text('Downtown Hall'), findsOneWidget);
+// print('Event appears in EventListPage.');
+
+
+// final newUser = await mockFirebaseAuth.createUserWithEmailAndPassword(
+// email: 'test@example.com',
+// password: 'password123',
+// );
+//
+// final currentUser = mockFirebaseAuth.currentUser;
+// expect(currentUser?.email, 'test@example.com');

@@ -32,9 +32,7 @@ class _EventListPageState extends State<EventListPage> {
   Future<void> loadEvents() async {
     try {
       final user = FirebaseAuth.instance.currentUser; // Get the current user
-      print(user?.uid);
       if (user != null) {
-        print("btd5ul hena?");
         final domainEventRepository = Provider.of<DomainEventRepository>(context, listen: false);
         final events = await domainEventRepository.getEventsByUserId(user.uid); // Fetch events directly as Event objects
 

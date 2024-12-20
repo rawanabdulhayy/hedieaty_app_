@@ -18,68 +18,29 @@ import '../mocks/mocks.mocks.dart';
 
 
 void main() {
-  // // Create a mock user for authentication
-  // final mockUser = MockUser(
-  //   isAnonymous: true,
-  //   uid: 'testUser',
-  //   email: 'test@example.com',
-  // );
 
   setupFirebaseAuthMocks(); // Set up Firebase mocks before running tests
   setUpAll(() async {
     await Firebase.initializeApp(); // Initialize Firebase
   });
   testWidgets(
-    'Add an event and verify it on EventListPage',
+    'Test Case: User Navigating from Homepage to Create Event Page and UI Event Creation Confirmation',
         (WidgetTester tester) async {
-      // print("initializing firebase");
-      //     await Firebase.initializeApp(); // Initialize Firebase
-      // print("firebase done");
-          // // Step 1: Initialize Firebase and sign in mock user
-      // print('Initializing Firebase...');
-      // await Firebase.initializeApp(); // Mock Firebase initialization
-      // print('Firebase initialized.');
-      //
-      // print('Signing in mock user...');
-      // await mockFirebaseAuth.signInAnonymously(); // Authenticate the mock user
-      // print('Mock user signed in.');
-      // Step 1: Mock FirebaseAuth and authenticate user
-      // final mockUser = MockUser(
-      //   isAnonymous: true,
-      //   uid: 'testUser',
-      //   email: 'test@example.com',
-      // );
-      // final mockFirebaseAuth = MockFirebaseAuth(mockUser: mockUser);
-      // await mockFirebaseAuth.signInAnonymously();
-      // final currentUser = mockFirebaseAuth.currentUser;
-      // expect(currentUser?.uid, 'testUser'); // Verify user is authenticated
-      // print ('User id matches the current user id');
-          final mockFirebaseAuth = MockFirebaseAuth();
-          final newUser = await mockFirebaseAuth.createUserWithEmailAndPassword(
-            email: 'test@example.com',
-            password: 'password123',
-          );
-          final currentUser = mockFirebaseAuth.currentUser;
-          expect(currentUser?.email, 'test@example.com');
+      final mockUser = MockUser(
+        isAnonymous: true,
+        uid: 'testUser',
+        email: 'test@example.com',
+      );
+      final mockFirebaseAuth = MockFirebaseAuth(mockUser: mockUser);
+      await mockFirebaseAuth.signInAnonymously();
+      final currentUser = mockFirebaseAuth.currentUser;
+      expect(currentUser?.uid, 'testUser'); // Verify user is authenticated
+      print ('User id matches the current user id');
 
       final mockEventList = <Event>[];
 
       // Step 2: Mock DomainEventRepository
       final mockDomainEventRepository = MockDomainEventRepository();
-      // when(mockDomainEventRepository.getEventsByUserId('testUser')).thenAnswer(
-      //       (_) async => [
-      //     Event(
-      //       id: '1',
-      //       name: 'Birthday Party',
-      //       location: 'Downtown Hall',
-      //       description: 'A fun birthday celebration.',
-      //       date: DateTime(2024, 12, 25),
-      //       type: 'Birthday',
-      //       userId: 'testUser',
-      //     ),
-      //   ],
-      // );
-      // Mock `getEventsByUserId` to return the dynamic event list
       when(mockDomainEventRepository.getEventsByUserId('testUser'))
           .thenAnswer((_) async => mockEventList);
 
@@ -106,7 +67,7 @@ void main() {
 
       // Step 3: Wait for widgets to render
       print('Waiting for widgets to stabilize...');
-      await tester.pumpAndSettle(const Duration(seconds: 5)); // Allow the UI to stabilize
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('Widget stabilization complete.');
 
       // Verify HomePage is displayed
@@ -119,7 +80,7 @@ void main() {
       expect(createEventButton, findsOneWidget);
 
       await tester.tap(createEventButton); // Tap the button
-      await tester.pumpAndSettle(); // Wait for navigation to complete
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('CreateEventPage navigation complete.');
 
       // Verify navigation to CreateEventPage
@@ -127,7 +88,7 @@ void main() {
 
       // Step 5: Tap confirmation button
       await tester.tap(find.text('Yes, take me there!'));
-      await tester.pumpAndSettle(); // Wait for action to complete
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('User confirmed navigation to CreateEventPage.');
 
       // Verify CreateEventPage is displayed
@@ -139,10 +100,13 @@ void main() {
       final eventNameField = find.byKey(ValueKey('eventNameField'));
       final eventLocationField = find.byKey(ValueKey('eventLocationField'));
       final eventDescriptionField = find.byKey(ValueKey('eventDescriptionField'));
-
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       await tester.enterText(eventNameField, 'Birthday Party2');
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       await tester.enterText(eventLocationField, 'Downtown Hall');
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       await tester.enterText(eventDescriptionField, 'A fun birthday celebration.');
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('Event details entered.');
 
       // Select the event date
@@ -150,28 +114,28 @@ void main() {
       final eventDateField = find.byKey(ValueKey('eventDateField'));
       expect(eventDateField, findsOneWidget); // Ensure the widget exists
       await tester.tap(eventDateField);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
 
       // Verify DatePicker is displayed
       expect(find.byType(DatePickerDialog), findsOneWidget);
 
       // Select a date from the DatePicker
       await tester.tap(find.text('30')); // Select day 25
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
 
       final datePickerOkButton = find.text('OK'); // Confirm button
       expect(datePickerOkButton, findsOneWidget);
       await tester.tap(datePickerOkButton);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('Event date selected.');
 
       // Select event type from the dropdown
       print('Selecting event type...');
       final eventTypeDropdown = find.byKey(ValueKey('eventTypeDropdown'));
       await tester.tap(eventTypeDropdown);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       await tester.tap(find.text('Birthday').last);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('Event type selected.');
 
       print('Adding Event in List.');
@@ -191,37 +155,12 @@ void main() {
       print('Submitting event creation form...');
       final submitButton = find.text('Add Event');
       await tester.tap(submitButton);
-      await tester.pumpAndSettle();
+      await tester.pumpAndSettle(const Duration(seconds: 2)); // Allow the UI to stabilize
       print('Event creation form submitted.');
 
       // Verify success message is displayed
       expect(find.text('Event created successfully!'), findsOneWidget);
       print('Event created successfully message displayed.');
-
-      // Step 7: Navigate to EventListPage and verify the event appears
-      print('Navigating to EventListPage...');
-      await tester.pumpWidget(
-        MultiProvider(
-          providers: [
-            Provider<FirebaseAuth>.value(value: mockFirebaseAuth),
-            Provider<DomainEventRepository>.value(value: mockDomainEventRepository),
-            ChangeNotifierProvider(create: (_) => NavigationController()),
-          ],
-          child: MaterialApp(home: Scaffold(body: EventListPage()),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(find.byType(EventCard), findsOneWidget);
-      print('EventListPage is displayed.');
-      print('Search Friends Search Bar is found.');
-
-      // Verify the created event is listed
-      // expect(find.byType(EventCard), findsOneWidget);
-      expect(find.text('Birthday Party2'), findsOneWidget);
-      expect(find.text('Downtown Hall'), findsOneWidget);
-      print('Event appears in EventListPage.');
     },
   );
 }
