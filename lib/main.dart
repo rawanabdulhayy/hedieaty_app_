@@ -111,6 +111,7 @@ void main() async {
               remoteRepo: remoteRepo
           ),
         ),
+        Provider(create: (_) => FriendRemoteRepository()),
         ProxyProvider<FriendRemoteRepository, DomainFriendRepository>(
           update: (_, remoteRepo, __) => DomainFriendRepository(remoteRepo),
         ),
