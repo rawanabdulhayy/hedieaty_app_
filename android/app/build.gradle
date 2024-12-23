@@ -24,7 +24,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.hedieaty_app_"
+        applicationId = "com.rawanabdulhayy.hedieaty_app_"
         minSdk = 23
         targetSdk = 34
         versionCode = flutter.versionCode

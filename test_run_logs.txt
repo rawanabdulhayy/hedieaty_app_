@@ -1,0 +1,398 @@
+Starting screen recording...
+Running integration test...
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 72.0.0 (78.0.0 available)
+  _flutterfire_internals 1.3.47 (1.3.48 available)
+  analyzer 6.7.0 (7.1.0 available)
+  async 2.11.0 (2.12.0 available)
+  boolean_selector 2.1.1 (2.1.2 available)
+  build 2.4.1 (2.4.2 available)
+  build_config 1.1.1 (1.1.2 available)
+  build_daemon 4.0.2 (4.0.3 available)
+  build_resolvers 2.4.2 (2.4.3 available)
+  build_runner 2.4.13 (2.4.14 available)
+  build_runner_core 7.3.2 (8.0.0 available)
+  characters 1.3.0 (1.4.0 available)
+  clock 1.1.1 (1.1.2 available)
+  cloud_firestore 5.5.1 (5.6.0 available)
+  cloud_firestore_platform_interface 6.5.1 (6.6.0 available)
+  cloud_firestore_web 4.3.5 (4.4.0 available)
+  collection 1.18.0 (1.19.1 available)
+  dart_style 2.3.7 (3.0.0 available)
+  fake_async 1.3.1 (1.3.2 available)
+  file 7.0.0 (7.0.1 available)
+  firebase_core 3.8.1 (3.9.0 available)
+  firebase_core_platform_interface 5.3.1 (5.4.0 available)
+  firebase_core_web 2.18.2 (2.19.0 available)
+  http_parser 4.0.2 (4.1.1 available)
+  intl 0.19.0 (0.20.1 available)
+  leak_tracker 10.0.5 (10.0.8 available)
+  leak_tracker_flutter_testing 3.0.5 (3.0.9 available)
+  lints 5.0.0 (5.1.1 available)
+  macros 0.1.2-main.4 (0.1.3-main.0 available)
+  matcher 0.12.16+1 (0.12.17 available)
+  material_color_utilities 0.11.1 (0.12.0 available)
+  meta 1.15.0 (1.16.0 available)
+  mockito 5.4.4 (5.4.5 available)
+  path 1.9.0 (1.9.1 available)
+  platform 3.1.5 (3.1.6 available)
+  process 5.0.2 (5.0.3 available)
+  pubspec_parse 1.3.0 (1.4.0 available)
+  shelf 1.4.1 (1.4.2 available)
+  source_gen 1.5.0 (2.0.0 available)
+  source_span 1.10.0 (1.10.1 available)
+  stack_trace 1.11.1 (1.12.1 available)
+  stream_channel 2.1.2 (2.1.3 available)
+  string_scanner 1.2.0 (1.4.1 available)
+  term_glyph 1.2.1 (1.2.2 available)
+  test_api 0.7.2 (0.7.4 available)
+  vm_service 14.2.5 (15.0.0 available)
+  webdriver 3.0.3 (3.0.4 available)
+  yaml 3.1.2 (3.1.3 available)
+Got dependencies!
+48 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                             11.0s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        1,720ms
+D/TrafficStats( 3643): tagSocket(148) with statsTag=0xffffffff, statsUid=-1
+W/y.hedieaty_app_( 3643): Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (unsupported, reflection, allowed)
+W/y.hedieaty_app_( 3643): Accessing hidden method Ljava/security/spec/ECParameterSpec;->setCurveName(Ljava/lang/String;)V (unsupported, reflection, allowed)
+I/FIAM.Headless( 3643): Successfully fetched 0 messages from backend
+D/ProfileInstaller( 3643): Installing profile for com.rawanabdulhayy.hedieaty_app_
+../../development/flutter/packages/flutter/lib/semantics.dart:18:1: Error: Dart library 'dart:ui' is not available on this platform.
+export 'dart:ui' show LocaleStringAttribute, SpellOutStringAttribute;
+^
+Context: The unavailable library 'dart:ui' is imported through these packages:
+
+    integration_test_driver.dart => package:flutter_driver => package:flutter => dart:ui
+    ...
+
+Detailed import paths for (some of) the these imports:
+
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/binding.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/binding.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/binding.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/binding.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/memory_allocations.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/memory_allocations.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/memory_allocations.dart => package:flutter/src/foundation/assertions.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/memory_allocations.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/change_notifier.dart => package:flutter/src/foundation/memory_allocations.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/key.dart => package:flutter/src/foundation/diagnostics.dart => dart:ui
+    integration_test_driver.dart => package:flutter_driver/driver_extension.dart => package:flutter_driver/src/common/handler_factory.dart => package:flutter/cupertino.dart => package:flutter/src/cupertino/activity_indicator.dart => package:flutter/widgets.dart => package:flutter/foundation.dart => package:flutter/src/foundation/key.dart => package:flutter/src/foundation/diagnostics.dart => package:flutter/src/foundation/debug.dart => dart:ui
+    ...
+
+../../.pub-cache/hosted/pub.dev/awesome_notifications-0.10.0/lib/src/models/notification_button.dart:2:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui';
+       ^
+../../.pub-cache/hosted/pub.dev/awesome_notifications-0.10.0/lib/src/helpers/bitmap_helper.dart:3:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui' as ui;
+       ^
+../../.pub-cache/hosted/pub.dev/awesome_notifications-0.10.0/lib/src/utils/resource_image_provider.dart:1:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui' as ui show Codec;
+       ^
+../../.pub-cache/hosted/pub.dev/awesome_notifications-0.10.0/lib/src/utils/resource_image_provider.dart:2:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui';
+       ^
+../../development/flutter/packages/flutter/lib/src/material/animated_icons.dart:9:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui' as ui show Canvas, Paint, Path, lerpDouble;
+       ^
+../../development/flutter/packages/flutter/lib/src/material/app.dart:5:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui' as ui;
+       ^
+../../development/flutter/packages/flutter/lib/src/material/app_bar_theme.dart:5:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui' show lerpDouble;
+       ^
+../../development/flutter/packages/flutter/lib/src/material/arc.dart:6:8: Error: Dart library 'dart:ui' is not available on this platform.
+import 'dart:ui' show lerpDouble;
+       ^
+Stopping screen recording...
+Pulling the recorded file to the local machine...
+./run_integration_test.ps1: line 47: adb: command not found
+Verifying the recording file integrity...
+Error: Recording file is corrupted. Logs saved in ./test_run_logs.txt.
+Starting screen recording...
+Running integration test...
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 72.0.0 (78.0.0 available)
+  _flutterfire_internals 1.3.47 (1.3.48 available)
+  analyzer 6.7.0 (7.1.0 available)
+  async 2.11.0 (2.12.0 available)
+  boolean_selector 2.1.1 (2.1.2 available)
+  build 2.4.1 (2.4.2 available)
+  build_config 1.1.1 (1.1.2 available)
+  build_daemon 4.0.2 (4.0.3 available)
+  build_resolvers 2.4.2 (2.4.3 available)
+  build_runner 2.4.13 (2.4.14 available)
+  build_runner_core 7.3.2 (8.0.0 available)
+  characters 1.3.0 (1.4.0 available)
+  clock 1.1.1 (1.1.2 available)
+  cloud_firestore 5.5.1 (5.6.0 available)
+  cloud_firestore_platform_interface 6.5.1 (6.6.0 available)
+  cloud_firestore_web 4.3.5 (4.4.0 available)
+  collection 1.18.0 (1.19.1 available)
+  dart_style 2.3.7 (3.0.0 available)
+  fake_async 1.3.1 (1.3.2 available)
+  file 7.0.0 (7.0.1 available)
+  firebase_core 3.8.1 (3.9.0 available)
+  firebase_core_platform_interface 5.3.1 (5.4.0 available)
+  firebase_core_web 2.18.2 (2.19.0 available)
+  http_parser 4.0.2 (4.1.1 available)
+  intl 0.19.0 (0.20.1 available)
+  leak_tracker 10.0.5 (10.0.8 available)
+  leak_tracker_flutter_testing 3.0.5 (3.0.9 available)
+  lints 5.0.0 (5.1.1 available)
+  macros 0.1.2-main.4 (0.1.3-main.0 available)
+  matcher 0.12.16+1 (0.12.17 available)
+  material_color_utilities 0.11.1 (0.12.0 available)
+  meta 1.15.0 (1.16.0 available)
+  mockito 5.4.4 (5.4.5 available)
+  path 1.9.0 (1.9.1 available)
+  platform 3.1.5 (3.1.6 available)
+  process 5.0.2 (5.0.3 available)
+  pubspec_parse 1.3.0 (1.4.0 available)
+  shelf 1.4.1 (1.4.2 available)
+  source_gen 1.5.0 (2.0.0 available)
+  source_span 1.10.0 (1.10.1 available)
+  stack_trace 1.11.1 (1.12.1 available)
+  stream_channel 2.1.2 (2.1.3 available)
+  string_scanner 1.2.0 (1.4.1 available)
+  term_glyph 1.2.1 (1.2.2 available)
+  test_api 0.7.2 (0.7.4 available)
+  vm_service 14.2.5 (15.0.0 available)
+  webdriver 3.0.3 (3.0.4 available)
+  yaml 3.1.2 (3.1.3 available)
+Got dependencies!
+48 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                              4.4s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...        2,037ms
+I/y.hedieaty_app_( 4019): Compiler allocated 5250KB to compile void android.view.ViewRootImpl.performTraversals()
+I/FIAM.Headless( 4019): Fetching campaigns from service.
+W/DynamiteModule( 4019): Local module descriptor class for com.google.android.gms.providerinstaller.dynamite not found.
+I/DynamiteModule( 4019): Considering local module com.google.android.gms.providerinstaller.dynamite:0 and remote module com.google.android.gms.providerinstaller.dynamite:0
+W/ProviderInstaller( 4019): Failed to load providerinstaller module: No acceptable module com.google.android.gms.providerinstaller.dynamite found. Local version is 0 and remote version is 0.
+D/ApplicationLoaders( 4019): Returning zygote-cached class loader: /system/framework/org.apache.http.legacy.jar
+D/nativeloader( 4019): Configuring clns-8 for other apk /system/framework/com.android.media.remotedisplay.jar. target_sdk_version=34, uses_libraries=ALL, library_path=/product/priv-app/PrebuiltGmsCore/lib/arm64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/nativeloader( 4019): Configuring clns-9 for other apk /system/framework/com.android.location.provider.jar. target_sdk_version=34, uses_libraries=ALL, library_path=/product/priv-app/PrebuiltGmsCore/lib/arm64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/ApplicationLoaders( 4019): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+D/ApplicationLoaders( 4019): Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+D/nativeloader( 4019): InitLlndkLibrariesProduct: libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libRS.so:libandroid_net.so:libapexsupport.so:libbinder_ndk.so:libc.so:libcgrouprc.so:libclang_rt.asan-aarch64-android.so:libclang_rt.hwasan-aarch64-android.so:libcom.android.tethering.connectivity_native.so:libdl.so:libft2.so:liblog.so:libm.so:libmediandk.so:libnativewindow.so:libneuralnetworks.so:libselinux.so:libsync.so:libvendorsupport.so:libvndksupport.so:libvulkan.so
+D/nativeloader( 4019): Configuring product-clns-10 for unbundled product apk /product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk. target_sdk_version=34, uses_libraries=, library_path=/product/priv-app/PrebuiltGmsCore/lib/arm64:/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/arm64-v8a:/product/lib64:/system/product/lib64, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms:/product/lib64:/system/product/lib64
+D/nativeloader( 4019): InitVndkspLibrariesProduct: VNDK is deprecated with product
+W/ProviderInstaller( 4019): Failed to report request stats: com.google.android.gms.common.security.ProviderInstallerImpl.reportRequestStats [class android.content.Context, long, long]
+D/nativeloader( 4019): Load /product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!/lib/arm64-v8a/libconscrypt_gmscore_jni.so using ns product-clns-10 from class loader (caller=/product/priv-app/PrebuiltGmsCore/PrebuiltGmsCore.apk!classes3.dex): ok
+V/NativeCrypto( 4019): Registering com/google/android/gms/org/conscrypt/NativeCrypto's 305 native methods...
+W/y.hedieaty_app_( 4019): Accessing hidden method Ljava/security/spec/ECParameterSpec;->getCurveName()Ljava/lang/String; (unsupported, reflection, allowed)
+I/ProviderInstaller( 4019): Installed default security provider GmsCore_OpenSSL
+D/TrafficStats( 4019): tagSocket(151) with statsTag=0xffffffff, statsUid=-1
+W/y.hedieaty_app_( 4019): Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (unsupported, reflection, allowed)
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:55031/NU9qdvVwNDk=/
+VMServiceFlutterDriver: Isolate found with number: 9006457783001799
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+W/y.hedieaty_app_( 4019): Accessing hidden method Ljava/security/spec/ECParameterSpec;->setCurveName(Ljava/lang/String;)V (unsupported, reflection, allowed)
+I/flutter ( 4019): Mocking Firebase Auth setup...
+I/flutter ( 4019): Firebase Auth setup complete.
+I/flutter ( 4019): 00:00 +0: (setUpAll)
+I/flutter ( 4019): 00:00 +1: Test Case: User Navigating from Homepage to Create Event Page and UI Event Creation Confirmation
+I/flutter ( 4019): User id matches the current user id
+I/flutter ( 4019): Setting up widget tree...
+I/FIAM.Headless( 4019): Successfully fetched 0 messages from backend
+I/FIAM.Headless( 4019): Recoverable exception while reading cache: /data/user/0/com.rawanabdulhayy.hedieaty_app_/files/fiam_impressions_store_file: open failed: ENOENT (No such file or directory)
+I/flutter ( 4019): No authenticated user found.
+I/flutter ( 4019): Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4019): Error fetching friends and events: Exception: Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4019): Widget tree setup complete.
+I/flutter ( 4019): Waiting for widgets to stabilize...
+I/flutter ( 4019): Widget stabilization complete.
+D/EGL_emulation( 4019): app_time_stats: avg=1355.59ms min=646.62ms max=2064.57ms count=2
+I/flutter ( 4019): HomePage is displayed.
+I/flutter ( 4019): Navigating to CreateEventPage...
+W/WindowOnBackDispatcher( 4019): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 4019): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+D/ProfileInstaller( 4019): Installing profile for com.rawanabdulhayy.hedieaty_app_
+VMServiceFlutterDriver: Flutter Driver extension is taking a long time to become available. Ensure your test app (often "lib/main.dart") imports "package:flutter_driver/driver_extension.dart" and calls enableFlutterDriverExtension() as the first call in main().
+I/flutter ( 4019): CreateEventPage navigation complete.
+D/EGL_emulation( 4019): app_time_stats: avg=524.54ms min=4.27ms max=1919.97ms count=4
+D/EGL_emulation( 4019): app_time_stats: avg=509.06ms min=2.86ms max=1629.11ms count=4
+I/flutter ( 4019): User confirmed navigation to CreateEventPage.
+I/flutter ( 4019): CreateEventPage is displayed.
+I/flutter ( 4019): Filling out event creation form...
+D/EGL_emulation( 4019): app_time_stats: avg=2030.45ms min=2030.45ms max=2030.45ms count=1
+W/y.hedieaty_app_( 4019): ApkAssets: Deleting an ApkAssets object '<empty> and /product/app/talkback/talkback.apk' with 1 weak references
+W/y.hedieaty_app_( 4019): ApkAssets: Deleting an ApkAssets object '/vendor/overlay/EmulatorTalkBackOverlay/EmulatorTalkBackOverlay.apk' with 1 weak references
+D/EGL_emulation( 4019): app_time_stats: avg=1068.11ms min=64.67ms max=2071.55ms count=2
+D/EGL_emulation( 4019): app_time_stats: avg=2022.98ms min=2022.98ms max=2022.98ms count=1
+D/EGL_emulation( 4019): app_time_stats: avg=1043.09ms min=29.64ms max=2056.54ms count=2
+D/EGL_emulation( 4019): app_time_stats: avg=2033.64ms min=2033.64ms max=2033.64ms count=1
+D/EGL_emulation( 4019): app_time_stats: avg=1043.14ms min=28.91ms max=2057.37ms count=2
+I/flutter ( 4019): Event details entered.
+I/flutter ( 4019): Selecting event date...
+D/EGL_emulation( 4019): app_time_stats: avg=2032.68ms min=2032.68ms max=2032.68ms count=1
+D/EGL_emulation( 4019): app_time_stats: avg=515.23ms min=12.81ms max=1866.65ms count=4
+D/EGL_emulation( 4019): app_time_stats: avg=508.79ms min=2.94ms max=1910.20ms count=4
+D/EGL_emulation( 4019): app_time_stats: avg=513.03ms min=10.44ms max=1948.97ms count=4
+I/flutter ( 4019): Event date selected.
+I/flutter ( 4019): Selecting event type...
+D/EGL_emulation( 4019): app_time_stats: avg=511.17ms min=3.42ms max=1915.77ms count=4
+I/flutter ( 4019): Event type selected.
+I/flutter ( 4019): Adding Event in List.
+I/flutter ( 4019): Event Added
+I/flutter ( 4019): Submitting event creation form...
+D/EGL_emulation( 4019): app_time_stats: avg=509.68ms min=12.72ms max=1930.98ms count=4
+I/flutter ( 4019): No authenticated user found.
+I/flutter ( 4019): Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4019): Error fetching friends and events: Exception: Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4019): Event creation form submitted.
+I/flutter ( 4019): Event created successfully message displayed.
+D/EGL_emulation( 4019): app_time_stats: avg=523.89ms min=9.76ms max=1851.36ms count=4
+I/flutter ( 4019): 00:33 +2: (tearDownAll)
+I/flutter ( 4019): 00:33 +3: All tests passed!
+Stopping screen recording...
+Pulling the recorded file to the local machine...
+./run_integration_test.ps1: line 47: adb: command not found
+Verifying the recording file integrity...
+Error: Recording file is corrupted. Logs saved in ./test_run_logs.txt.
+Starting screen recording...
+Running integration test...
+Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 72.0.0 (78.0.0 available)
+  _flutterfire_internals 1.3.47 (1.3.48 available)
+  analyzer 6.7.0 (7.1.0 available)
+  async 2.11.0 (2.12.0 available)
+  boolean_selector 2.1.1 (2.1.2 available)
+  build 2.4.1 (2.4.2 available)
+  build_config 1.1.1 (1.1.2 available)
+  build_daemon 4.0.2 (4.0.3 available)
+  build_resolvers 2.4.2 (2.4.3 available)
+  build_runner 2.4.13 (2.4.14 available)
+  build_runner_core 7.3.2 (8.0.0 available)
+  characters 1.3.0 (1.4.0 available)
+  clock 1.1.1 (1.1.2 available)
+  cloud_firestore 5.5.1 (5.6.0 available)
+  cloud_firestore_platform_interface 6.5.1 (6.6.0 available)
+  cloud_firestore_web 4.3.5 (4.4.0 available)
+  collection 1.18.0 (1.19.1 available)
+  dart_style 2.3.7 (3.0.0 available)
+  fake_async 1.3.1 (1.3.2 available)
+  file 7.0.0 (7.0.1 available)
+  firebase_core 3.8.1 (3.9.0 available)
+  firebase_core_platform_interface 5.3.1 (5.4.0 available)
+  firebase_core_web 2.18.2 (2.19.0 available)
+  http_parser 4.0.2 (4.1.1 available)
+  intl 0.19.0 (0.20.1 available)
+  leak_tracker 10.0.5 (10.0.8 available)
+  leak_tracker_flutter_testing 3.0.5 (3.0.9 available)
+  lints 5.0.0 (5.1.1 available)
+  macros 0.1.2-main.4 (0.1.3-main.0 available)
+  matcher 0.12.16+1 (0.12.17 available)
+  material_color_utilities 0.11.1 (0.12.0 available)
+  meta 1.15.0 (1.16.0 available)
+  mockito 5.4.4 (5.4.5 available)
+  path 1.9.0 (1.9.1 available)
+  platform 3.1.5 (3.1.6 available)
+  process 5.0.2 (5.0.3 available)
+  pubspec_parse 1.3.0 (1.4.0 available)
+  shelf 1.4.1 (1.4.2 available)
+  source_gen 1.5.0 (2.0.0 available)
+  source_span 1.10.0 (1.10.1 available)
+  stack_trace 1.11.1 (1.12.1 available)
+  stream_channel 2.1.2 (2.1.3 available)
+  string_scanner 1.2.0 (1.4.1 available)
+  term_glyph 1.2.1 (1.2.2 available)
+  test_api 0.7.2 (0.7.4 available)
+  vm_service 14.2.5 (15.0.0 available)
+  webdriver 3.0.3 (3.0.4 available)
+  yaml 3.1.2 (3.1.3 available)
+Got dependencies!
+48 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Running Gradle task 'assembleDebug'...                              3.9s
+✓ Built build/app/outputs/flutter-apk/app-debug.apk
+Installing build/app/outputs/flutter-apk/app-debug.apk...          815ms
+I/ProviderInstaller( 4649): Installed default security provider GmsCore_OpenSSL
+D/TrafficStats( 4649): tagSocket(149) with statsTag=0xffffffff, statsUid=-1
+W/y.hedieaty_app_( 4649): Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (unsupported, reflection, allowed)
+W/y.hedieaty_app_( 4649): Accessing hidden method Ljava/security/spec/ECParameterSpec;->setCurveName(Ljava/lang/String;)V (unsupported, reflection, allowed)
+I/FIAM.Headless( 4649): Successfully fetched 0 messages from backend
+I/FIAM.Headless( 4649): Recoverable exception while reading cache: /data/user/0/com.rawanabdulhayy.hedieaty_app_/files/fiam_impressions_store_file: open failed: ENOENT (No such file or directory)
+VMServiceFlutterDriver: Connecting to Flutter application at http://127.0.0.1:55956/v-n3Gs2Svk4=/
+VMServiceFlutterDriver: Isolate found with number: 4073292130323359
+VMServiceFlutterDriver: Isolate is paused at start.
+VMServiceFlutterDriver: Attempting to resume isolate
+I/flutter ( 4649): Mocking Firebase Auth setup...
+I/flutter ( 4649): Firebase Auth setup complete.
+I/flutter ( 4649): 00:00 +0: (setUpAll)
+I/flutter ( 4649): 00:00 +1: Test Case: User Navigating from Homepage to Create Event Page and UI Event Creation Confirmation
+I/flutter ( 4649): User id matches the current user id
+I/flutter ( 4649): Setting up widget tree...
+I/flutter ( 4649): No authenticated user found.
+I/flutter ( 4649): Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4649): Error fetching friends and events: Exception: Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4649): Widget tree setup complete.
+I/flutter ( 4649): Waiting for widgets to stabilize...
+D/ProfileInstaller( 4649): Installing profile for com.rawanabdulhayy.hedieaty_app_
+I/flutter ( 4649): Widget stabilization complete.
+D/EGL_emulation( 4649): app_time_stats: avg=1558.41ms min=1031.34ms max=2085.48ms count=2
+I/flutter ( 4649): HomePage is displayed.
+I/flutter ( 4649): Navigating to CreateEventPage...
+W/WindowOnBackDispatcher( 4649): OnBackInvokedCallback is not enabled for the application.
+W/WindowOnBackDispatcher( 4649): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+VMServiceFlutterDriver: Flutter Driver extension is taking a long time to become available. Ensure your test app (often "lib/main.dart") imports "package:flutter_driver/driver_extension.dart" and calls enableFlutterDriverExtension() as the first call in main().
+I/flutter ( 4649): CreateEventPage navigation complete.
+D/EGL_emulation( 4649): app_time_stats: avg=524.25ms min=7.93ms max=1939.59ms count=4
+D/EGL_emulation( 4649): app_time_stats: avg=514.79ms min=7.59ms max=1870.26ms count=4
+I/flutter ( 4649): User confirmed navigation to CreateEventPage.
+I/flutter ( 4649): CreateEventPage is displayed.
+I/flutter ( 4649): Filling out event creation form...
+W/y.hedieaty_app_( 4649): ApkAssets: Deleting an ApkAssets object '<empty> and /product/app/talkback/talkback.apk' with 1 weak references
+W/y.hedieaty_app_( 4649): ApkAssets: Deleting an ApkAssets object '/vendor/overlay/EmulatorTalkBackOverlay/EmulatorTalkBackOverlay.apk' with 1 weak references
+D/EGL_emulation( 4649): app_time_stats: avg=2042.42ms min=2042.42ms max=2042.42ms count=1
+D/EGL_emulation( 4649): app_time_stats: avg=1074.19ms min=83.10ms max=2065.29ms count=2
+D/EGL_emulation( 4649): app_time_stats: avg=2033.86ms min=2033.86ms max=2033.86ms count=1
+D/EGL_emulation( 4649): app_time_stats: avg=1048.38ms min=42.80ms max=2053.95ms count=2
+D/EGL_emulation( 4649): app_time_stats: avg=2013.00ms min=2013.00ms max=2013.00ms count=1
+D/EGL_emulation( 4649): app_time_stats: avg=1044.86ms min=35.64ms max=2054.07ms count=2
+I/flutter ( 4649): Event details entered.
+I/flutter ( 4649): Selecting event date...
+D/EGL_emulation( 4649): app_time_stats: avg=2033.46ms min=2033.46ms max=2033.46ms count=1
+D/EGL_emulation( 4649): app_time_stats: avg=513.39ms min=10.00ms max=1854.74ms count=4
+D/EGL_emulation( 4649): app_time_stats: avg=521.79ms min=13.96ms max=1877.71ms count=4
+D/EGL_emulation( 4649): app_time_stats: avg=521.43ms min=28.99ms max=1926.66ms count=4
+I/flutter ( 4649): Event date selected.
+I/flutter ( 4649): Selecting event type...
+D/EGL_emulation( 4649): app_time_stats: avg=520.11ms min=1.31ms max=1917.38ms count=4
+D/EGL_emulation( 4649): app_time_stats: avg=513.69ms min=11.37ms max=1909.75ms count=4
+I/flutter ( 4649): Event type selected.
+I/flutter ( 4649): Adding Event in List.
+I/flutter ( 4649): Event Added
+I/flutter ( 4649): Submitting event creation form...
+I/flutter ( 4649): No authenticated user found.
+I/flutter ( 4649): Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+I/flutter ( 4649): Error fetching friends and events: Exception: Error fetching friends and events: Exception: No authenticated user found. Ensure the user is logged in.
+D/EGL_emulation( 4649): app_time_stats: avg=536.14ms min=10.82ms max=1907.72ms count=4
+I/flutter ( 4649): Event creation form submitted.
+I/flutter ( 4649): Event created successfully message displayed.
+I/flutter ( 4649): 00:34 +2: (tearDownAll)
+I/flutter ( 4649): 00:34 +3: All tests passed!
+Stopping screen recording...
+Pulling the recorded file to the local machine...
+/sdcard/app_test_recording.mp4: 1 file pulled, 0 skipped. 151.7 MB/s (2212094 bytes in 0.014s)
+Verifying the recording file integrity...
+Error: Recording file is corrupted. Logs saved in ./test_run_logs.txt.

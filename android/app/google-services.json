@@ -61,6 +61,25 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398924112359:android:7b36c7fab9a539e33add42",
+        "android_client_info": {
+          "package_name": "com.rawanabdulhayy.hedieaty_app_"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA73GR2Wzg7GSJ5Cp0xUN-G6ycNudWHa3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"
